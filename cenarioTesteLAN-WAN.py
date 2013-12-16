@@ -26,6 +26,9 @@ Executar com:
 observacao: a API nao esta desigando corretamento o controlador local, entao pode ser que em um segundo teste apareca uma mensagem informando
 que a porta do controlador local (127.0.0.1) esta ativa! caso isso ocorra execute o novamente o comando e funcionara...
 
+
+Para fazer um teste descomente um cenario de teste no final no arquivo! (por padrao esse vai fazer um teste de ping automatico.
+
 """
 
 from mininet.net import Mininet
@@ -925,9 +928,15 @@ def emptyNet():
     arquivo.write(textoTeste)
     
     ### testes a serem executados
+    
+    #
+    # Inicie os testes aqui!
+    #
+    # Descomente um dos testes abaixo para executar cenario de teste especifico!
+    # Se o teste for automatico lembre de comentar a linha CLI(net) logo abaixo
 		   
     info( '*** Executing Tests\n')
-    #textoTeste = textoTeste =teste1(net)
+    textoTeste = textoTeste =teste1(net)
     #textoTeste = testeIperf(net)
     #textoTeste = teste3(net)
     #textoTeste = teste4(net)
@@ -944,7 +953,7 @@ def emptyNet():
     # grava tipo do ataque!
     textoTeste = textoTeste+"""
      
-    Teste com IDSWakup so externo interno
+    texto a ser inserido nos arquivos de teste!
     
     """
     
@@ -965,7 +974,8 @@ def emptyNet():
     #host1.cmd("iperf -s -p 80 -D")
     #host1.cmd("iperf -s -p 8080 -D")
     
-    CLI( net )
+    # Descomente a linha abaixo para executar terminais manualmente
+    #CLI( net )
     sleep(5)
     info('*** Stoping IDS process\n')
     desligarIDS(net,'h3')
