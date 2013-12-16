@@ -1,0 +1,25 @@
+1. Para executar o Of-IDPS é necessário instalar o simulador de rede Mininet e o controlador OpenFlow Beacon, 
+para isso execute os passos dos seguintes tutoriais: 
+
+Mininet - http://mininet.org/download/
+Beacon - https://openflow.stanford.edu/display/Beacon/Quick+Start
+
+Certifique-se que o simulador e controlador estejam funcionando corretamente.
+
+2. Dentro da pasta home do usuário mininet da máquina virtual do mininet gerada anteriormente:
+
+a. Descompacte o arquivo: 
+  tar vzxf /home/mininet/scripts.tar.gz
+
+  b. Copie o arquivo: cenarioTesteLAN-WAN.py para a pasta: 
+  cp cenarioTesteLAN-WAN.py /home/mininet/mininet/custon
+
+3. No diretório do projeto do controlador OpenFlow Beacon substitua o conteúdo da 
+pasta beacon/beacon-tutorial-1.0.4/src/beacon-1.0.4/net.beaconcontroller.tutorial/src/ pelo conteúdo do arquivo 
+compactado src-Of-IDPS-2013-12-15.tar.gz, exemplo: 
+  tar vzxf src-Of-IDPS-2013-12-15.tar.gz -C beacon/beacon-tutorial-1.0.4/src/beacon-1.0.4/net.beaconcontroller.tutorial/src/
+
+Após o ambiente estar funcional execute os passos do arquivo PassosExecucaoOfIDPS-TestesAutomaticos.pdf ou PassosExecucaoOfIDPS.pdf para realizar os testes.
+
+
+ 
