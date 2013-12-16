@@ -19,7 +19,7 @@ pasta beacon/beacon-tutorial-1.0.4/src/beacon-1.0.4/net.beaconcontroller.tutoria
 compactado src-Of-IDPS-2013-12-15.tar.gz, exemplo: 
   tar vzxf src-Of-IDPS-2013-12-15.tar.gz -C beacon/beacon-tutorial-1.0.4/src/beacon-1.0.4/net.beaconcontroller.tutorial/src/
 
-Com o ambinte funcional execute os passos do arquivo PassosExecucaoOfIDPS-TestesAutomaticos.pdf ou PassosExecucaoOfIDPS.pdf para realizar os testes.
+Com o ambiente funcional execute os passos do arquivo PassosExecucaoOfIDPS-TestesAutomaticos.pdf ou PassosExecucaoOfIDPS.pdf para realizar os testes.
 
 
  
