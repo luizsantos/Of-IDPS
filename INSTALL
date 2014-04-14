@@ -1,25 +1,23 @@
-1. Para executar o Of-IDPS é necessário instalar o simulador de rede Mininet e o controlador OpenFlow Beacon, 
-para isso execute os passos dos seguintes tutoriais: 
+1. To execute Of-IDPS is necessary have installed Mininet network simulator and Beacon Openflow controller, 
+for this follow the tutorials: 
 
 Mininet - http://mininet.org/download/
 Beacon - https://openflow.stanford.edu/display/Beacon/Quick+Start
 
-Certifique-se que o simulador e controlador estejam funcionando corretamente.
+2. Inside of home directory of user mininet of the Mininet simulator:
 
-2. Dentro da pasta home do usuário mininet da máquina virtual do mininet gerada anteriormente:
-
-a. Descompacte o arquivo: 
+a. Uncompress the file: 
   tar vzxf /home/mininet/scripts.tar.gz
 
-  b. Copie o arquivo: cenarioTesteLAN-WAN.py para a pasta: 
+  b. Copy the file cenarioTesteLAN-WAN.py to: 
   cp cenarioTesteLAN-WAN.py /home/mininet/mininet/custon
 
-3. No diretório do projeto do controlador OpenFlow Beacon substitua o conteúdo da 
-pasta beacon/beacon-tutorial-1.0.4/src/beacon-1.0.4/net.beaconcontroller.tutorial/src/ pelo conteúdo do arquivo 
-compactado src-Of-IDPS-2013-12-15.tar.gz, exemplo: 
+3. In the project directory of OpenFlow Beacon controller, 
+replace the content of beacon/beacon-tutorial-1.0.4/src/beacon-1.0.4/net.beaconcontroller.tutorial/src/ 
+directory by content of uncompressed file src-Of-IDPS-2013-12-15.tar.gz, for instance: 
   tar vzxf src-Of-IDPS-2013-12-15.tar.gz -C beacon/beacon-tutorial-1.0.4/src/beacon-1.0.4/net.beaconcontroller.tutorial/src/
 
-Com o ambiente funcional execute os passos do arquivo PassosExecucaoOfIDPS-TestesAutomaticos.pdf ou PassosExecucaoOfIDPS.pdf para realizar os testes.
+Finally, when all is working, execute steps from executionStepsForAutomaticTestsWithOf-IDPS.pdf file to execute tests with Of-IDPS.
 
 
  

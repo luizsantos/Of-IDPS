@@ -186,7 +186,7 @@ def testeIperf(net):
     #
     data1 = datetime.datetime.now()
     #host2.cmdPrint('ping -c 4 -s 92 10.0.0.4')
-    textoTeste=textoTeste+"Inicio de teste sem alertas: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
+    textoTeste=textoTeste+"Begin of test without alert: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
     
     tempo = 30
     sleep(tempo)
@@ -194,24 +194,24 @@ def testeIperf(net):
     data2 = datetime.datetime.now()
     host2.cmdPrint('ping -c 4 -s 93 10.0.0.4')
     dr=data2-data1
-    textoTeste=textoTeste+"\n\ttempo decorrido: %s"%dr
-    textoTeste=textoTeste+"\nInicio de teste sem alertas: %s:%s:%s:%s\n"%(data2.hour,data2.minute,data2.second,data2.microsecond)
+    textoTeste=textoTeste+"\n\telapsed time: %s"%dr
+    textoTeste=textoTeste+"\nBegin of test without alert: %s:%s:%s:%s\n"%(data2.hour,data2.minute,data2.second,data2.microsecond)
     os.system('echo \"11/27-16:56:01.676655,3,[1:1228:7] teste,10.0.0.3,10.0.0.2,TCP,52146,90\" > /tmp/alertas/formatted_log.csv')
     sleep(tempo)
     
     data3 = datetime.datetime.now()
     host2.cmdPrint('ping -c 4 -s 94 10.0.0.4')
     dr=data3-data2
-    textoTeste=textoTeste+"\n\ttempo decorrido: %s"%dr
-    textoTeste=textoTeste+"\nAtiva alerta prioridade 3 em: %s:%s:%s:%s\n"%(data3.hour,data3.minute,data3.second,data3.microsecond)
+    textoTeste=textoTeste+"\n\telapsed time: %s"%dr
+    textoTeste=textoTeste+"\nSend alert priority 3 (soft) at: %s:%s:%s:%s\n"%(data3.hour,data3.minute,data3.second,data3.microsecond)
     os.system('echo \"11/27-16:56:01.676655,2,[1:1228:7] teste,10.0.0.3,10.0.0.2,TCP,52146,90\" > /tmp/alertas/formatted_log.csv')
     sleep(tempo)
     
     data5 = datetime.datetime.now()
     host2.cmdPrint('ping -c 4 -s 95 10.0.0.4')
     dr=data5-data3
-    textoTeste=textoTeste+"\n\ttempo decorrido: %s"%dr
-    textoTeste=textoTeste+"\nAtiva alerta prioridade 2 em: %s:%s:%s:%s\n"%(data5.hour,data5.minute,data5.second,data5.microsecond)
+    textoTeste=textoTeste+"\n\telapsed time: %s"%dr
+    textoTeste=textoTeste+"\nSend alert priority 2 (hard) at: %s:%s:%s:%s\n"%(data5.hour,data5.minute,data5.second,data5.microsecond)
     os.system('echo \"11/27-16:56:01.676655,1,[1:1228:7] teste,10.0.0.3,10.0.0.2,TCP,52146,90\" > /tmp/alertas/formatted_log.csv')
     sleep(tempo)
         
@@ -222,7 +222,7 @@ def testeIperf(net):
     th3.join()
     data6 = datetime.datetime.now()
     dr=data6-data5
-    textoTeste=textoTeste+"\n terminou! \n\ttempo decorrido: %s"%dr
+    textoTeste=textoTeste+"\n test finished! \n\telapsed time: %s"%dr
     
     #Finish tcpdump command (logs)
     sleep(20)
@@ -255,7 +255,7 @@ def testeDDoSExtInt(net):
 
     # run a command
     data1 = datetime.datetime.now()
-    textoTeste=textoTeste+"Inicio de teste alertas em tempo de execucao: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
+    textoTeste=textoTeste+"Test started at: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
     host1.cmdPrint('hyenae -I 1 -a tcp -f s -A 4 -s 00:00:00:00:02:06-192.168.0.6@%%%% -d 00:00:00:00:02:04-10.0.0.2@80 -c 10000 -e 5 ')
     
     tempo = 10
@@ -264,7 +264,7 @@ def testeDDoSExtInt(net):
     
     data2 = datetime.datetime.now()
     dr=data2-data1
-    textoTeste=textoTeste+"\n\ttempo decorrido: %s"%dr
+    textoTeste=textoTeste+"\n\telapsed time: %s"%dr
     
     host2.cmdPrint('apache2ctl stop')
     #Finish tcpdump command (logs)
@@ -297,7 +297,7 @@ def testeDDoSIntExt(net):
     sleep(5)
 
     data1 = datetime.datetime.now()
-    textoTeste=textoTeste+"Inicio de teste alertas em tempo de execucao: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
+    textoTeste=textoTeste+"Test started at: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
     host1.cmdPrint('hyenae -I 1 -a tcp -f s -A 4 -s 00:00:00:00:01:02-10.0.0.2@%%%% -d 00:00:00:00:01:04-192.168.0.6@80 -c 10000 -e 5 ')
     
     tempo = 10
@@ -306,7 +306,7 @@ def testeDDoSIntExt(net):
     
     data2 = datetime.datetime.now()
     dr=data2-data1
-    textoTeste=textoTeste+"\n\ttempo decorrido: %s"%dr
+    textoTeste=textoTeste+"\n\telapsed time: %s"%dr
     
     host2.cmdPrint('apache2ctl stop')
     #Finish tcpdumps
@@ -339,7 +339,7 @@ def testeDDoSIntInt(net):
     sleep(5)
 
     data1 = datetime.datetime.now()
-    textoTeste=textoTeste+"Inicio de teste alertas em tempo de execucao: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
+    textoTeste=textoTeste+"Test started at: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
     host1.cmdPrint('hyenae -I 1 -a tcp -f s -A 4 -s 00:00:00:00:01:01-10.0.0.1@%%%% -d 00:00:00:00:01:02-10.0.0.2@80 -c 10000 -e 5 ')
     
     tempo = 10
@@ -348,7 +348,7 @@ def testeDDoSIntInt(net):
     
     data2 = datetime.datetime.now()
     dr=data2-data1
-    textoTeste=textoTeste+"\n\ttempo decorrido: %s"%dr
+    textoTeste=textoTeste+"\n\telapsed time: %s"%dr
     
     host2.cmdPrint('apache2ctl stop')
     #Finish tcpdumps
@@ -379,7 +379,7 @@ def testeIDSWakeupExternoInterno(net):
     sleep(5)
     #First execution
     data1 = datetime.datetime.now()
-    textoTeste=textoTeste+"Inicio de teste alertas em tempo de execucao: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
+    textoTeste=textoTeste+"Test 1 started at: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
     host1.cmdPrint('idswakeup 192.168.0.6 10.0.0.1 1 70 >> /var/log/tcpdump/'+date+'/saidaIDSWakeup1.txt')
     
     sleep(5)
@@ -388,8 +388,8 @@ def testeIDSWakeupExternoInterno(net):
     #Second execution
     data2 = datetime.datetime.now()
     dr=data2-data1
-    textoTeste=textoTeste+"\n\ttempo decorrido: %s"%dr
-    textoTeste=textoTeste+"\nInicio de teste com alertas instalados: %s:%s:%s:%s\n"%(data2.hour,data2.minute,data2.second,data2.microsecond)
+    textoTeste=textoTeste+"\n\telapsed time: %s"%dr
+    textoTeste=textoTeste+"\nTest 2 started at: %s:%s:%s:%s\n"%(data2.hour,data2.minute,data2.second,data2.microsecond)
     host1.cmdPrint('idswakeup 192.168.0.6 10.0.0.1 1 70 >> /var/log/tcpdump/'+date+'/saidaIDSWakeup2.txt')
     
     sleep(10)
