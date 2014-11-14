@@ -63,21 +63,27 @@ qos='sh ./shSwithes/qos.sh'
 ipControladorOF='192.168.1.113'
 #ipControladorOF='172.16.1.113'
 date = datetime.datetime.now().strftime("%y%m%d-%H%M%S")
+if0 = 'eth0'
+if1 = 'eth1'
+if2 = 's1-eth1'
+if3 = 's1-eth2'
+if4 = 's1-eth3'
+if5 = 's1-eth4'
 
 def tcpdump(idhost, net):
     host = net.getNodeByName('h'+idhost)
-    host.cmd('tcpdump -i h'+idhost+'-eth0 -s 65535 -w /var/log/tcpdump/'+date+'/host'+idhost+'-eth0.pcap &')
+    host.cmd('tcpdump -i h'+idhost+'-'+if0+' -s 65535 -w /var/log/tcpdump/'+date+'/host'+idhost+'-'+if0+'.pcap &')
     #Case route, then capture packets from two interfaces.
     if idhost=='4':
-      host.cmd('tcpdump -i h'+idhost+'-eth1 -s 65535 -w /var/log/tcpdump/'+date+'/host'+idhost+'-eth1.pcap &')
+      host.cmd('tcpdump -i h'+idhost+'-'+if1+' -s 65535 -w /var/log/tcpdump/'+date+'/host'+idhost+'-'+if1+'.pcap &')
       
 def tcpdumpSwLAN(net):
     host = net.getNodeByName('s1')
-    host.cmd('tcpdump -i eth1 -s 65535 -w /var/log/tcpdump/'+date+'/s1-eth1-controller.pcap &')
-    host.cmd('tcpdump -i s1-eth1 -s 65535 -w /var/log/tcpdump/'+date+'/s1-eth1.pcap &')
-    host.cmd('tcpdump -i s1-eth2 -s 65535 -w /var/log/tcpdump/'+date+'/s1-eth2.pcap &')
-    host.cmd('tcpdump -i s1-eth3 -s 65535 -w /var/log/tcpdump/'+date+'/s1-eth3.pcap &')
-    host.cmd('tcpdump -i s1-eth4 -s 65535 -w /var/log/tcpdump/'+date+'/s1-eth4.pcap &')
+    host.cmd('tcpdump -i '+if1+' -s 65535 -w /var/log/tcpdump/'+date+'/'+if1+'-controller.pcap &')
+    host.cmd('tcpdump -i '+if2+' -s 65535 -w /var/log/tcpdump/'+date+'/'+if2+'.pcap &')
+    host.cmd('tcpdump -i '+if3+' -s 65535 -w /var/log/tcpdump/'+date+'/'+if3+'.pcap &')
+    host.cmd('tcpdump -i '+if4+' -s 65535 -w /var/log/tcpdump/'+date+'/'+if4+'.pcap &')
+    host.cmd('tcpdump -i '+if5+' -s 65535 -w /var/log/tcpdump/'+date+'/'+if5+'.pcap &')
     #host.cmd('tcpdump -i s1-eth1 -i s1-eth2 -i s1-eth3 -i s1-eth4 -s 65535 -w /var/log/tcpdump/'+date+'/s1-ethLAN.pcap &')
 
 
