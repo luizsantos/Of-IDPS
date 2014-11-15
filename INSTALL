@@ -1,8 +1,10 @@
-1. To execute Of-IDPS is necessary have installed Mininet network simulator and Beacon Openflow controller, 
-for this follow the tutorials: 
+1. To execute Of-IDPS is necessary have installed these softwares for this follow the tutorials: 
 
-Mininet - http://mininet.org/download/
-Beacon - https://openflow.stanford.edu/display/Beacon/Quick+Start
+Mininet network simulator - http://mininet.org/download/
+Beacon Openflow controller - https://openflow.stanford.edu/display/Beacon/Quick+Start
+Tcpdump - http://www.tcpdump.org/
+Apache - http://www.apache.org/
+Iperf - https://iperf.fr/
 
 2. Inside of home directory of user mininet of the Mininet simulator:
 
