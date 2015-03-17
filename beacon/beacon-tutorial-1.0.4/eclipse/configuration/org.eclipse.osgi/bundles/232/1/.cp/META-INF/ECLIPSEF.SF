@@ -1,0 +1,119 @@
+Signature-Version: 1.0
+SHA1-Digest-Manifest: lSZkQUJ778WqsjzNsyNbVifmI6Q=
+Created-By: 1.6.0 (IBM Corporation)
+SHA1-Digest-Manifest-Main-Attributes: EbRWku8O5bIeYmhxbdWduCg5HHM=
+
+Name: org/eclipse/rap/ui/internal/intro/target/ContainerCreator$Contai
+ nerCreatorWithoutFlagParameter.class
+SHA1-Digest: JM+xXPkO3OB4DBJUmMRQGon1Tbc=
+
+Name: intro/graphics/extract_target.gif
+SHA1-Digest: sjsmoBX0+MLjj4eY0BcETxvgDfE=
+
+Name: intro/graphics/rap_hov.gif
+SHA1-Digest: tB7tRrRFFHEnSLjL8qMlM7h5rcU=
+
+Name: org/eclipse/rap/ui/internal/intro/target/InstallTargetDialog$1.c
+ lass
+SHA1-Digest: XkLxneW7d9vEWkPu1EbrjUdLizs=
+
+Name: org/eclipse/rap/ui/internal/intro/target/InstallTargetDialog$2.c
+ lass
+SHA1-Digest: fUgy1UPwewtcNzc6SZvBKyuemZ0=
+
+Name: org/eclipse/rap/ui/internal/intro/target/InstallTargetDialog$3.c
+ lass
+SHA1-Digest: t/s7QFzdNxZFiO38gpVkfjdwMgE=
+
+Name: plugin.properties
+SHA1-Digest: Mmw0yiSNLq3WmPRMiAggu+y+xJU=
+
+Name: org/eclipse/rap/ui/internal/intro/target/ContainerCreator.class
+SHA1-Digest: gbW4XtbX/gHWdh7EMriT3D2N4k0=
+
+Name: org/eclipse/rap/ui/internal/intro/commands/LaunchRAPApplication.
+ class
+SHA1-Digest: 1PKmPO2hqojqMnBmH+KPSsjHGpo=
+
+Name: icons/wizban/extract_target.gif
+SHA1-Digest: q3qPy9Y0YCrCYFMI5kpmxGWhInE=
+
+Name: org/eclipse/rap/ui/internal/intro/ErrorUtil.class
+SHA1-Digest: mQLCxWH7NxGDmaETJ1K98BZRLys=
+
+Name: cheatsheets/getting-started.xml
+SHA1-Digest: EbBjxsNKnvZPGi/m3xfh6dGAFsc=
+
+Name: org/eclipse/rap/ui/internal/intro/target/InstallRAPTargetHandler
+ .class
+SHA1-Digest: 4a3ZdWVxpUsykJpJJu118DLTn0I=
+
+Name: plugin.xml
+SHA1-Digest: YueDADyxeoaaOnTqv4O19mLlzek=
+
+Name: intro/graphics/tu_checkout48.gif
+SHA1-Digest: uXDIaN7IK5l8DAa7QV21k10PkQE=
+
+Name: intro/css/overview.css
+SHA1-Digest: +9RpgTy6PI1/Id+K78qfRxR2tIs=
+
+Name: org/eclipse/rap/ui/internal/intro/target/IntroMessages.class
+SHA1-Digest: xBGtjO2zRe5NRv7L7V+Uqo+FZtQ=
+
+Name: org/eclipse/rap/ui/internal/intro/target/ContainerCreator$Contai
+ nerCreatorWithFlagParameter.class
+SHA1-Digest: SMMdmLC69sXOmeGnhP0gyb3GyrY=
+
+Name: intro/graphics/quick_tour.gif
+SHA1-Digest: sUy4lPkvoHGOq6N0OWZUWLxmI8g=
+
+Name: META-INF/eclipse.inf
+SHA1-Digest: QdryQvJlVywlE0MGLuwYCkmkyWk=
+
+Name: org/eclipse/rap/ui/internal/intro/commands/LaunchRAPApplication$
+ 1.class
+SHA1-Digest: a8pZkC2sD6u/zU6Hiq2MK8c6Xkg=
+
+Name: org/eclipse/rap/ui/internal/intro/ErrorUtil$1.class
+SHA1-Digest: Wjy0H07GaymbpGjbXcAG1OTptcM=
+
+Name: org/eclipse/rap/ui/internal/intro/target/InstallRAPTargetHandler
+ $1.class
+SHA1-Digest: ENZKEr4a9fOXe3bR6ZKFcJAc6hI=
+
+Name: org/eclipse/rap/ui/internal/intro/target/InstallRAPTargetHandler
+ $2.class
+SHA1-Digest: +RkiddlxyAUnNdF4onRmqiQppvM=
+
+Name: about.html
+SHA1-Digest: p+J1lshfujMqAzV5/VljRFB28RA=
+
+Name: intro/graphics/tu_checkout48_hov.gif
+SHA1-Digest: zBf0+M89jC2JsMu+uTVsxZc7VaM=
+
+Name: org/eclipse/rap/ui/internal/intro/IntroPlugin.class
+SHA1-Digest: MBc+5e3TtshiW386itkLMMwb0qo=
+
+Name: org/eclipse/rap/ui/internal/intro/target/messages.properties
+SHA1-Digest: vkwQ4o/ukOWoe/5byXTvkxHLDvE=
+
+Name: intro/graphics/rap.gif
+SHA1-Digest: TAaDgNjMzIsJw93eZlVIbBzjUJs=
+
+Name: org/eclipse/rap/ui/internal/intro/target/InstallRAPTargetAction.
+ class
+SHA1-Digest: btaie8uH2UyVGsblj+1sh3jpNcc=
+
+Name: org/eclipse/rap/ui/internal/intro/target/InstallTargetDialog.cla
+ ss
+SHA1-Digest: dCPpYcwHE36Y8G5jYg1yZXUv60o=
+
+Name: org/eclipse/rap/ui/internal/intro/Images.class
+SHA1-Digest: +Uy3zvd2o4HwAUfnAua+WWhRTrM=
+
+Name: intro/overviewExtensionContent.xml
+SHA1-Digest: RB9FNjJhrCXKopZ9XEGbWSoNLXA=
+
+Name: org/eclipse/rap/ui/internal/intro/target/TargetSwitcher.class
+SHA1-Digest: eSFBjLkraQWAcJTHaleyfwnMYKM=
+

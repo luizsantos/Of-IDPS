@@ -1,0 +1,28 @@
+Signature-Version: 1.0
+SHA1-Digest-Manifest: xlv35CUPikXdBuHs6s3YxiSevOA=
+Created-By: 1.6.0 (IBM Corporation)
+SHA1-Digest-Manifest-Main-Attributes: ofgHCuMzh9XF5aPhQMIbNJsn5DA=
+
+Name: epl-v10.html
+SHA1-Digest: xipg4kdvniXTRoluum46PzkHsAQ=
+
+Name: META-INF/eclipse.inf
+SHA1-Digest: QdryQvJlVywlE0MGLuwYCkmkyWk=
+
+Name: license.html
+SHA1-Digest: Rp9AnRyeUIxNWe10fjaMDkQB8rU=
+
+Name: feature.properties
+SHA1-Digest: ILHxGYiJvPX3ycTEUNJCl1FYqKY=
+
+Name: META-INF/maven/org.eclipse.mylyn.context/org.eclipse.mylyn.java_
+ feature/pom.properties
+SHA1-Digest: +JhvEUB5Dg1Rn/tiST1g0/U55SE=
+
+Name: feature.xml
+SHA1-Digest: GPCGTw1CH4lmeuaOVXRQ89u+J84=
+
+Name: META-INF/maven/org.eclipse.mylyn.context/org.eclipse.mylyn.java_
+ feature/pom.xml
+SHA1-Digest: K6bT20pl9k1dPaCG2UfJxDhLSAk=
+

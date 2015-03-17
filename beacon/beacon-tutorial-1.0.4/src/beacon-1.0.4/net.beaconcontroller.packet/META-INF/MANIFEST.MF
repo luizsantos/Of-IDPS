@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Packet Library
+Bundle-SymbolicName: net.beaconcontroller.packet
+Bundle-Version: 1.0.4
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: net.beaconcontroller.packet
+Import-Package: org.junit;version="4.8.1";resolution:=optional,
+  org.junit.runner;version="4.8.1";resolution:=optional

@@ -1,0 +1,2358 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?metadataRepository version='1.1.0'?>
+<repository name='file:/mnt/armazem/openflow/beacon/beacon-tutorial-1.0.4/src/beacon-1.0.4/libs/ - metadata' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='1.0.0'>
+  <properties size='2'>
+    <property name='p2.timestamp' value='1383183839957'/>
+    <property name='p2.compressed' value='false'/>
+  </properties>
+  <units size='41'>
+    <unit id='org.springframework.context' version='3.0.4.RELEASE' singleton='false'>
+      <update id='org.springframework.context' range='[0.0.0,3.0.4.RELEASE)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='Spring Context'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SpringSource'/>
+      </properties>
+      <provides size='62'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.springframework.context' version='3.0.4.RELEASE'/>
+        <provided namespace='osgi.bundle' name='org.springframework.context' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.context' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.context.access' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.context.annotation' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.context.config' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.context.event' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.context.expression' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.context.i18n' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.context.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.context.weaving' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.ejb.access' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.ejb.config' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.ejb.interceptor' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.ejb.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.format' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.format.annotation' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.format.datetime' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.format.datetime.joda' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.format.number' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.format.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.instrument.classloading' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.instrument.classloading.glassfish' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.instrument.classloading.jboss' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.instrument.classloading.oc4j' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.instrument.classloading.weblogic' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jmx' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jmx.access' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jmx.export' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jmx.export.annotation' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jmx.export.assembler' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jmx.export.metadata' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jmx.export.naming' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jmx.export.notification' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jmx.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jndi' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jndi.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.remoting' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.remoting.rmi' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.remoting.soap' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.remoting.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.scheduling' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.scheduling.annotation' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.scheduling.backportconcurrent' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.scheduling.concurrent' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.scheduling.config' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.scheduling.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.scheduling.timer' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.scripting' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.scripting.bsh' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.scripting.config' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.scripting.groovy' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.scripting.jruby' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.scripting.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.stereotype' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.ui' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.ui.context' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.ui.context.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.validation' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.validation.beanvalidation' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.validation.support' version='3.0.4.RELEASE'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='82'>
+        <required namespace='java.package' name='bsh' range='[2.0.0.b4,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='com.ibm.websphere.management' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='com.sun.net.httpserver' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='edu.emory.mathcs.backport.java.util.concurrent' range='[3.0.0,4.0.0)' optional='true'/>
+        <required namespace='java.package' name='groovy.lang' range='[1.5.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.annotation' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.ejb' range='[2.1.0,4.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.interceptor' range='[3.0.0,4.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.jms' range='[1.1.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.management' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.management.modelmbean' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.management.openmbean' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.management.remote' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.naming' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.persistence' range='[1.0.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.persistence.spi' range='[1.0.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.rmi' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.validation' range='[1.0.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.validation.bootstrap' range='[1.0.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.validation.metadata' range='[1.0.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.xml.namespace' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.ws' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='net.sf.cglib.asm' range='[2.1.3,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='net.sf.cglib.core' range='[2.1.3,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='net.sf.cglib.proxy' range='[2.1.3,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.aopalliance.aop' range='[1.0.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.aopalliance.intercept' range='[1.0.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.commons.logging' range='[1.1.1,2.0.0)'/>
+        <required namespace='java.package' name='org.aspectj.weaver.loadtime' range='[1.5.4,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.codehaus.groovy.control' range='[1.5.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.hibernate.validator.messageinterpolation' range='[4.1.0,5.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.hibernate.validator.resourceloading' range='[4.1.0,5.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.joda.time' range='[1.6.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.joda.time.format' range='[1.6.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.jruby' range='[1.1.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.jruby.ast' range='[1.1.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.jruby.exceptions' range='[1.1.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.jruby.javasupport' range='[1.1.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.jruby.runtime' range='[1.1.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.jruby.runtime.builtin' range='[1.1.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.omg.CORBA' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.springframework.aop' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.aop.framework' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.aop.framework.adapter' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.aop.interceptor' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.aop.scope' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.aop.support' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.aop.support.annotation' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.aop.target' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.aop.target.dynamic' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.beans' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.annotation' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.access' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.annotation' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.config' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.parsing' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.xml' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.propertyeditors' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.annotation' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.convert' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.convert.converter' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.convert.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.io' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.io.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.task' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.task.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.type' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.type.classreading' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.type.filter' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.expression' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.expression.spel.standard' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.expression.spel.support' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.instrument' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.springframework.orm.jpa.support' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.util' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.util.xml' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.w3c.dom' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.xml.sax' range='0.0.0' optional='true'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.springframework.context' version='3.0.4.RELEASE'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.springframework.context&#xA;Bundle-Version: 3.0.4.RELEASE&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.springframework.beans' version='3.0.4.RELEASE' singleton='false'>
+      <update id='org.springframework.beans' range='[0.0.0,3.0.4.RELEASE)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='Spring Beans'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SpringSource'/>
+      </properties>
+      <provides size='17'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.springframework.beans' version='3.0.4.RELEASE'/>
+        <provided namespace='osgi.bundle' name='org.springframework.beans' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.beans' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.beans.annotation' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.beans.factory' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.beans.factory.access' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.beans.factory.access.el' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.beans.factory.annotation' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.beans.factory.config' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.beans.factory.parsing' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.beans.factory.serviceloader' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.beans.factory.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.beans.factory.wiring' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.beans.factory.xml' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.beans.propertyeditors' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.beans.support' version='3.0.4.RELEASE'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='16'>
+        <required namespace='java.package' name='javax.el' range='[1.0.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.inject' range='[1.0.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.xml.parsers' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='net.sf.cglib.proxy' range='[2.1.3,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.commons.logging' range='[1.1.1,2.0.0)'/>
+        <required namespace='java.package' name='org.springframework.core' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.annotation' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.convert' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.convert.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.io' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.io.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.type' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.util' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.util.xml' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.w3c.dom' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.xml.sax' range='0.0.0' optional='true'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.springframework.beans' version='3.0.4.RELEASE'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.springframework.beans&#xA;Bundle-Version: 3.0.4.RELEASE&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='jackson-mapper-asl' version='1.6.1' singleton='false'>
+      <update id='jackson-mapper-asl' range='[0.0.0,1.6.1)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='Data mapper for Jackson JSON processor'/>
+        <property name='org.eclipse.equinox.p2.provider' value='http://fasterxml.com'/>
+      </properties>
+      <provides size='15'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='jackson-mapper-asl' version='1.6.1'/>
+        <provided namespace='osgi.bundle' name='jackson-mapper-asl' version='1.6.1'/>
+        <provided namespace='java.package' name='org.codehaus.jackson.schema' version='1.6.1'/>
+        <provided namespace='java.package' name='org.codehaus.jackson.node' version='1.6.1'/>
+        <provided namespace='java.package' name='org.codehaus.jackson.map.exc' version='1.6.1'/>
+        <provided namespace='java.package' name='org.codehaus.jackson.map.deser' version='1.6.1'/>
+        <provided namespace='java.package' name='org.codehaus.jackson.map.annotate' version='1.6.1'/>
+        <provided namespace='java.package' name='org.codehaus.jackson.map' version='1.6.1'/>
+        <provided namespace='java.package' name='org.codehaus.jackson.map.type' version='1.6.1'/>
+        <provided namespace='java.package' name='org.codehaus.jackson.map.introspect' version='1.6.1'/>
+        <provided namespace='java.package' name='org.codehaus.jackson.map.jsontype' version='1.6.1'/>
+        <provided namespace='java.package' name='org.codehaus.jackson.map.util' version='1.6.1'/>
+        <provided namespace='java.package' name='org.codehaus.jackson.map.ser' version='1.6.1'/>
+        <provided namespace='java.package' name='org.codehaus.jackson.map.jsontype.impl' version='1.6.1'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='15'>
+        <required namespace='java.package' name='org.joda.time' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.joda.time.format' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.w3c.dom.ls' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.w3c.dom.bootstrap' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.datatype' range='0.0.0'/>
+        <required namespace='java.package' name='javax.xml.namespace' range='0.0.0'/>
+        <required namespace='java.package' name='javax.xml.parsers' range='0.0.0'/>
+        <required namespace='java.package' name='org.codehaus.jackson' range='1.6.1'/>
+        <required namespace='java.package' name='org.codehaus.jackson.annotate' range='1.6.1'/>
+        <required namespace='java.package' name='org.codehaus.jackson.impl' range='1.6.1'/>
+        <required namespace='java.package' name='org.codehaus.jackson.io' range='1.6.1'/>
+        <required namespace='java.package' name='org.codehaus.jackson.type' range='1.6.1'/>
+        <required namespace='java.package' name='org.codehaus.jackson.util' range='1.6.1'/>
+        <required namespace='java.package' name='org.w3c.dom' range='0.0.0'/>
+        <required namespace='java.package' name='org.xml.sax' range='0.0.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='jackson-mapper-asl' version='1.6.1'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: jackson-mapper-asl&#xA;Bundle-Version: 1.6.1&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='ch.qos.logback.core' version='1.0.7' singleton='false'>
+      <update id='ch.qos.logback.core' range='[0.0.0,1.0.7)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='Logback Core Module'/>
+        <property name='org.eclipse.equinox.p2.description' value='logback-core module'/>
+        <property name='org.eclipse.equinox.p2.provider' value='QOS.ch'/>
+        <property name='org.eclipse.equinox.p2.doc.url' value='http://www.qos.ch'/>
+      </properties>
+      <provides size='33'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='ch.qos.logback.core' version='1.0.7'/>
+        <provided namespace='osgi.bundle' name='ch.qos.logback.core' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.spi' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.status' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.db.dialect' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.property' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.encoder' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.joran.action' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.joran.spi' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.joran.event' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.net' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.joran' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.boolex' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.rolling' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.subst' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.recovery' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.db' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.sift' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.read' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.pattern' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.pattern.parser' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.html' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.joran.conditional' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.helpers' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.filter' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.layout' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.pattern.util' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.joran.util' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.util' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.rolling.helper' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.core.pattern.color' version='1.0.7'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='42'>
+        <required namespace='java.package' name='ch.qos.logback.core' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.boolex' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.db' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.db.dialect' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.encoder' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.filter' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.helpers' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.html' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.joran' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.joran.action' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.joran.conditional' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.joran.event' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.joran.spi' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.joran.util' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.layout' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.net' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.pattern' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.pattern.color' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.pattern.parser' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.pattern.util' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.property' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.read' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.recovery' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.rolling' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.rolling.helper' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.sift' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.spi' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.status' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.subst' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.util' range='1.0.0'/>
+        <required namespace='java.package' name='javax.mail' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.mail.internet' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.naming' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.servlet' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.servlet.http' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.sql' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.parsers' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.codehaus.commons.compiler' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.codehaus.janino' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.fusesource.jansi' range='1.8.0' optional='true'/>
+        <required namespace='java.package' name='org.xml.sax' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.xml.sax.helpers' range='0.0.0' optional='true'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='ch.qos.logback.core' version='1.0.7'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: ch.qos.logback.core&#xA;Bundle-Version: 1.0.7&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.mortbay.jetty.util' version='6.1.25' singleton='false'>
+      <update id='org.mortbay.jetty.util' range='[0.0.0,6.1.25)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='Jetty Utilities'/>
+        <property name='org.eclipse.equinox.p2.description' value='Utility classes for Jetty'/>
+        <property name='org.eclipse.equinox.p2.provider' value='Mort Bay Consulting'/>
+        <property name='org.eclipse.equinox.p2.doc.url' value='http://jetty.mortbay.org'/>
+      </properties>
+      <provides size='9'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mortbay.jetty.util' version='6.1.25'/>
+        <provided namespace='osgi.bundle' name='org.mortbay.jetty.util' version='6.1.25'/>
+        <provided namespace='java.package' name='org.mortbay.log' version='6.1.25'/>
+        <provided namespace='java.package' name='org.mortbay.util.ajax' version='6.1.25'/>
+        <provided namespace='java.package' name='org.mortbay.servlet' version='6.1.25'/>
+        <provided namespace='java.package' name='org.mortbay.thread' version='6.1.25'/>
+        <provided namespace='java.package' name='org.mortbay.util' version='6.1.25'/>
+        <provided namespace='java.package' name='org.mortbay.component' version='6.1.25'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='3'>
+        <required namespace='java.package' name='javax.servlet' range='0.0.0'/>
+        <required namespace='java.package' name='javax.servlet.http' range='0.0.0'/>
+        <required namespace='java.package' name='org.slf4j' range='1.3.0' optional='true'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.mortbay.jetty.util' version='6.1.25'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.mortbay.jetty.util&#xA;Bundle-Version: 6.1.25&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.springframework.jdbc' version='3.0.4.RELEASE' singleton='false'>
+      <update id='org.springframework.jdbc' range='[0.0.0,3.0.4.RELEASE)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='Spring JDBC'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SpringSource'/>
+      </properties>
+      <provides size='21'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.springframework.jdbc' version='3.0.4.RELEASE'/>
+        <provided namespace='osgi.bundle' name='org.springframework.jdbc' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jdbc' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jdbc.config' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jdbc.core' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jdbc.core.metadata' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jdbc.core.namedparam' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jdbc.core.simple' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jdbc.core.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jdbc.datasource' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jdbc.datasource.embedded' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jdbc.datasource.init' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jdbc.datasource.lookup' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jdbc.object' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jdbc.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jdbc.support.incrementer' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jdbc.support.lob' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jdbc.support.nativejdbc' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jdbc.support.rowset' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.jdbc.support.xml' version='3.0.4.RELEASE'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='35'>
+        <required namespace='java.package' name='com.ibm.websphere.rsadapter' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='com.ibm.ws.rsadapter.jdbc' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='com.mchange.v2.c3p0' range='[0.9.1,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='com.sun.rowset' range='[1.0.1,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.naming' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.sql' range='0.0.0'/>
+        <required namespace='java.package' name='javax.sql.rowset' range='0.0.0'/>
+        <required namespace='java.package' name='javax.transaction' range='[1.0.1,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.xml.transform' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.transform.dom' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='oracle.sql' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.apache.commons.logging' range='[1.1.1,2.0.0)'/>
+        <required namespace='java.package' name='org.apache.derby.impl.io' range='[10.5.0,11.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.derby.jdbc' range='[10.5.0,11.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.h2' range='[1.0.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.hsqldb' range='[1.8.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.jboss.resource.adapter.jdbc' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.springframework.beans' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.config' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.xml' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.context' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.io' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.io.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.dao' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.dao.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.jndi' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.transaction' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.transaction.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.util' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.util.xml' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.w3c.dom' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='weblogic.jdbc.extensions' range='0.0.0' optional='true'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.springframework.jdbc' version='3.0.4.RELEASE'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.springframework.jdbc&#xA;Bundle-Version: 3.0.4.RELEASE&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.springframework.expression' version='3.0.4.RELEASE' singleton='false'>
+      <update id='org.springframework.expression' range='[0.0.0,3.0.4.RELEASE)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='Spring Expression Language'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SpringSource'/>
+      </properties>
+      <provides size='10'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.springframework.expression' version='3.0.4.RELEASE'/>
+        <provided namespace='osgi.bundle' name='org.springframework.expression' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.expression' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.expression.common' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.expression.spel' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.expression.spel.ast' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.expression.spel.generated' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.expression.spel.standard' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.expression.spel.support' version='3.0.4.RELEASE'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='4'>
+        <required namespace='java.package' name='org.springframework.core' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.convert' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.convert.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.util' range='[3.0.4,3.0.5)'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.springframework.expression' version='3.0.4.RELEASE'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.springframework.expression&#xA;Bundle-Version: 3.0.4.RELEASE&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.apache.commons.io' version='2.0.0' singleton='false'>
+      <update id='org.apache.commons.io' range='[0.0.0,2.0.0)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='Commons IO'/>
+        <property name='org.eclipse.equinox.p2.description' value='Commons-IO contains utility classes, stream implementations, file filters, file comparators and endian classes.'/>
+        <property name='org.eclipse.equinox.p2.provider' value='The Apache Software Foundation'/>
+        <property name='org.eclipse.equinox.p2.doc.url' value='http://commons.apache.org/io/'/>
+      </properties>
+      <provides size='9'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.apache.commons.io' version='2.0.0'/>
+        <provided namespace='osgi.bundle' name='org.apache.commons.io' version='2.0.0'/>
+        <provided namespace='java.package' name='org.apache.commons.io.output' version='2.0.0'/>
+        <provided namespace='java.package' name='org.apache.commons.io.comparator' version='2.0.0'/>
+        <provided namespace='java.package' name='org.apache.commons.io' version='2.0.0'/>
+        <provided namespace='java.package' name='org.apache.commons.io.monitor' version='2.0.0'/>
+        <provided namespace='java.package' name='org.apache.commons.io.input' version='2.0.0'/>
+        <provided namespace='java.package' name='org.apache.commons.io.filefilter' version='2.0.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.apache.commons.io' version='2.0.0'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.apache.commons.io&#xA;Bundle-Version: 2.0&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.springframework.context.support' version='3.0.4.RELEASE' singleton='false'>
+      <update id='org.springframework.context.support' range='[0.0.0,3.0.4.RELEASE)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='Spring Context Support'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SpringSource'/>
+      </properties>
+      <provides size='11'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.springframework.context.support' version='3.0.4.RELEASE'/>
+        <provided namespace='osgi.bundle' name='org.springframework.context.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.cache.ehcache' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.mail' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.mail.javamail' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.scheduling.commonj' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.scheduling.quartz' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.ui.freemarker' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.ui.jasperreports' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.ui.velocity' version='3.0.4.RELEASE'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='50'>
+        <required namespace='java.package' name='commonj.timers' range='[1.1.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='commonj.work' range='[1.1.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='freemarker.cache' range='[2.3.14,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='freemarker.template' range='[2.3.14,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.activation' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.mail' range='[1.4.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.mail.internet' range='[1.4.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.naming' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.sql' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='net.sf.ehcache' range='[1.3.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='net.sf.ehcache.bootstrap' range='[1.3.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='net.sf.ehcache.constructs.blocking' range='[1.3.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='net.sf.ehcache.event' range='[1.3.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='net.sf.ehcache.store' range='[1.3.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='net.sf.jasperreports.engine' range='[2.0.5,4.0.0)' optional='true'/>
+        <required namespace='java.package' name='net.sf.jasperreports.engine.data' range='[2.0.5,4.0.0)' optional='true'/>
+        <required namespace='java.package' name='net.sf.jasperreports.engine.export' range='[2.0.5,4.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.commons.collections' range='[3.2.0,4.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.commons.logging' range='[1.1.1,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.velocity' range='[1.5.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.velocity.app' range='[1.5.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.velocity.context' range='[1.5.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.velocity.exception' range='[1.5.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.velocity.runtime' range='[1.5.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.velocity.runtime.log' range='[1.5.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.velocity.runtime.resource' range='[1.5.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.velocity.runtime.resource.loader' range='[1.5.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.quartz' range='[1.6.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.quartz.impl' range='[1.6.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.quartz.impl.jdbcjobstore' range='[1.6.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.quartz.simpl' range='[1.6.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.quartz.spi' range='[1.6.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.quartz.utils' range='[1.6.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.quartz.xml' range='[1.6.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.beans' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.beans.factory' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.beans.support' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.context' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.io' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.io.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.task' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.jdbc.datasource' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.jdbc.support' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.jndi' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.scheduling' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.scheduling.support' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.transaction' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.transaction.support' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.util' range='[3.0.4,3.0.5)'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.springframework.context.support' version='3.0.4.RELEASE'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.springframework.context.support&#xA;Bundle-Version: 3.0.4.RELEASE&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.easymock' version='3.0.0' singleton='false'>
+      <update id='org.easymock' range='[0.0.0,3.0.0)' severity='0'/>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='EasyMock'/>
+        <property name='org.eclipse.equinox.p2.description' value='EasyMock provides an easy way to create Mock Objects for interfaces and classes generating them on the fly'/>
+        <property name='org.eclipse.equinox.p2.provider' value='OFFIS, Tammo Freese, Henri Tremblay'/>
+      </properties>
+      <provides size='6'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.easymock' version='3.0.0'/>
+        <provided namespace='osgi.bundle' name='org.easymock' version='3.0.0'/>
+        <provided namespace='java.package' name='org.easymock.internal' version='3.0.0'/>
+        <provided namespace='java.package' name='org.easymock.internal.matchers' version='3.0.0'/>
+        <provided namespace='java.package' name='org.easymock' version='3.0.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='6'>
+        <required namespace='java.package' name='net.sf.cglib.core' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='net.sf.cglib.proxy' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='net.sf.cglib.reflect' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.easymock' range='3.0.0'/>
+        <required namespace='java.package' name='org.easymock.internal' range='3.0.0'/>
+        <required namespace='java.package' name='org.objenesis' range='1.2.0' optional='true'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.easymock' version='3.0.0'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.easymock&#xA;Bundle-Version: 3.0&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.springframework.osgi.commons-el.osgi' version='1.0.0.SNAPSHOT' singleton='false'>
+      <update id='org.springframework.osgi.commons-el.osgi' range='[0.0.0,1.0.0.SNAPSHOT)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='commons-el.osgi'/>
+        <property name='org.eclipse.equinox.p2.description' value='Commons EL (OSGi version)'/>
+      </properties>
+      <provides size='5'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.springframework.osgi.commons-el.osgi' version='1.0.0.SNAPSHOT'/>
+        <provided namespace='osgi.bundle' name='org.springframework.osgi.commons-el.osgi' version='1.0.0.SNAPSHOT'/>
+        <provided namespace='java.package' name='org.apache.commons.el.parser' version='1.0.0'/>
+        <provided namespace='java.package' name='org.apache.commons.el' version='1.0.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='6'>
+        <required namespace='java.package' name='javax.servlet' range='2.4.0'/>
+        <required namespace='java.package' name='javax.servlet.http' range='2.4.0'/>
+        <required namespace='java.package' name='javax.servlet.jsp' range='2.0.0'/>
+        <required namespace='java.package' name='javax.servlet.jsp.el' range='2.0.0'/>
+        <required namespace='java.package' name='org.apache.commons.el' range='1.0.0'/>
+        <required namespace='java.package' name='org.apache.commons.el.parser' range='1.0.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.springframework.osgi.commons-el.osgi' version='1.0.0.SNAPSHOT'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.springframework.osgi.commons-el.osgi&#xA;Bundle-Version: 1.0.0.SNAPSHOT&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.apache.commons.fileupload' version='1.2.2' singleton='false'>
+      <update id='org.apache.commons.fileupload' range='[0.0.0,1.2.2)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='Commons FileUpload'/>
+        <property name='org.eclipse.equinox.p2.description' value='The FileUpload component provides a simple yet flexible means of adding support for multipart    file upload functionality to servlets and web applications.'/>
+        <property name='org.eclipse.equinox.p2.provider' value='The Apache Software Foundation'/>
+        <property name='org.eclipse.equinox.p2.doc.url' value='http://commons.apache.org/fileupload/'/>
+      </properties>
+      <provides size='8'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.apache.commons.fileupload' version='1.2.2'/>
+        <provided namespace='osgi.bundle' name='org.apache.commons.fileupload' version='1.2.2'/>
+        <provided namespace='java.package' name='org.apache.commons.fileupload.util' version='1.2.2'/>
+        <provided namespace='java.package' name='org.apache.commons.fileupload.disk' version='1.2.2'/>
+        <provided namespace='java.package' name='org.apache.commons.fileupload' version='1.2.2'/>
+        <provided namespace='java.package' name='org.apache.commons.fileupload.servlet' version='1.2.2'/>
+        <provided namespace='java.package' name='org.apache.commons.fileupload.portlet' version='1.2.2'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='5'>
+        <required namespace='java.package' name='javax.portlet' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.servlet' range='0.0.0'/>
+        <required namespace='java.package' name='javax.servlet.http' range='0.0.0'/>
+        <required namespace='java.package' name='org.apache.commons.io' range='0.0.0'/>
+        <required namespace='java.package' name='org.apache.commons.io.output' range='0.0.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.apache.commons.fileupload' version='1.2.2'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.apache.commons.fileupload&#xA;Bundle-Version: 1.2.2&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='com.springsource.net.sf.cglib' version='2.1.3' singleton='false'>
+      <update id='com.springsource.net.sf.cglib' range='[0.0.0,2.1.3)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='CGLIB Code Generation Library'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SpringSource'/>
+      </properties>
+      <provides size='13'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='com.springsource.net.sf.cglib' version='2.1.3'/>
+        <provided namespace='osgi.bundle' name='com.springsource.net.sf.cglib' version='2.1.3'/>
+        <provided namespace='java.package' name='net.sf.cglib.asm' version='2.1.3'/>
+        <provided namespace='java.package' name='net.sf.cglib.asm.attrs' version='2.1.3'/>
+        <provided namespace='java.package' name='net.sf.cglib.beans' version='2.1.3'/>
+        <provided namespace='java.package' name='net.sf.cglib.core' version='2.1.3'/>
+        <provided namespace='java.package' name='net.sf.cglib.proxy' version='2.1.3'/>
+        <provided namespace='java.package' name='net.sf.cglib.reflect' version='2.1.3'/>
+        <provided namespace='java.package' name='net.sf.cglib.transform' version='2.1.3'/>
+        <provided namespace='java.package' name='net.sf.cglib.transform.hook' version='2.1.3'/>
+        <provided namespace='java.package' name='net.sf.cglib.transform.impl' version='2.1.3'/>
+        <provided namespace='java.package' name='net.sf.cglib.util' version='2.1.3'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='3'>
+        <required namespace='java.package' name='org.apache.tools.ant' range='[1.7.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.tools.ant.types' range='[1.7.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.codehaus.aspectwerkz.hook' range='[0.8.1,0.9.0)' optional='true'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='com.springsource.net.sf.cglib' version='2.1.3'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: com.springsource.net.sf.cglib&#xA;Bundle-Version: 2.1.3&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='log4j.over.slf4j' version='1.5.11' singleton='false'>
+      <update id='log4j.over.slf4j' range='[0.0.0,1.5.11)' severity='0'/>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='log4j-over-slf4j'/>
+        <property name='org.eclipse.equinox.p2.description' value='Log4j implemented over SLF4J'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SLF4J.ORG'/>
+      </properties>
+      <provides size='4'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='log4j.over.slf4j' version='1.5.11'/>
+        <provided namespace='osgi.bundle' name='log4j.over.slf4j' version='1.5.11'/>
+        <provided namespace='java.package' name='org.apache.log4j' version='0.0.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='3'>
+        <required namespace='java.package' name='org.apache.log4j' range='0.0.0'/>
+        <required namespace='java.package' name='org.slf4j' range='0.0.0'/>
+        <required namespace='java.package' name='org.slf4j.spi' range='0.0.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='log4j.over.slf4j' version='1.5.11'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: log4j.over.slf4j&#xA;Bundle-Version: 1.5.11&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.springframework.context.source' version='3.0.4.RELEASE' singleton='false'>
+      <update id='org.springframework.context.source' range='[0.0.0,3.0.4.RELEASE)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='Spring Context Source'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SpringSource'/>
+      </properties>
+      <provides size='3'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.springframework.context.source' version='3.0.4.RELEASE'/>
+        <provided namespace='osgi.bundle' name='org.springframework.context.source' version='3.0.4.RELEASE'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='source' version='1.0.0'/>
+      </provides>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.springframework.context.source' version='3.0.4.RELEASE'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.springframework.context.source&#xA;Bundle-Version: 3.0.4.RELEASE&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.springframework.core' version='3.0.4.RELEASE' singleton='false'>
+      <update id='org.springframework.core' range='[0.0.0,3.0.4.RELEASE)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='Spring Core'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SpringSource'/>
+      </properties>
+      <provides size='20'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.springframework.core' version='3.0.4.RELEASE'/>
+        <provided namespace='osgi.bundle' name='org.springframework.core' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.core' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.core.annotation' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.core.convert' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.core.convert.converter' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.core.convert.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.core.enums' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.core.io' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.core.io.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.core.style' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.core.task' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.core.task.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.core.type' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.core.type.classreading' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.core.type.filter' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.util' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.util.comparator' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.util.xml' version='3.0.4.RELEASE'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='23'>
+        <required namespace='java.package' name='javax.xml.namespace' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.stream' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.stream.events' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.stream.util' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.transform' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.transform.sax' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.transform.stax' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.apache.commons.logging' range='[1.1.1,2.0.0)'/>
+        <required namespace='java.package' name='org.apache.log4j' range='[1.2.15,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.log4j.xml' range='[1.2.15,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.aspectj.bridge' range='[1.5.4,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.aspectj.weaver' range='[1.5.4,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.aspectj.weaver.bcel' range='[1.5.4,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.aspectj.weaver.patterns' range='[1.5.4,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.eclipse.core.runtime' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.jboss.vfs' range='[3.0.0,4.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.jboss.virtual' range='[2.1.0.GA,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.asm' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.asm.commons' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.w3c.dom' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.xml.sax' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.xml.sax.ext' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.xml.sax.helpers' range='0.0.0' optional='true'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.springframework.core' version='3.0.4.RELEASE'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.springframework.core&#xA;Bundle-Version: 3.0.4.RELEASE&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.apache.commons.lang3' version='3.1.0' singleton='false'>
+      <update id='org.apache.commons.lang3' range='[0.0.0,3.1.0)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='Commons Lang'/>
+        <property name='org.eclipse.equinox.p2.description' value='Commons Lang, a package of Java utility classes for the  classes that are in java.lang&apos;s hierarchy, or are considered to be so  standard as to justify existence in java.lang.'/>
+        <property name='org.eclipse.equinox.p2.provider' value='The Apache Software Foundation'/>
+        <property name='org.eclipse.equinox.p2.doc.url' value='http://commons.apache.org/lang/'/>
+      </properties>
+      <provides size='15'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.apache.commons.lang3' version='3.1.0'/>
+        <provided namespace='osgi.bundle' name='org.apache.commons.lang3' version='3.1.0'/>
+        <provided namespace='java.package' name='org.apache.commons.lang3.event' version='3.1.0'/>
+        <provided namespace='java.package' name='org.apache.commons.lang3.mutable' version='3.1.0'/>
+        <provided namespace='java.package' name='org.apache.commons.lang3.tuple' version='3.1.0'/>
+        <provided namespace='java.package' name='org.apache.commons.lang3.time' version='3.1.0'/>
+        <provided namespace='java.package' name='org.apache.commons.lang3.concurrent' version='3.1.0'/>
+        <provided namespace='java.package' name='org.apache.commons.lang3.text.translate' version='3.1.0'/>
+        <provided namespace='java.package' name='org.apache.commons.lang3.text' version='3.1.0'/>
+        <provided namespace='java.package' name='org.apache.commons.lang3.math' version='3.1.0'/>
+        <provided namespace='java.package' name='org.apache.commons.lang3' version='3.1.0'/>
+        <provided namespace='java.package' name='org.apache.commons.lang3.exception' version='3.1.0'/>
+        <provided namespace='java.package' name='org.apache.commons.lang3.reflect' version='3.1.0'/>
+        <provided namespace='java.package' name='org.apache.commons.lang3.builder' version='3.1.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.apache.commons.lang3' version='3.1.0'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.apache.commons.lang3&#xA;Bundle-Version: 3.1.0&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='ch.qos.logback.classic' version='1.0.7' singleton='false'>
+      <update id='ch.qos.logback.classic' range='[0.0.0,1.0.7)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='Logback Classic Module'/>
+        <property name='org.eclipse.equinox.p2.description' value='logback-classic module'/>
+        <property name='org.eclipse.equinox.p2.provider' value='QOS.ch'/>
+        <property name='org.eclipse.equinox.p2.doc.url' value='http://www.qos.ch'/>
+      </properties>
+      <provides size='27'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='ch.qos.logback.classic' version='1.0.7'/>
+        <provided namespace='osgi.bundle' name='ch.qos.logback.classic' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic.util' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic.jul' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic.joran.action' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic.html' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic.helpers' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic.gaffer' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic.pattern' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic.encoder' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic.net' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic.log4j' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic.turbo' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic.db.names' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic.jmx' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic.pattern.color' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic.selector' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic.boolex' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic.filter' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic.joran' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic.db' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic.selector.servlet' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic.sift' version='1.0.7'/>
+        <provided namespace='java.package' name='ch.qos.logback.classic.spi' version='1.0.7'/>
+        <provided namespace='java.package' name='org.slf4j.impl' version='1.6.6'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='64'>
+        <required namespace='java.package' name='ch.qos.logback.classic' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.classic.boolex' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.classic.db' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.classic.db.names' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.classic.encoder' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.classic.filter' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.classic.gaffer' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.classic.helpers' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.classic.html' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.classic.jmx' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.classic.joran' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.classic.joran.action' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.classic.jul' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.classic.log4j' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.classic.net' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.classic.pattern' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.classic.pattern.color' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.classic.selector' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.classic.selector.servlet' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.classic.sift' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.classic.spi' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.classic.turbo' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.classic.util' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.boolex' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.db' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.encoder' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.filter' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.helpers' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.html' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.joran' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.joran.action' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.joran.conditional' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.joran.event' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.joran.spi' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.joran.util' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.net' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.pattern' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.pattern.color' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.pattern.parser' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.read' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.rolling' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.rolling.helper' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.sift' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.spi' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.status' range='1.0.0'/>
+        <required namespace='java.package' name='ch.qos.logback.core.util' range='1.0.0'/>
+        <required namespace='java.package' name='groovy.lang' range='2.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.jms' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.management' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.naming' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.servlet' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.servlet.http' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.codehaus.groovy.control' range='2.0.0' optional='true'/>
+        <required namespace='java.package' name='org.codehaus.groovy.reflection' range='2.0.0' optional='true'/>
+        <required namespace='java.package' name='org.codehaus.groovy.runtime' range='2.0.0' optional='true'/>
+        <required namespace='java.package' name='org.codehaus.groovy.runtime.callsite' range='2.0.0' optional='true'/>
+        <required namespace='java.package' name='org.codehaus.groovy.runtime.typehandling' range='2.0.0' optional='true'/>
+        <required namespace='java.package' name='org.slf4j' range='1.6.0'/>
+        <required namespace='java.package' name='org.slf4j.helpers' range='1.6.0'/>
+        <required namespace='java.package' name='org.slf4j.impl' range='1.6.0'/>
+        <required namespace='java.package' name='org.slf4j.spi' range='1.6.0'/>
+        <required namespace='java.package' name='org.xml.sax' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='sun.reflect' range='0.0.0' optional='true'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='ch.qos.logback.classic' version='1.0.7'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: ch.qos.logback.classic&#xA;Bundle-Version: 1.0.7&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.springframework.web.servlet' version='3.0.4.RELEASE' singleton='false'>
+      <update id='org.springframework.web.servlet' range='[0.0.0,3.0.4.RELEASE)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='Spring Web Servlet'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SpringSource'/>
+      </properties>
+      <provides size='26'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.springframework.web.servlet' version='3.0.4.RELEASE'/>
+        <provided namespace='osgi.bundle' name='org.springframework.web.servlet' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet.config' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet.handler' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet.i18n' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet.mvc' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet.mvc.annotation' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet.mvc.multiaction' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet.mvc.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet.resource' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet.tags' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet.tags.form' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet.theme' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet.view' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet.view.document' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet.view.feed' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet.view.freemarker' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet.view.jasperreports' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet.view.json' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet.view.tiles2' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet.view.velocity' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet.view.xml' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.servlet.view.xslt' version='3.0.4.RELEASE'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='118'>
+        <required namespace='java.package' name='com.lowagie.text' range='[2.0.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='com.lowagie.text.pdf' range='[2.0.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='com.sun.syndication.feed' range='[1.0.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='com.sun.syndication.feed.atom' range='[1.0.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='com.sun.syndication.feed.rss' range='[1.0.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='com.sun.syndication.io' range='[1.0.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='freemarker.cache' range='[2.3.14,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='freemarker.core' range='[2.3.14,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='freemarker.ext.jsp' range='[2.3.14,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='freemarker.ext.servlet' range='[2.3.14,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='freemarker.template' range='[2.3.14,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.activation' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.el' range='[1.0.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.servlet' range='[2.4.0,4.0.0)'/>
+        <required namespace='java.package' name='javax.servlet.http' range='[2.4.0,4.0.0)'/>
+        <required namespace='java.package' name='javax.servlet.jsp' range='[2.0.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.servlet.jsp.el' range='[2.0.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.servlet.jsp.jstl.core' range='[1.1.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.servlet.jsp.jstl.fmt' range='[1.1.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.servlet.jsp.tagext' range='[2.0.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.sql' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.transform' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.transform.dom' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.transform.stream' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='jxl' range='[2.6.6,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='jxl.write' range='[2.6.6,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='net.sf.jasperreports.engine' range='[2.0.5,4.0.0)' optional='true'/>
+        <required namespace='java.package' name='net.sf.jasperreports.engine.design' range='[2.0.5,4.0.0)' optional='true'/>
+        <required namespace='java.package' name='net.sf.jasperreports.engine.export' range='[2.0.5,4.0.0)' optional='true'/>
+        <required namespace='java.package' name='net.sf.jasperreports.engine.util' range='[2.0.5,4.0.0)' optional='true'/>
+        <required namespace='java.package' name='net.sf.jasperreports.engine.xml' range='[2.0.5,4.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.commons.logging' range='[1.1.1,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.poi.hssf.usermodel' range='[3.0.2.FINAL,4.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.poi.poifs.filesystem' range='[3.0.2.FINAL,4.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.tiles' range='[2.1.2,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.tiles.awareness' range='[2.1.2,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.tiles.context' range='[2.1.2,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.tiles.definition' range='[2.1.2,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.tiles.definition.dao' range='[2.1.2,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.tiles.definition.digester' range='[2.1.2,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.tiles.evaluator' range='[2.1.2,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.tiles.evaluator.el' range='[2.1.2,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.tiles.evaluator.impl' range='[2.1.2,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.tiles.factory' range='[2.1.2,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.tiles.impl' range='[2.1.2,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.tiles.impl.mgmt' range='[2.1.2,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.tiles.jsp.context' range='[2.1.2,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.tiles.locale' range='[2.1.2,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.tiles.locale.impl' range='[2.1.2,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.tiles.preparer' range='[2.1.2,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.tiles.renderer' range='[2.1.2,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.tiles.servlet.context' range='[2.1.2,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.tiles.startup' range='[2.1.2,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.velocity' range='[1.5.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.velocity.app' range='[1.5.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.velocity.context' range='[1.5.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.velocity.exception' range='[1.5.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.velocity.runtime.resource.loader' range='[1.5.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.velocity.tools.generic' range='[1.4.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.velocity.tools.view' range='[1.4.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.velocity.tools.view.context' range='[1.4.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.velocity.tools.view.servlet' range='[1.4.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.codehaus.jackson' range='[1.3.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.codehaus.jackson.map' range='[1.3.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.beans' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.config' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.parsing' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.xml' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.propertyeditors' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.context' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.context.event' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.context.expression' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.context.i18n' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.context.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.annotation' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.convert' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.enums' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.io' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.io.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.style' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.expression' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.expression.spel.standard' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.expression.spel.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.format.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.http' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.http.converter' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.http.converter.feed' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.http.converter.json' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.http.converter.xml' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.http.server' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.oxm' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.stereotype' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.ui' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.ui.context' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.ui.context.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.ui.freemarker' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.ui.jasperreports' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.ui.velocity' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.util' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.util.xml' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.validation' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.validation.beanvalidation' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.validation.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.web' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.web.bind' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.web.bind.annotation' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.web.bind.annotation.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.web.bind.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.web.context' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.web.context.request' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.web.context.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.web.multipart' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.web.util' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.w3c.dom' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.xml.sax' range='0.0.0' optional='true'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.springframework.web.servlet' version='3.0.4.RELEASE'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.springframework.web.servlet&#xA;Bundle-Version: 3.0.4.RELEASE&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.springframework.osgi.core' version='2.0.0.M1' singleton='false'>
+      <update id='org.springframework.osgi.core' range='[0.0.0,2.0.0.M1)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='spring-osgi-core'/>
+        <property name='org.eclipse.equinox.p2.description' value='Spring/OSGi core classes. Offers OSGi-based application context and importer/exporter functionality.'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SpringSource'/>
+        <property name='org.eclipse.equinox.p2.doc.url' value='http://www.springframework.org/osgi'/>
+      </properties>
+      <provides size='25'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.springframework.osgi.core' version='2.0.0.M1'/>
+        <provided namespace='osgi.bundle' name='org.springframework.osgi.core' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.osgi.service.blueprint.container' version='1.0.0'/>
+        <provided namespace='java.package' name='org.osgi.service.blueprint.reflect' version='1.0.0'/>
+        <provided namespace='java.package' name='org.springframework.osgi' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.blueprint.compendium.cm.config' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.blueprint.config' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.blueprint.container' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.blueprint.container.support' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.blueprint.reflect' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.bundle' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.compendium.cm' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.compendium.config' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.config' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.context' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.context.event' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.context.support' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.service' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.service.exporter' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.service.exporter.support' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.service.importer' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.service.importer.event' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.service.importer.support' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.util' version='2.0.0.M1'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='31'>
+        <required namespace='java.package' name='javax.xml.parsers' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.aopalliance.aop' range='0.0.0'/>
+        <required namespace='java.package' name='org.aopalliance.intercept' range='0.0.0'/>
+        <required namespace='java.package' name='org.apache.commons.logging' range='[1.0.0,2.0.0)'/>
+        <required namespace='java.package' name='org.osgi.framework' range='1.3.0'/>
+        <required namespace='java.package' name='org.osgi.service.cm' range='1.2.0' optional='true'/>
+        <required namespace='java.package' name='org.osgi.service.packageadmin' range='1.2.0'/>
+        <required namespace='java.package' name='org.osgi.service.startlevel' range='1.0.0' optional='true'/>
+        <required namespace='java.package' name='org.springframework.aop' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.aop.framework' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.aop.support' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.beans' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.config' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.parsing' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.support' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.xml' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.beans.propertyeditors' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.context' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.context.event' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.context.support' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.core' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.core.convert' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.core.enums' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.core.io' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.core.io.support' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.osgi.io' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.util' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.util.xml' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.w3c.dom' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.xml.sax' range='0.0.0' optional='true'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.springframework.osgi.core' version='2.0.0.M1'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.springframework.osgi.core&#xA;Bundle-Version: 2.0.0.M1&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.mortbay.jetty.server' version='6.1.25' singleton='false'>
+      <update id='org.mortbay.jetty.server' range='[0.0.0,6.1.25)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='Jetty Server'/>
+        <property name='org.eclipse.equinox.p2.description' value='Jetty server core'/>
+        <property name='org.eclipse.equinox.p2.provider' value='Mort Bay Consulting'/>
+        <property name='org.eclipse.equinox.p2.doc.url' value='http://jetty.mortbay.org'/>
+      </properties>
+      <provides size='17'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mortbay.jetty.server' version='6.1.25'/>
+        <provided namespace='osgi.bundle' name='org.mortbay.jetty.server' version='6.1.25'/>
+        <provided namespace='java.package' name='org.mortbay.jetty' version='6.1.25'/>
+        <provided namespace='java.package' name='org.mortbay.io.nio' version='6.1.25'/>
+        <provided namespace='java.package' name='org.mortbay.servlet.jetty' version='6.1.25'/>
+        <provided namespace='java.package' name='org.mortbay.io' version='6.1.25'/>
+        <provided namespace='java.package' name='org.mortbay.jetty.bio' version='6.1.25'/>
+        <provided namespace='java.package' name='org.mortbay.jetty.security' version='6.1.25'/>
+        <provided namespace='java.package' name='org.mortbay.jetty.webapp' version='6.1.25'/>
+        <provided namespace='java.package' name='org.mortbay.xml' version='6.1.25'/>
+        <provided namespace='java.package' name='org.mortbay.jetty.nio' version='6.1.25'/>
+        <provided namespace='java.package' name='org.mortbay.jetty.handler' version='6.1.25'/>
+        <provided namespace='java.package' name='org.mortbay.resource' version='6.1.25'/>
+        <provided namespace='java.package' name='org.mortbay.jetty.servlet' version='6.1.25'/>
+        <provided namespace='java.package' name='org.mortbay.io.bio' version='6.1.25'/>
+        <provided namespace='java.package' name='org.mortbay.jetty.deployer' version='6.1.25'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='17'>
+        <required namespace='java.package' name='javax.net.ssl' range='0.0.0'/>
+        <required namespace='java.package' name='javax.security.cert' range='0.0.0'/>
+        <required namespace='java.package' name='javax.servlet' range='2.5.0'/>
+        <required namespace='java.package' name='javax.servlet.http' range='2.5.0'/>
+        <required namespace='java.package' name='javax.servlet.jsp' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.servlet.resources' range='2.5.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.parsers' range='0.0.0'/>
+        <required namespace='java.package' name='org.apache.jasper.servlet' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.mortbay.component' range='6.1.0'/>
+        <required namespace='java.package' name='org.mortbay.jetty.handler.management' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.mortbay.log' range='6.1.0'/>
+        <required namespace='java.package' name='org.mortbay.servlet' range='6.1.0'/>
+        <required namespace='java.package' name='org.mortbay.thread' range='6.1.0'/>
+        <required namespace='java.package' name='org.mortbay.util' range='6.1.0'/>
+        <required namespace='java.package' name='org.mortbay.util.ajax' range='6.1.0'/>
+        <required namespace='java.package' name='org.xml.sax' range='0.0.0'/>
+        <required namespace='java.package' name='org.xml.sax.helpers' range='0.0.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.mortbay.jetty.server' version='6.1.25'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.mortbay.jetty.server&#xA;Bundle-Version: 6.1.25&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.springframework.osgi.extensions.annotations' version='2.0.0.M1' singleton='false'>
+      <update id='org.springframework.osgi.extensions.annotations' range='[0.0.0,2.0.0.M1)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='spring-osgi-annotation'/>
+        <property name='org.eclipse.equinox.p2.description' value='Provides OSGi service injection via annotations.'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SpringSource'/>
+        <property name='org.eclipse.equinox.p2.doc.url' value='http://www.springframework.org/osgi'/>
+      </properties>
+      <provides size='4'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.springframework.osgi.extensions.annotations' version='2.0.0.M1'/>
+        <provided namespace='osgi.bundle' name='org.springframework.osgi.extensions.annotations' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.extensions.annotation' version='2.0.0.M1'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='13'>
+        <required namespace='java.package' name='org.apache.commons.logging' range='[1.0.0,2.0.0)'/>
+        <required namespace='java.package' name='org.osgi.framework' range='1.3.0'/>
+        <required namespace='java.package' name='org.springframework.beans' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.config' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.core.annotation' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.osgi.context' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.extender' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.service.exporter.support' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.service.importer' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.service.importer.support' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.util' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.util' range='[3.0.0,4.0.0)'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.springframework.osgi.extensions.annotations' version='2.0.0.M1'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.springframework.osgi.extensions.annotations&#xA;Bundle-Version: 2.0.0.M1&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='com.springsource.org.aopalliance' version='1.0.0' singleton='false'>
+      <update id='com.springsource.org.aopalliance' range='[0.0.0,1.0.0)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='AOP Alliance API'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SpringSource'/>
+      </properties>
+      <provides size='5'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='com.springsource.org.aopalliance' version='1.0.0'/>
+        <provided namespace='osgi.bundle' name='com.springsource.org.aopalliance' version='1.0.0'/>
+        <provided namespace='java.package' name='org.aopalliance.aop' version='1.0.0'/>
+        <provided namespace='java.package' name='org.aopalliance.intercept' version='1.0.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='com.springsource.org.aopalliance' version='1.0.0'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: com.springsource.org.aopalliance&#xA;Bundle-Version: 1.0.0&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='jcl.over.slf4j' version='1.7.2' singleton='false'>
+      <update id='jcl.over.slf4j' range='[0.0.0,1.7.2)' severity='0'/>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='jcl-over-slf4j'/>
+        <property name='org.eclipse.equinox.p2.description' value='JCL 1.1.1 implemented over SLF4J'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SLF4J.ORG'/>
+      </properties>
+      <provides size='5'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='jcl.over.slf4j' version='1.7.2'/>
+        <provided namespace='osgi.bundle' name='jcl.over.slf4j' version='1.7.2'/>
+        <provided namespace='java.package' name='org.apache.commons.logging' version='1.1.1'/>
+        <provided namespace='java.package' name='org.apache.commons.logging.impl' version='1.1.1'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='2'>
+        <required namespace='java.package' name='org.slf4j' range='1.7.2'/>
+        <required namespace='java.package' name='org.slf4j.spi' range='1.7.2'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='jcl.over.slf4j' version='1.7.2'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: jcl.over.slf4j&#xA;Bundle-Version: 1.7.2&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.springframework.aop' version='3.0.4.RELEASE' singleton='false'>
+      <update id='org.springframework.aop' range='[0.0.0,3.0.4.RELEASE)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='Spring AOP'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SpringSource'/>
+      </properties>
+      <provides size='18'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.springframework.aop' version='3.0.4.RELEASE'/>
+        <provided namespace='osgi.bundle' name='org.springframework.aop' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.aop' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.aop.aspectj' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.aop.aspectj.annotation' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.aop.aspectj.autoproxy' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.aop.config' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.aop.framework' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.aop.framework.adapter' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.aop.framework.autoproxy' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.aop.framework.autoproxy.target' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.aop.interceptor' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.aop.scope' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.aop.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.aop.support.annotation' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.aop.target' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.aop.target.dynamic' version='3.0.4.RELEASE'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='34'>
+        <required namespace='java.package' name='com.jamonapi' range='[2.4.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='net.sf.cglib.core' range='[2.1.3,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='net.sf.cglib.proxy' range='[2.1.3,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='net.sf.cglib.transform.impl' range='[2.1.3,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.aopalliance.aop' range='[1.0.0,2.0.0)'/>
+        <required namespace='java.package' name='org.aopalliance.intercept' range='[1.0.0,2.0.0)'/>
+        <required namespace='java.package' name='org.apache.commons.logging' range='[1.1.1,2.0.0)'/>
+        <required namespace='java.package' name='org.apache.commons.pool' range='[1.3.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.commons.pool.impl' range='[1.3.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.aspectj.bridge' range='[1.5.4,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.aspectj.lang' range='[1.5.4,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.aspectj.lang.annotation' range='[1.5.4,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.aspectj.lang.reflect' range='[1.5.4,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.aspectj.runtime.internal' range='[1.5.4,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.aspectj.util' range='[1.5.4,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.aspectj.weaver' range='[1.5.4,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.aspectj.weaver.ast' range='[1.5.4,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.aspectj.weaver.internal.tools' range='[1.5.4,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.aspectj.weaver.patterns' range='[1.5.4,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.aspectj.weaver.reflect' range='[1.5.4,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.aspectj.weaver.tools' range='[1.5.4,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.beans' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.beans.factory' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.config' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.parsing' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.support' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.xml' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.core' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.annotation' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.task' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.task.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.util' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.util.xml' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.w3c.dom' range='0.0.0' optional='true'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.springframework.aop' version='3.0.4.RELEASE'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.springframework.aop&#xA;Bundle-Version: 3.0.4.RELEASE&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='slf4j.api' version='1.7.2' singleton='false'>
+      <update id='slf4j.api' range='[0.0.0,1.7.2)' severity='0'/>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='slf4j-api'/>
+        <property name='org.eclipse.equinox.p2.description' value='The slf4j API'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SLF4J.ORG'/>
+      </properties>
+      <provides size='6'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='slf4j.api' version='1.7.2'/>
+        <provided namespace='osgi.bundle' name='slf4j.api' version='1.7.2'/>
+        <provided namespace='java.package' name='org.slf4j' version='1.7.2'/>
+        <provided namespace='java.package' name='org.slf4j.spi' version='1.7.2'/>
+        <provided namespace='java.package' name='org.slf4j.helpers' version='1.7.2'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='java.package' name='org.slf4j.impl' range='1.6.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='slf4j.api' version='1.7.2'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: slf4j.api&#xA;Bundle-Version: 1.7.2&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.mortbay.jetty.jsp-api-2.1' version='2.1.0' singleton='false'>
+      <update id='org.mortbay.jetty.jsp-api-2.1' range='[0.0.0,2.1.0)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='Glassfish Jasper API'/>
+        <property name='org.eclipse.equinox.p2.description' value='JSP2.1 API'/>
+        <property name='org.eclipse.equinox.p2.provider' value='Mort Bay Consulting'/>
+        <property name='org.eclipse.equinox.p2.doc.url' value='http://www.mortbay.com'/>
+      </properties>
+      <provides size='12'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mortbay.jetty.jsp-api-2.1' version='2.1.0'/>
+        <provided namespace='osgi.bundle' name='org.mortbay.jetty.jsp-api-2.1' version='2.1.0'/>
+        <provided namespace='java.package' name='javax.servlet.jsp.jstl.tlv' version='2.1.0'/>
+        <provided namespace='java.package' name='javax.servlet.jsp.jstl.core' version='2.1.0'/>
+        <provided namespace='java.package' name='javax.servlet.jsp.jstl.fmt' version='2.1.0'/>
+        <provided namespace='java.package' name='javax.servlet.jsp.tagext' version='2.1.0'/>
+        <provided namespace='java.package' name='javax.servlet.jsp.el' version='2.1.0'/>
+        <provided namespace='java.package' name='javax.servlet.jsp.resources' version='2.1.0'/>
+        <provided namespace='java.package' name='javax.servlet.jsp.jstl.sql' version='2.1.0'/>
+        <provided namespace='java.package' name='javax.servlet.jsp' version='2.1.0'/>
+        <provided namespace='java.package' name='javax.el' version='2.1.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='5'>
+        <required namespace='java.package' name='javax.servlet' range='2.5.0'/>
+        <required namespace='java.package' name='javax.servlet.http' range='2.5.0'/>
+        <required namespace='java.package' name='javax.xml.parsers' range='0.0.0'/>
+        <required namespace='java.package' name='org.xml.sax' range='0.0.0'/>
+        <required namespace='java.package' name='org.xml.sax.helpers' range='0.0.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.mortbay.jetty.jsp-api-2.1' version='2.1.0'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.mortbay.jetty.jsp-api-2.1&#xA;Bundle-Version: 2.1&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.objenesis' version='1.2.0' singleton='false'>
+      <update id='org.objenesis' range='[0.0.0,1.2.0)' severity='0'/>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='Objenesis'/>
+        <property name='org.eclipse.equinox.p2.description' value='A library for instantiating Java objects'/>
+        <property name='org.eclipse.equinox.p2.provider' value='Joe Walnes, Henri Tremblay, Leonardo Mesquita'/>
+      </properties>
+      <provides size='11'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.objenesis' version='1.2.0'/>
+        <provided namespace='osgi.bundle' name='org.objenesis' version='1.2.0'/>
+        <provided namespace='java.package' name='org.objenesis.instantiator.jrockit' version='1.2.0'/>
+        <provided namespace='java.package' name='org.objenesis.instantiator.perc' version='1.2.0'/>
+        <provided namespace='java.package' name='org.objenesis' version='1.2.0'/>
+        <provided namespace='java.package' name='org.objenesis.strategy' version='1.2.0'/>
+        <provided namespace='java.package' name='org.objenesis.instantiator' version='1.2.0'/>
+        <provided namespace='java.package' name='org.objenesis.instantiator.basic' version='1.2.0'/>
+        <provided namespace='java.package' name='org.objenesis.instantiator.gcj' version='1.2.0'/>
+        <provided namespace='java.package' name='org.objenesis.instantiator.sun' version='1.2.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='8'>
+        <required namespace='java.package' name='org.objenesis' range='1.2.0'/>
+        <required namespace='java.package' name='org.objenesis.instantiator' range='1.2.0'/>
+        <required namespace='java.package' name='org.objenesis.instantiator.basic' range='1.2.0'/>
+        <required namespace='java.package' name='org.objenesis.instantiator.gcj' range='1.2.0'/>
+        <required namespace='java.package' name='org.objenesis.instantiator.jrockit' range='1.2.0'/>
+        <required namespace='java.package' name='org.objenesis.instantiator.perc' range='1.2.0'/>
+        <required namespace='java.package' name='org.objenesis.instantiator.sun' range='1.2.0'/>
+        <required namespace='java.package' name='org.objenesis.strategy' range='1.2.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.objenesis' version='1.2.0'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.objenesis&#xA;Bundle-Version: 1.2&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='jul.to.slf4j' version='1.7.2' singleton='false'>
+      <update id='jul.to.slf4j' range='[0.0.0,1.7.2)' severity='0'/>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='jul-to-slf4j'/>
+        <property name='org.eclipse.equinox.p2.description' value='JUL to SLF4J bridge'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SLF4J.ORG'/>
+      </properties>
+      <provides size='4'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='jul.to.slf4j' version='1.7.2'/>
+        <provided namespace='osgi.bundle' name='jul.to.slf4j' version='1.7.2'/>
+        <provided namespace='java.package' name='org.slf4j.bridge' version='1.7.2'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='2'>
+        <required namespace='java.package' name='org.slf4j' range='1.7.2'/>
+        <required namespace='java.package' name='org.slf4j.spi' range='1.7.2'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='jul.to.slf4j' version='1.7.2'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: jul.to.slf4j&#xA;Bundle-Version: 1.7.2&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.springframework.asm' version='3.0.4.RELEASE' singleton='false'>
+      <update id='org.springframework.asm' range='[0.0.0,3.0.4.RELEASE)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='Spring ASM'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SpringSource'/>
+      </properties>
+      <provides size='6'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.springframework.asm' version='3.0.4.RELEASE'/>
+        <provided namespace='osgi.bundle' name='org.springframework.asm' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.asm' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.asm.commons' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.asm.signature' version='3.0.4.RELEASE'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.springframework.asm' version='3.0.4.RELEASE'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.springframework.asm&#xA;Bundle-Version: 3.0.4.RELEASE&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.springframework.osgi.extender' version='2.0.0.M1' singleton='false'>
+      <update id='org.springframework.osgi.extender' range='[0.0.0,2.0.0.M1)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='spring-osgi-extender'/>
+        <property name='org.eclipse.equinox.p2.description' value='Spring/OSGi extender. Listens for and bootstraps Spring-powered OSGi bundles.'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SpringSource'/>
+        <property name='org.eclipse.equinox.p2.doc.url' value='http://www.springframework.org/osgi'/>
+      </properties>
+      <provides size='7'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.springframework.osgi.extender' version='2.0.0.M1'/>
+        <provided namespace='osgi.bundle' name='org.springframework.osgi.extender' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.extender' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.extender.event' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.extender.support' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.extender.support.scanning' version='2.0.0.M1'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='36'>
+        <required namespace='java.package' name='org.apache.commons.logging' range='[1.0.0,2.0.0)'/>
+        <required namespace='java.package' name='org.osgi.framework' range='1.3.0'/>
+        <required namespace='java.package' name='org.osgi.service.blueprint.container' range='1.0.0' optional='true'/>
+        <required namespace='java.package' name='org.osgi.service.blueprint.reflect' range='1.0.0' optional='true'/>
+        <required namespace='java.package' name='org.osgi.service.event' range='1.1.0' optional='true'/>
+        <required namespace='java.package' name='org.osgi.service.packageadmin' range='1.2.0'/>
+        <required namespace='java.package' name='org.osgi.util.tracker' range='1.3.0'/>
+        <required namespace='java.package' name='org.springframework.beans' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.config' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.parsing' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.support' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.xml' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.context' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.context.event' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.core' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.core.convert' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.core.io' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.core.io.support' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.core.task' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.osgi' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.blueprint.container' range='[2.0.0.M1,2.0.0.M1]' optional='true'/>
+        <required namespace='java.package' name='org.springframework.osgi.blueprint.container.support' range='[2.0.0.M1,2.0.0.M1]' optional='true'/>
+        <required namespace='java.package' name='org.springframework.osgi.context' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.context.event' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.context.support' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.extensions.annotation' range='[2.0.0.M1,2.0.0.M1]' optional='true'/>
+        <required namespace='java.package' name='org.springframework.osgi.io' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.service.exporter.support' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.service.importer' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.service.importer.event' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.service.importer.support' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.util' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.scheduling.timer' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.util' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.xml.sax' range='0.0.0' optional='true'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.springframework.osgi.extender' version='2.0.0.M1'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.springframework.osgi.extender&#xA;Bundle-Version: 2.0.0.M1&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.springframework.osgi.web.extender' version='2.0.0.M1' singleton='false'>
+      <update id='org.springframework.osgi.web.extender' range='[0.0.0,2.0.0.M1)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='spring-osgi-web-extender'/>
+        <property name='org.eclipse.equinox.p2.description' value='Spring/OSGi web extender. Detects war bundles and deploys them into the configured web container.'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SpringSource'/>
+        <property name='org.eclipse.equinox.p2.doc.url' value='http://www.springframework.org/osgi'/>
+      </properties>
+      <provides size='3'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.springframework.osgi.web.extender' version='2.0.0.M1'/>
+        <provided namespace='osgi.bundle' name='org.springframework.osgi.web.extender' version='2.0.0.M1'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='14'>
+        <required namespace='java.package' name='org.apache.commons.logging' range='[1.0.0,2.0.0)'/>
+        <required namespace='java.package' name='org.osgi.framework' range='1.3.0'/>
+        <required namespace='java.package' name='org.springframework.beans.factory' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.core' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.osgi' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.context' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.context.support' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.util' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.web.deployer' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.web.deployer.jetty' range='[2.0.0.M1,2.0.0.M1]' optional='true'/>
+        <required namespace='java.package' name='org.springframework.osgi.web.deployer.support' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.web.deployer.tomcat' range='[2.0.0.M1,2.0.0.M1]' optional='true'/>
+        <required namespace='java.package' name='org.springframework.scheduling.timer' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.util' range='[3.0.0,4.0.0)'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.springframework.osgi.web.extender' version='2.0.0.M1'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.springframework.osgi.web.extender&#xA;Bundle-Version: 2.0.0.M1&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.springframework.osgi.web' version='2.0.0.M1' singleton='false'>
+      <update id='org.springframework.osgi.web' range='[0.0.0,2.0.0.M1)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='spring-osgi-web'/>
+        <property name='org.eclipse.equinox.p2.description' value='Spring/OSGi web support. Allows web applications to transparently run on OSGi platforms.'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SpringSource'/>
+        <property name='org.eclipse.equinox.p2.doc.url' value='http://www.springframework.org/osgi'/>
+      </properties>
+      <provides size='8'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.springframework.osgi.web' version='2.0.0.M1'/>
+        <provided namespace='osgi.bundle' name='org.springframework.osgi.web' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.web.context.support' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.web.deployer' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.web.deployer.jetty' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.web.deployer.support' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.web.deployer.tomcat' version='2.0.0.M1'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='30'>
+        <required namespace='java.package' name='javax.servlet' range='2.4.0'/>
+        <required namespace='java.package' name='org.apache.catalina' range='5.5.23' optional='true'/>
+        <required namespace='java.package' name='org.apache.catalina.core' range='5.5.23' optional='true'/>
+        <required namespace='java.package' name='org.apache.catalina.startup' range='5.5.23' optional='true'/>
+        <required namespace='java.package' name='org.apache.commons.logging' range='[1.0.0,2.0.0)'/>
+        <required namespace='java.package' name='org.apache.jasper' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.apache.jasper.servlet' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.mortbay.jetty' range='6.1.9' optional='true'/>
+        <required namespace='java.package' name='org.mortbay.jetty.handler' range='6.1.9' optional='true'/>
+        <required namespace='java.package' name='org.mortbay.jetty.webapp' range='6.1.9' optional='true'/>
+        <required namespace='java.package' name='org.mortbay.resource' range='6.1.9' optional='true'/>
+        <required namespace='java.package' name='org.mortbay.util' range='6.1.9' optional='true'/>
+        <required namespace='java.package' name='org.osgi.framework' range='1.3.0'/>
+        <required namespace='java.package' name='org.osgi.service.packageadmin' range='1.2.0'/>
+        <required namespace='java.package' name='org.springframework.beans.factory' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.config' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.context' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.core.io' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.core.io.support' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.osgi' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.context' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.context.support' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.io' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.service.importer.support' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.osgi.util' range='[2.0.0.M1,2.0.0.M1]'/>
+        <required namespace='java.package' name='org.springframework.ui.context' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.ui.context.support' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.util' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.web.context' range='[3.0.0,4.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.web.context.support' range='[3.0.0,4.0.0)' optional='true'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.springframework.osgi.web' version='2.0.0.M1'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.springframework.osgi.web&#xA;Bundle-Version: 2.0.0.M1&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.springframework.osgi.io' version='2.0.0.M1' singleton='false'>
+      <update id='org.springframework.osgi.io' range='[0.0.0,2.0.0.M1)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='spring-osgi-io'/>
+        <property name='org.eclipse.equinox.p2.description' value='Spring/OSGi IO abstract classes. Provides Resource, ResourceLoader and ResourcePatternResolver for OSGi environments.'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SpringSource'/>
+        <property name='org.eclipse.equinox.p2.doc.url' value='http://www.springframework.org/osgi'/>
+      </properties>
+      <provides size='4'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.springframework.osgi.io' version='2.0.0.M1'/>
+        <provided namespace='osgi.bundle' name='org.springframework.osgi.io' version='2.0.0.M1'/>
+        <provided namespace='java.package' name='org.springframework.osgi.io' version='2.0.0.M1'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='6'>
+        <required namespace='java.package' name='org.apache.commons.logging' range='[1.0.0,2.0.0)'/>
+        <required namespace='java.package' name='org.osgi.framework' range='1.3.0'/>
+        <required namespace='java.package' name='org.osgi.service.packageadmin' range='1.2.0'/>
+        <required namespace='java.package' name='org.springframework.core.io' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.core.io.support' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='org.springframework.util' range='[3.0.0,4.0.0)'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.springframework.osgi.io' version='2.0.0.M1'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.springframework.osgi.io&#xA;Bundle-Version: 2.0.0.M1&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='com.springsource.org.apache.commons.logging' version='1.1.1' singleton='false'>
+      <update id='com.springsource.org.apache.commons.logging' range='[0.0.0,1.1.1)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='Apache Commons Logging'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SpringSource'/>
+      </properties>
+      <provides size='5'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='com.springsource.org.apache.commons.logging' version='1.1.1'/>
+        <provided namespace='osgi.bundle' name='com.springsource.org.apache.commons.logging' version='1.1.1'/>
+        <provided namespace='java.package' name='org.apache.commons.logging' version='1.1.1'/>
+        <provided namespace='java.package' name='org.apache.commons.logging.impl' version='1.1.1'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='4'>
+        <required namespace='java.package' name='javax.servlet' range='[2.1.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.avalon.framework.logger' range='[4.1.3,4.1.3]' optional='true'/>
+        <required namespace='java.package' name='org.apache.log' range='[1.0.1,1.0.1]' optional='true'/>
+        <required namespace='java.package' name='org.apache.log4j' range='[1.2.15,2.0.0)' optional='true'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='com.springsource.org.apache.commons.logging' version='1.1.1'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: com.springsource.org.apache.commons.logging&#xA;Bundle-Version: 1.1.1&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.springframework.osgi.jetty.start.osgi' version='1.0.0' singleton='false'>
+      <update id='org.springframework.osgi.jetty.start.osgi' range='[0.0.0,1.0.0)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='jetty.start.osgi'/>
+        <property name='org.eclipse.equinox.p2.description' value='Jetty OSGi Activator'/>
+      </properties>
+      <provides size='3'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.springframework.osgi.jetty.start.osgi' version='1.0.0'/>
+        <provided namespace='osgi.bundle' name='org.springframework.osgi.jetty.start.osgi' version='1.0.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='7'>
+        <required namespace='java.package' name='org.mortbay.component' range='0.0.0'/>
+        <required namespace='java.package' name='org.mortbay.jetty' range='6.1.9'/>
+        <required namespace='java.package' name='org.mortbay.jetty.handler' range='0.0.0'/>
+        <required namespace='java.package' name='org.mortbay.log' range='0.0.0'/>
+        <required namespace='java.package' name='org.mortbay.util' range='0.0.0'/>
+        <required namespace='java.package' name='org.mortbay.xml' range='6.1.9'/>
+        <required namespace='java.package' name='org.osgi.framework' range='1.3.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.springframework.osgi.jetty.start.osgi' version='1.0.0'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.springframework.osgi.jetty.start.osgi&#xA;Bundle-Version: 1.0.0&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.springframework.osgi.jetty.web.extender.fragment.osgi' version='1.0.1' singleton='false'>
+      <update id='org.springframework.osgi.jetty.web.extender.fragment.osgi' range='[0.0.0,1.0.1)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='jetty.web.extender.fragment.osgi'/>
+        <property name='org.eclipse.equinox.p2.description' value='Jetty Spring-DM Web Fragment (OSGi version)'/>
+      </properties>
+      <provides size='4'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.springframework.osgi.jetty.web.extender.fragment.osgi' version='1.0.1'/>
+        <provided namespace='osgi.bundle' name='org.springframework.osgi.jetty.web.extender.fragment.osgi' version='1.0.1'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+        <provided namespace='osgi.fragment' name='org.springframework.osgi.web.extender' version='1.0.1'/>
+      </provides>
+      <requires size='2'>
+        <required namespace='osgi.bundle' name='org.springframework.osgi.web.extender' range='0.0.0'/>
+        <required namespace='java.package' name='org.springframework.osgi.web.deployer.jetty' range='0.0.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.springframework.osgi.jetty.web.extender.fragment.osgi' version='1.0.1'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.springframework.osgi.jetty.web.extender.fragment.osgi&#xA;Bundle-Version: 1.0.1&#xA;Fragment-Host: org.springframework.osgi.web.extender&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.springframework.osgi.jasper.osgi' version='6.0.16.SNAPSHOT' singleton='false'>
+      <update id='org.springframework.osgi.jasper.osgi' range='[0.0.0,6.0.16.SNAPSHOT)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='jasper.osgi'/>
+        <property name='org.eclipse.equinox.p2.description' value='Tomcat 6.x JSP Jasper (OSGi version)'/>
+      </properties>
+      <provides size='15'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.springframework.osgi.jasper.osgi' version='6.0.16.SNAPSHOT'/>
+        <provided namespace='osgi.bundle' name='org.springframework.osgi.jasper.osgi' version='6.0.16.SNAPSHOT'/>
+        <provided namespace='java.package' name='org.apache.jasper' version='6.0.16'/>
+        <provided namespace='java.package' name='org.apache.jasper.el' version='6.0.16'/>
+        <provided namespace='java.package' name='org.apache.jasper.tagplugins.jstl' version='6.0.16'/>
+        <provided namespace='java.package' name='org.apache.jasper.runtime' version='6.0.16'/>
+        <provided namespace='java.package' name='org.apache.jasper.resources' version='6.0.16'/>
+        <provided namespace='java.package' name='org.apache.jasper.util' version='6.0.16'/>
+        <provided namespace='java.package' name='org.apache.jasper.compiler.tagplugin' version='6.0.16'/>
+        <provided namespace='java.package' name='org.apache.jasper.security' version='6.0.16'/>
+        <provided namespace='java.package' name='org.apache.jasper.tagplugins.jstl.core' version='6.0.16'/>
+        <provided namespace='java.package' name='org.apache.jasper.xmlparser' version='6.0.16'/>
+        <provided namespace='java.package' name='org.apache.jasper.compiler' version='6.0.16'/>
+        <provided namespace='java.package' name='org.apache.jasper.servlet' version='6.0.16'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='37'>
+        <required namespace='java.package' name='javax.el' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.naming' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.servlet' range='2.5.0'/>
+        <required namespace='java.package' name='javax.servlet.http' range='2.5.0'/>
+        <required namespace='java.package' name='javax.servlet.jsp' range='2.1.0'/>
+        <required namespace='java.package' name='javax.servlet.jsp.el' range='2.1.0'/>
+        <required namespace='java.package' name='javax.servlet.jsp.resources' range='2.1.0'/>
+        <required namespace='java.package' name='javax.servlet.jsp.tagext' range='2.1.0'/>
+        <required namespace='java.package' name='javax.servlet.resources' range='2.5.0'/>
+        <required namespace='java.package' name='javax.xml.parsers' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.apache.jasper' range='6.0.16' optional='true'/>
+        <required namespace='java.package' name='org.apache.jasper.compiler' range='6.0.16' optional='true'/>
+        <required namespace='java.package' name='org.apache.jasper.compiler.tagplugin' range='6.0.16' optional='true'/>
+        <required namespace='java.package' name='org.apache.jasper.el' range='6.0.16' optional='true'/>
+        <required namespace='java.package' name='org.apache.jasper.resources' range='6.0.16' optional='true'/>
+        <required namespace='java.package' name='org.apache.jasper.runtime' range='6.0.16' optional='true'/>
+        <required namespace='java.package' name='org.apache.jasper.security' range='6.0.16' optional='true'/>
+        <required namespace='java.package' name='org.apache.jasper.servlet' range='6.0.16' optional='true'/>
+        <required namespace='java.package' name='org.apache.jasper.tagplugins.jstl' range='6.0.16' optional='true'/>
+        <required namespace='java.package' name='org.apache.jasper.tagplugins.jstl.core' range='6.0.16' optional='true'/>
+        <required namespace='java.package' name='org.apache.jasper.util' range='6.0.16' optional='true'/>
+        <required namespace='java.package' name='org.apache.jasper.xmlparser' range='6.0.16' optional='true'/>
+        <required namespace='java.package' name='org.apache.tools.ant' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.apache.tools.ant.taskdefs' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.apache.tools.ant.types' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.apache.tools.ant.util' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.eclipse.core.resources' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.eclipse.core.runtime' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.eclipse.jdt.core' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.eclipse.jdt.core.dom' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.eclipse.jdt.internal.compiler.apt.dispatch' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.eclipse.jdt.internal.core' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.eclipse.jdt.internal.core.builder' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.w3c.dom' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.xml.sax' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.xml.sax.ext' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.xml.sax.helpers' range='0.0.0' optional='true'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.springframework.osgi.jasper.osgi' version='6.0.16.SNAPSHOT'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.springframework.osgi.jasper.osgi&#xA;Bundle-Version: 6.0.16.SNAPSHOT&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.springframework.web' version='3.0.4.RELEASE' singleton='false'>
+      <update id='org.springframework.web' range='[0.0.0,3.0.4.RELEASE)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='Spring Web'/>
+        <property name='org.eclipse.equinox.p2.provider' value='SpringSource'/>
+      </properties>
+      <provides size='32'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.springframework.web' version='3.0.4.RELEASE'/>
+        <provided namespace='osgi.bundle' name='org.springframework.web' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.http' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.http.client' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.http.client.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.http.converter' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.http.converter.feed' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.http.converter.json' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.http.converter.xml' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.http.server' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.remoting.caucho' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.remoting.httpinvoker' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.remoting.jaxrpc' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.remoting.jaxws' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.bind' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.bind.annotation' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.bind.annotation.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.bind.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.client' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.client.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.context' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.context.request' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.context.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.filter' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.jsf' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.jsf.el' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.multipart' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.multipart.commons' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.multipart.support' version='3.0.4.RELEASE'/>
+        <provided namespace='java.package' name='org.springframework.web.util' version='3.0.4.RELEASE'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='90'>
+        <required namespace='java.package' name='com.caucho.burlap.client' range='[3.2.0,5.0.0)' optional='true'/>
+        <required namespace='java.package' name='com.caucho.burlap.io' range='[3.2.0,5.0.0)' optional='true'/>
+        <required namespace='java.package' name='com.caucho.burlap.server' range='[3.2.0,5.0.0)' optional='true'/>
+        <required namespace='java.package' name='com.caucho.hessian' range='[3.2.0,5.0.0)' optional='true'/>
+        <required namespace='java.package' name='com.caucho.hessian.client' range='[3.2.0,5.0.0)' optional='true'/>
+        <required namespace='java.package' name='com.caucho.hessian.io' range='[3.2.0,5.0.0)' optional='true'/>
+        <required namespace='java.package' name='com.caucho.hessian.server' range='[3.2.0,5.0.0)' optional='true'/>
+        <required namespace='java.package' name='com.sun.net.httpserver' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='com.sun.syndication.feed' range='[1.0.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='com.sun.syndication.feed.atom' range='[1.0.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='com.sun.syndication.feed.rss' range='[1.0.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='com.sun.syndication.io' range='[1.0.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.activation' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.el' range='[1.0.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.faces.application' range='[1.1.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.faces.component' range='[1.1.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.faces.context' range='[1.1.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.faces.el' range='[1.1.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.faces.event' range='[1.1.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.imageio' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.imageio.metadata' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.imageio.stream' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.jws' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.portlet' range='[2.0.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.servlet' range='[2.4.0,4.0.0)'/>
+        <required namespace='java.package' name='javax.servlet.http' range='[2.4.0,4.0.0)'/>
+        <required namespace='java.package' name='javax.servlet.jsp' range='[2.0.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.servlet.jsp.el' range='[2.0.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.servlet.jsp.tagext' range='[2.0.0,3.0.0)' optional='true'/>
+        <required namespace='java.package' name='javax.xml.bind' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.bind.annotation' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.namespace' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.rpc' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.rpc.server' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.rpc.soap' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.soap' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.transform' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.transform.dom' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.transform.sax' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.transform.stream' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.ws' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.ws.handler' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.ws.soap' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.aopalliance.aop' range='[1.0.0,2.0.0)'/>
+        <required namespace='java.package' name='org.aopalliance.intercept' range='[1.0.0,2.0.0)'/>
+        <required namespace='java.package' name='org.apache.commons.fileupload' range='[1.2.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.commons.fileupload.disk' range='[1.2.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.commons.fileupload.servlet' range='[1.2.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.commons.httpclient' range='[3.1.0,4.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.commons.httpclient.methods' range='[3.1.0,4.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.commons.httpclient.params' range='[3.1.0,4.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.apache.commons.logging' range='[1.1.1,2.0.0)'/>
+        <required namespace='java.package' name='org.apache.log4j' range='[1.2.15,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.codehaus.jackson' range='[1.3.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.codehaus.jackson.map' range='[1.3.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.codehaus.jackson.map.type' range='[1.3.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.codehaus.jackson.type' range='[1.3.0,2.0.0)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.aop.framework' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.aop.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.access' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.access.el' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.annotation' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.config' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.factory.xml' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.beans.propertyeditors' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.context' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.context.access' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.context.annotation' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.context.i18n' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.context.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.annotation' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.convert' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.io' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.core.io.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.oxm' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.remoting' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.remoting.rmi' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.remoting.soap' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.remoting.support' range='[3.0.4,3.0.5)' optional='true'/>
+        <required namespace='java.package' name='org.springframework.ui' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.ui.context' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.ui.context.support' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.util' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.springframework.validation' range='[3.0.4,3.0.5)'/>
+        <required namespace='java.package' name='org.w3c.dom' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.xml.sax' range='0.0.0' optional='true'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.springframework.web' version='3.0.4.RELEASE'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.springframework.web&#xA;Bundle-Version: 3.0.4.RELEASE&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.springframework.osgi.jstl.osgi' version='1.1.2.SNAPSHOT' singleton='false'>
+      <update id='org.springframework.osgi.jstl.osgi' range='[0.0.0,1.1.2.SNAPSHOT)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='jstl.osgi'/>
+        <property name='org.eclipse.equinox.p2.description' value='JSTL 1.1.x (OSGi version)'/>
+      </properties>
+      <provides size='30'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.springframework.osgi.jstl.osgi' version='1.1.2.SNAPSHOT'/>
+        <provided namespace='osgi.bundle' name='org.springframework.osgi.jstl.osgi' version='1.1.2.SNAPSHOT'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard.tag.common.core' version='1.1.2'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard.tag.rt.sql' version='1.1.2'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard.tag.el.xml' version='1.1.2'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard.lang.jstl' version='1.1.2'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard.functions' version='1.1.2'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard.extra.spath' version='1.1.2'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard' version='1.1.2'/>
+        <provided namespace='java.package' name='javax.servlet.jsp.jstl.tlv' version='1.1.2'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard.lang.jstl.test.beans' version='1.1.2'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard.tag.el.core' version='1.1.2'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard.tag.common.fmt' version='1.1.2'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard.tag.el.sql' version='1.1.2'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard.lang.jstl.test' version='1.1.2'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard.resources' version='1.1.2'/>
+        <provided namespace='java.package' name='javax.servlet.jsp.jstl.fmt' version='1.1.2'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard.lang.jstl.parser' version='1.1.2'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard.tag.rt.xml' version='1.1.2'/>
+        <provided namespace='java.package' name='javax.servlet.jsp.jstl.core' version='1.1.2'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard.tag.rt.fmt' version='1.1.2'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard.tag.common.xml' version='1.1.2'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard.tag.rt.core' version='1.1.2'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard.lang.support' version='1.1.2'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard.tag.common.sql' version='1.1.2'/>
+        <provided namespace='java.package' name='javax.servlet.jsp.jstl.sql' version='1.1.2'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard.tlv' version='1.1.2'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard.tag.el.fmt' version='1.1.2'/>
+        <provided namespace='java.package' name='org.apache.taglibs.standard.tei' version='1.1.2'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='53'>
+        <required namespace='java.package' name='javax.naming' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.servlet' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.servlet.http' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.servlet.jsp' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.servlet.jsp.el' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.servlet.jsp.jstl.core' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='javax.servlet.jsp.jstl.fmt' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='javax.servlet.jsp.jstl.sql' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='javax.servlet.jsp.jstl.tlv' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='javax.servlet.jsp.tagext' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.sql' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.namespace' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.parsers' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.transform' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.transform.dom' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.transform.sax' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.transform.stream' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='javax.xml.xpath' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.apache.bcel.classfile' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.apache.bcel.generic' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.apache.bcel.util' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard.extra.spath' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard.functions' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard.lang.jstl' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard.lang.jstl.parser' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard.lang.jstl.test' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard.lang.jstl.test.beans' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard.lang.support' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard.resources' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard.tag.common.core' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard.tag.common.fmt' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard.tag.common.sql' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard.tag.common.xml' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard.tag.el.core' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard.tag.el.fmt' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard.tag.el.sql' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard.tag.el.xml' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard.tag.rt.core' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard.tag.rt.fmt' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard.tag.rt.sql' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard.tag.rt.xml' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard.tei' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.taglibs.standard.tlv' range='1.1.2' optional='true'/>
+        <required namespace='java.package' name='org.apache.xerces.parsers' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.apache.xml.serialize' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.w3c.dom' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.w3c.dom.events' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.w3c.dom.traversal' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.w3c.dom.xpath' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.xml.sax' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.xml.sax.ext' range='0.0.0' optional='true'/>
+        <required namespace='java.package' name='org.xml.sax.helpers' range='0.0.0' optional='true'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.springframework.osgi.jstl.osgi' version='1.1.2.SNAPSHOT'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.springframework.osgi.jstl.osgi&#xA;Bundle-Version: 1.1.2.SNAPSHOT&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='jackson-core-asl' version='1.6.1' singleton='false'>
+      <update id='jackson-core-asl' range='[0.0.0,1.6.1)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='Jackson JSON processor'/>
+        <property name='org.eclipse.equinox.p2.provider' value='http://fasterxml.com'/>
+      </properties>
+      <provides size='10'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='jackson-core-asl' version='1.6.1'/>
+        <provided namespace='osgi.bundle' name='jackson-core-asl' version='1.6.1'/>
+        <provided namespace='java.package' name='org.codehaus.jackson.io' version='1.6.1'/>
+        <provided namespace='java.package' name='org.codehaus.jackson.sym' version='1.6.1'/>
+        <provided namespace='java.package' name='org.codehaus.jackson.util' version='1.6.1'/>
+        <provided namespace='java.package' name='org.codehaus.jackson.annotate' version='1.6.1'/>
+        <provided namespace='java.package' name='org.codehaus.jackson.impl' version='1.6.1'/>
+        <provided namespace='java.package' name='org.codehaus.jackson' version='1.6.1'/>
+        <provided namespace='java.package' name='org.codehaus.jackson.type' version='1.6.1'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='7'>
+        <required namespace='java.package' name='org.codehaus.jackson' range='1.6.1'/>
+        <required namespace='java.package' name='org.codehaus.jackson.annotate' range='1.6.1'/>
+        <required namespace='java.package' name='org.codehaus.jackson.impl' range='1.6.1'/>
+        <required namespace='java.package' name='org.codehaus.jackson.io' range='1.6.1'/>
+        <required namespace='java.package' name='org.codehaus.jackson.sym' range='1.6.1'/>
+        <required namespace='java.package' name='org.codehaus.jackson.type' range='1.6.1'/>
+        <required namespace='java.package' name='org.codehaus.jackson.util' range='1.6.1'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='jackson-core-asl' version='1.6.1'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: jackson-core-asl&#xA;Bundle-Version: 1.6.1&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+  </units>
+</repository>

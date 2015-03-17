@@ -1,0 +1,110 @@
+diff --git a/net.beaconcontroller.learningswitch.tests/src/main/java/net/beaconcontroller/learningswitch/LearningSwitchTest.java b/net.beaconcontroller.learningswitch.tests/src/main/java/net/beaconcontroller/learningswitch/LearningSwitchTest.java
+index 5a9c267..89ffa41 100644
+--- a/net.beaconcontroller.learningswitch.tests/src/main/java/net/beaconcontroller/learningswitch/LearningSwitchTest.java
++++ b/net.beaconcontroller.learningswitch.tests/src/main/java/net/beaconcontroller/learningswitch/LearningSwitchTest.java
+@@ -11,6 +11,7 @@ import static org.easymock.EasyMock.verify;
+ import static org.junit.Assert.assertEquals;
+ 
+ import java.util.Arrays;
++import java.util.HashMap;
+ 
+ import net.beaconcontroller.core.IOFMessageListener;
+ import net.beaconcontroller.core.IOFSwitch;
+@@ -117,7 +118,7 @@ public class LearningSwitchTest extends BeaconTestCase {
+         verify(mockSwitch, mockStream);
+ 
+         // Verify the MAC table inside the switch
+-        assertEquals(1, learningSwitch.getMacTables().get(mockSwitch).get(
++        assertEquals(new Short("1"), learningSwitch.getMacTables().get(mockSwitch).get(
+                 Ethernet.toLong(Ethernet.toMACAddress("00:44:33:22:11:00"))));
+     }
+ 
+@@ -151,7 +152,7 @@ public class LearningSwitchTest extends BeaconTestCase {
+ 
+         // Populate the MAC table
+         learningSwitch.getMacTables().put(mockSwitch,
+-                new LongShortHopscotchHashMap());
++                new HashMap<Long,Short>());
+         learningSwitch.getMacTables().get(mockSwitch).put(
+                 Ethernet.toLong(Ethernet.toMACAddress("00:11:22:33:44:55")),
+                 (short) 2);
+@@ -165,7 +166,7 @@ public class LearningSwitchTest extends BeaconTestCase {
+         verify(mockSwitch, mockStream, mockInStream);
+ 
+         // Verify the MAC table inside the switch
+-        assertEquals(1, learningSwitch.getMacTables().get(mockSwitch).get(
++        assertEquals(new Short("1"), learningSwitch.getMacTables().get(mockSwitch).get(
+                 Ethernet.toLong(Ethernet.toMACAddress("00:44:33:22:11:00"))));
+     }
+ }
+diff --git a/net.beaconcontroller.learningswitch/src/main/java/net/beaconcontroller/learningswitch/LearningSwitch.java b/net.beaconcontroller.learningswitch/src/main/java/net/beaconcontroller/learningswitch/LearningSwitch.java
+index 7e9eba3..88543dc 100644
+--- a/net.beaconcontroller.learningswitch/src/main/java/net/beaconcontroller/learningswitch/LearningSwitch.java
++++ b/net.beaconcontroller.learningswitch/src/main/java/net/beaconcontroller/learningswitch/LearningSwitch.java
+@@ -35,8 +35,8 @@ import org.slf4j.LoggerFactory;
+ public class LearningSwitch implements IOFMessageListener, IOFSwitchListener {
+     protected static Logger log = LoggerFactory.getLogger(LearningSwitch.class);
+     protected IBeaconProvider beaconProvider;
+-    protected Map<IOFSwitch, LongShortHopscotchHashMap> macTables =
+-        new HashMap<IOFSwitch, LongShortHopscotchHashMap>();
++    protected Map<IOFSwitch, Map<Long,Short>> macTables =
++        new HashMap<IOFSwitch, Map<Long,Short>>();
+ 
+     public void startUp() {
+         log.trace("Starting");
+@@ -52,9 +52,9 @@ public class LearningSwitch implements IOFMessageListener, IOFSwitchListener {
+ 
+     public Command receive(IOFSwitch sw, OFMessage msg) throws IOException {
+         OFPacketIn pi = (OFPacketIn) msg;
+-        LongShortHopscotchHashMap macTable = macTables.get(sw);
++        Map<Long,Short> macTable = macTables.get(sw);
+         if (macTable == null) {
+-            macTable = new LongShortHopscotchHashMap();
++            macTable = new HashMap<Long,Short>();
+             macTables.put(sw, macTable);
+         }
+ 
+@@ -66,11 +66,11 @@ public class LearningSwitch implements IOFMessageListener, IOFSwitchListener {
+         long dlDstLong = Ethernet.toLong(dlDst);
+         long dlSrcLong = Ethernet.toLong(dlSrc);
+         int bufferId = pi.getBufferId();
+-        short outPort = -1;
++        Short outPort = -1;
+ 
+         // if the src is not multicast, learn it
+         if ((dlSrc[0] & 0x1) == 0 && dlSrcLong != 0) {
+-            if (!macTable.contains(dlSrcLong) ||
++            if (!macTable.containsKey(dlSrcLong) ||
+                     macTable.get(dlSrcLong) != pi.getInPort()) {
+                 macTable.put(dlSrcLong, pi.getInPort());
+             }
+@@ -82,7 +82,7 @@ public class LearningSwitch implements IOFMessageListener, IOFSwitchListener {
+         }
+ 
+         // push a flow mod if we know where the destination lives
+-        if (outPort != -1) {
++        if (outPort != null) {
+             // don't send out the port it came in
+             if (outPort == pi.getInPort()) {
+                 return Command.CONTINUE;
+@@ -100,9 +100,9 @@ public class LearningSwitch implements IOFMessageListener, IOFSwitchListener {
+ 
+         // If the destination is unknown or the OFPacketIn was not buffered
+         // then send an OFPacketOut.
+-        if (outPort == -1 || bufferId == OFPacketOut.BUFFER_ID_NONE) {
++        if (outPort == null || bufferId == OFPacketOut.BUFFER_ID_NONE) {
+             OFActionOutput action = new OFActionOutput(
+-                    (short) ((outPort == -1) ? OFPort.OFPP_FLOOD.getValue()
++                    (short) ((outPort == null) ? OFPort.OFPP_FLOOD.getValue()
+                             : outPort));
+ 
+             OFPacketOut po = new OFPacketOut()
+@@ -137,7 +137,7 @@ public class LearningSwitch implements IOFMessageListener, IOFSwitchListener {
+     /**
+      * @return the macTables
+      */
+-    public Map<IOFSwitch, LongShortHopscotchHashMap> getMacTables() {
++    public Map<IOFSwitch, Map<Long,Short>> getMacTables() {
+         return macTables;
+     }
+ 

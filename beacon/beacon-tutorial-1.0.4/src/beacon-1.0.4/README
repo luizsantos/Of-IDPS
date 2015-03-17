@@ -1,0 +1,40 @@
+Beacon - v1.0.2
+
+Beacon is a fast, cross-platform, modular, Java-based OpenFlow controller that
+supports both event-based and threaded operation.
+
+Author: David Erickson <daviderickson@cs.stanford.edu>
+Website: http://www.beaconcontroller.net/
+
+RUNNING
+-------------------------------------------------------------------------------
+If you have downloaded a "binary" build, there should be a beacon executable
+in the root folder of the downloaded archive.  Running this will start Beacon
+and put you into the OSGi console.  For example on Linux:
+
+    ./beacon
+
+To quit Beacon after starting, type exit and press enter.
+
+Two configurations are included in binary builds, the default (in the
+configuration directory), includes layer 2 shortest path routing, and the web
+user interface.  An alternative configuration (configurationSwitch), starts
+only the learning switch application, and is useful for basic testing
+functionality and benchmarking.  You can select a configuration with the
+configuration argument:
+
+    ./beacon -configuration configurationSwitch
+
+Additionally, Beacon has a number of startup options contained both within
+the beacon.properties file and beacon.ini.  Please see the website for a
+description of all options.
+
+
+DEVELOPING
+-------------------------------------------------------------------------------
+The easiest way to get familiar with Beacon is to run through the tutorials
+available on the website.  There is a tutorial bundle available that includes
+source for Beacon and OpenFlowJ, as well as the Eclipse code editor.  Please
+see the website for the list of current tutorials and guides available.  There
+is also a user forum available for getting help.
+

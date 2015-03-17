@@ -1,0 +1,5 @@
+15:18:36.366 [pool-2-thread-1] INFO  n.b.core.internal.Controller - Started thread Thread[pool-2-thread-1,5,spring-osgi-extender[6dcee361]-threads] for IOLoop IOLoop [id=0 stream_count=0]
+15:18:36.367 [SpringOsgiExtenderThread-3] INFO  n.b.core.internal.Controller - Beacon Core Started
+15:18:36.459 [SpringOsgiExtenderThread-4] INFO  n.b.core.internal.Controller - Controller listening on *:6633
+15:18:36.574 [pool-2-thread-2] INFO  n.b.core.internal.Controller - Switch connected from java.nio.channels.SocketChannel[connected local=/192.168.1.156:6633 remote=/192.168.1.200:51848]
+15:18:36.579 [pool-2-thread-2] INFO  n.b.core.internal.Controller - Added switch OFSwitchImpl [Socket[addr=/192.168.1.200,port=51848,localport=6633] DPID[?]] to IOLoop IOLoop [id=0 stream_count=1]

@@ -1,0 +1,47 @@
+!SESSION 2013-10-30 18:35:32.736 -----------------------------------------------
+eclipse.buildId=I20110613-1736
+java.version=1.6.0_45
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=pt_BR
+Framework arguments:  -application org.eclipse.equinox.p2.publisher.FeaturesAndBundlesPublisher -metadataRepository file:///mnt/armazem/openflow/beacon/beacon-tutorial-1.0.4/src/beacon-1.0.4/libs -artifactRepository file:///mnt/armazem/openflow/beacon/beacon-tutorial-1.0.4/src/beacon-1.0.4/libs -source /mnt/armazem/openflow/beacon/beacon-tutorial-1.0.4/src/beacon-1.0.4/libs/temp -publishArtifacts
+Command-line arguments:  -application org.eclipse.equinox.p2.publisher.FeaturesAndBundlesPublisher -metadataRepository file:///mnt/armazem/openflow/beacon/beacon-tutorial-1.0.4/src/beacon-1.0.4/libs -artifactRepository file:///mnt/armazem/openflow/beacon/beacon-tutorial-1.0.4/src/beacon-1.0.4/libs -source /mnt/armazem/openflow/beacon/beacon-tutorial-1.0.4/src/beacon-1.0.4/libs/temp -publishArtifacts
+
+!ENTRY org.eclipse.equinox.p2.metadata.repository 4 0 2013-10-30 18:35:34.201
+!MESSAGE Unexpected error loading extension: org.eclipse.equinox.p2.metadata.repository.simpleRepository
+!STACK 0
+org.eclipse.core.runtime.AssertionFailedException: null argument:
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:85)
+	at org.eclipse.core.runtime.Assert.isNotNull(Assert.java:73)
+	at org.eclipse.equinox.internal.p2.metadata.RequiredCapability.<init>(RequiredCapability.java:104)
+	at org.eclipse.equinox.p2.metadata.MetadataFactory.createRequirement(MetadataFactory.java:511)
+	at org.eclipse.equinox.internal.p2.metadata.repository.io.MetadataParser$RequirementHandler.finished(MetadataParser.java:640)
+	at org.eclipse.equinox.internal.p2.persistence.XMLParser$AbstractHandler.endElement(XMLParser.java:178)
+	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.endElement(AbstractSAXParser.java:601)
+	at com.sun.org.apache.xerces.internal.parsers.AbstractXMLDocumentParser.emptyElement(AbstractXMLDocumentParser.java:180)
+	at com.sun.org.apache.xerces.internal.impl.XMLNSDocumentScannerImpl.scanStartElement(XMLNSDocumentScannerImpl.java:377)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl$FragmentContentDriver.next(XMLDocumentFragmentScannerImpl.java:2756)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentScannerImpl.next(XMLDocumentScannerImpl.java:647)
+	at com.sun.org.apache.xerces.internal.impl.XMLNSDocumentScannerImpl.next(XMLNSDocumentScannerImpl.java:140)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanDocument(XMLDocumentFragmentScannerImpl.java:511)
+	at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:808)
+	at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:737)
+	at com.sun.org.apache.xerces.internal.parsers.XMLParser.parse(XMLParser.java:119)
+	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1205)
+	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(SAXParserImpl.java:522)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryIO$Parser.parse(MetadataRepositoryIO.java:209)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryIO.read(MetadataRepositoryIO.java:63)
+	at org.eclipse.equinox.internal.p2.metadata.repository.SimpleMetadataRepositoryFactory.load(SimpleMetadataRepositoryFactory.java:107)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.factoryLoad(MetadataRepositoryManager.java:57)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:749)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:651)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
+	at org.eclipse.equinox.p2.publisher.Publisher.loadMetadataRepository(Publisher.java:85)
+	at org.eclipse.equinox.p2.publisher.Publisher.createMetadataRepository(Publisher.java:48)
+	at org.eclipse.equinox.p2.publisher.AbstractPublisherApplication.initializeRepositories(AbstractPublisherApplication.java:115)
+	at org.eclipse.equinox.p2.publisher.AbstractPublisherApplication.initialize(AbstractPublisherApplication.java:85)
+	at org.eclipse.equinox.p2.publisher.AbstractPublisherApplication.run(AbstractPublisherApplication.java:277)
+	at org.eclipse.equinox.p2.publisher.AbstractPublisherApplication.run(AbstractPublisherApplication.java:253)
+	at org.eclipse.equinox.p2.publisher.AbstractPublisherApplication.start(AbstractPublisherApplication.java:315)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
+	at org.eclipse.equinox.internal.app.AnyThreadAppLauncher.run(AnyThreadAppLauncher.java:26)
+	at java.lang.Thread.run(Thread.java:662)

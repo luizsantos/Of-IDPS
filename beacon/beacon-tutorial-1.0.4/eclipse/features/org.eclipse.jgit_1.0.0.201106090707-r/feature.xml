@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.jgit"
+      label="%featureName"
+      version="1.0.0.201106090707-r"
+      provider-name="%providerName">
+
+   <description url="http://www.eclipse.org/jgit/">
+     %description
+   </description>
+
+   <copyright>
+     %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+     %license
+   </license>
+
+   <url>
+      <update label="%updateSiteName" url="http://download.eclipse.org/egit/updates"/>
+      <discovery label="%updateSiteName" url="http://download.eclipse.org/egit/updates"/>
+   </url>
+
+   <requires>
+      <import plugin="com.jcraft.jsch"/>
+   </requires>
+
+   <plugin
+         id="org.eclipse.jgit"
+         download-size="1319"
+         install-size="2558"
+         version="1.0.0.201106090707-r"
+         unpack="false"/>
+</feature>

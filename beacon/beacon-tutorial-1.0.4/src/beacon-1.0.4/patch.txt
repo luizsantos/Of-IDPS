@@ -1,0 +1,70 @@
+diff --git a/net.beaconcontroller.tutorial/src/main/java/net/beaconcontroller/tutorial/LearningSwitchTutorial.java b/net.beaconcontroller.tutorial/src/main/java/net/beaconcontroller/tutorial/LearningSwitchTutorial.java
+index 8202388..d85482e 100644
+--- a/net.beaconcontroller.tutorial/src/main/java/net/beaconcontroller/tutorial/LearningSwitchTutorial.java
++++ b/net.beaconcontroller.tutorial/src/main/java/net/beaconcontroller/tutorial/LearningSwitchTutorial.java
+@@ -37,11 +37,10 @@ import org.slf4j.LoggerFactory;
+ public class LearningSwitchTutorial implements IOFMessageListener, IOFSwitchListener {
+     protected static Logger log = LoggerFactory.getLogger(LearningSwitchTutorial.class);
+     protected IBeaconProvider beaconProvider;
+-    protected Map<IOFSwitch, Map<Long,Short>> macTables =
+-        new HashMap<IOFSwitch, Map<Long,Short>>();
++    protected Map<Long,Short> macTable =
++        new HashMap<Long,Short>();
+ 
+     public Command receive(IOFSwitch sw, OFMessage msg) throws IOException {
+-        initMACTable(sw);
+         OFPacketIn pi = (OFPacketIn) msg;
+ 
+         /**
+@@ -102,8 +101,6 @@ public class LearningSwitchTutorial implements IOFMessageListener, IOFSwitchList
+      * @throws IOException
+      */
+     public void forwardAsLearningSwitch(IOFSwitch sw, OFPacketIn pi) throws IOException {
+-        Map<Long,Short> macTable = macTables.get(sw);
+-
+         /**
+          * START HERE: You'll find descriptions of what needs to be done below
+          * here, and starter pseudo code. Your job is to uncomment and replace
+@@ -121,7 +118,7 @@ public class LearningSwitchTutorial implements IOFMessageListener, IOFSwitchList
+          * reachable at the port this packet arrived on. Put this source
+          * MAC:port pair into the macTable object for future lookups. HINT: you
+          * can use Ethernet.toLong to convert from byte[] to Long, which is the
+-         * key for the macTable Map object.
++         * key for the global macTable Map object.
+          */
+         // macTable.put(...);
+         // log.info("Learned MAC address {} is at port {}", macAddress, port);
+@@ -145,6 +142,7 @@ public class LearningSwitchTutorial implements IOFMessageListener, IOFSwitchList
+          *      Instead of an OFPacketOut, create and send an OFFlowMod using
+          *      the match created earlier from the packet, and send matched
+          *      packets to the outPort.
++         *
+          *      For extra credit, after sending the OFFlowMod, send an
+          *      OFPacketOut, but only if the switch did not buffer the packet
+          *      (pi.getBufferId() == OFPacketOut.BUFFER_ID_NONE), and be sure
+@@ -180,25 +178,12 @@ public class LearningSwitchTutorial implements IOFMessageListener, IOFSwitchList
+ 
+     // ---------- NO NEED TO EDIT ANYTHING BELOW THIS LINE ----------
+ 
+-    /**
+-     * Ensure there is a MAC to port table per switch
+-     * @param sw
+-     */
+-    private void initMACTable(IOFSwitch sw) {
+-        Map<Long,Short> macTable = macTables.get(sw);
+-        if (macTable == null) {
+-            macTable = new HashMap<Long,Short>();
+-            macTables.put(sw, macTable);
+-        }
+-    }
+-
+     @Override
+     public void addedSwitch(IOFSwitch sw) {
+     }
+ 
+     @Override
+     public void removedSwitch(IOFSwitch sw) {
+-        macTables.remove(sw);
+     }
+ 
+     /**

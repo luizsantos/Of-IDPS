@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.6"?>
+
+<target includeMode="feature" name="Beacon Main Target" sequenceNumber="5">
+<locations>
+<location path="${resource_loc:/Beacon Libraries/local_target}" type="Profile"/>
+<location path="/mnt/armazem/of-idpsBeta" type="Directory"/>
+</locations>
+</target>
