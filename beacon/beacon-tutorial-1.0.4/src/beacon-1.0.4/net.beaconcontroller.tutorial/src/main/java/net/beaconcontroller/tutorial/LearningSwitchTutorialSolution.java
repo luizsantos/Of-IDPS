@@ -6,7 +6,7 @@
 /**
  * @author Luiz Arthur Feitosa dos Santos
  * @email luiz.arthur.feitosa.santos@gmail.com
- * test
+ * 
  * This class starts all processes to OF-IDPS.
  * 
  * This class receive packets from switches to decide if the packets will be
@@ -558,20 +558,20 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
                     break;
                 case AlertMessage.ALERT_PRIORITY_LOW:
                     //log.debug("!-!-!-! LOW security priority, forward to SOFT decrease bandwidth!");
-                    log.debug("LOW");
+                    //log.debug("LOW");
                     sendPacketUsingBandwidthQueue(sw, QUEUE_BANDWIDTH_MEDIUM, match,
                             outPort, pi);
                     countAlertPriorityLow++;
                     break;
                 case AlertMessage.ALERT_PRIORITY_MEDIUM:
                     //log.debug("!+!+!+! MEDIUM security priority, forward to SEVERE decrease bandwidth!");
-                    log.debug("MEDIUM");
+                    //log.debug("MEDIUM");
                     sendPacketUsingBandwidthQueue(sw, QUEUE_BANDWIDTH_LOW, match,
                             outPort, pi);
                     countAlertPriorityMediun++;
                     break;
                 case AlertMessage.ALERT_PRIORITY_HIGH:
-                    log.debug("HIGH");
+                    //log.debug("HIGH");
                     //log.debug("!*!*!*! HIGH security priority, BLOCK this packet and all subsequent.");
                     countAlertPriorityHigh++;
                     break;
