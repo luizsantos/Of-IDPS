@@ -575,20 +575,32 @@ public class AlgoFPGrowth_Strings {
                 && alertMsg.getNetworkProtocol() == Integer.MAX_VALUE
                 && alertMsg.getTransportSource() == Integer.MAX_VALUE
                 && alertMsg.getTransportDestination() == Integer.MAX_VALUE
-                && (alertMsg.getPriorityAlert() != Integer.MAX_VALUE || !alertMsg
-                        .getAlertDescription().equals("none"))) {
+                && (alertMsg.getPriorityAlert() != Integer.MAX_VALUE 
+                || !alertMsg.getAlertDescription().equals("none"))) {
             //System.out.println("Don't use this rule, because it have just alert priority or description!");
         } else {
             // If have protocol information.
             if (alertMsg.getNetworkProtocol() != Integer.MAX_VALUE) {
-                // Verify if use different support to different items quantity is enable.
-                if (useDifferentsSupportBasedOnQuantityOfReturnedItems==1) {
-                    // If enable
-                    addToListAplyingDifferentsSupportBasedOnQuantityOfReturnedItems(quantity, alertMsg, networkSocketKey);
+                // Verify if only have network protocol field
+                if (alertMsg.getNetworkSource() == Integer.MAX_VALUE
+                        && alertMsg.getNetworkDestination() == Integer.MAX_VALUE
+                        && alertMsg.getTransportSource() == Integer.MAX_VALUE
+                        && alertMsg.getTransportDestination() == Integer.MAX_VALUE) {
+//                    System.out.println("Only has network PROTOCOL field, this rule can be very aggressive, them we don't use this!");
+//                    alertMsg.printMsgAlert();
                 } else {
-                    // If disable.
-                    addToListVerifyingTheQuantityOfItemsRequiredOnRule(quantity, alertMsg, networkSocketKey);
-                }    
+                    // Verify if use different support to different items
+                    // quantity is enable.
+                    if (useDifferentsSupportBasedOnQuantityOfReturnedItems == 1) {
+                        // If enable
+                        addToListAplyingDifferentsSupportBasedOnQuantityOfReturnedItems(
+                                quantity, alertMsg, networkSocketKey);
+                    } else {
+                        // If disable.
+                        addToListVerifyingTheQuantityOfItemsRequiredOnRule(
+                                quantity, alertMsg, networkSocketKey);
+                    }
+                }
             } else {
                 // If don't have protocol information, have Integer.MAX_VALUE!
                 // If enter here it have Integer.MAX_VALUE that means: don't have protocol.
