@@ -212,33 +212,47 @@ public class IntrusionPreventionSystem extends Thread implements
                     proto = ProtocolsNumbers.UDP;
                 else if (fields[5].equals("ICMP"))
                     proto = ProtocolsNumbers.ICMP;
-                alertMsg.setNetworkProtocol(proto);
-                alertMsg.setTransportSource(Integer.valueOf(fields[6]));
-                alertMsg.setTransportDestination(Integer.valueOf(fields[7]));
-
-//                log.debug("getting alerts from IDS:");
-//                msgAlerta.printMsgAlert();
-
-                String alertDescription = alertMsg.getAlertDescription();
-                /**
-                 * The next three lines get only the code from alert of Snort
-                 * IDS. And ignore the description of alert.
+                /*
+                 * Verify if is a know protocol, for now we just handle TCP/UDP/ICMP protocols,
+                 * mainly this block IPv6 protocols!
                  */
-                int descriptionIdBegin = alertDescription.indexOf("[");
-                int descriptionIdEnd = alertDescription.lastIndexOf("]");
-                alertDescription = alertDescription.substring(
-                        descriptionIdBegin + 1, descriptionIdEnd);
+                if (proto == ProtocolsNumbers.TCP
+                        || proto == ProtocolsNumbers.UDP
+                        || proto == ProtocolsNumbers.ICMP) {
+                    alertMsg.setNetworkProtocol(proto);
+                    alertMsg.setTransportSource(Integer.valueOf(fields[6]));
+                    alertMsg.setTransportDestination(Integer.valueOf(fields[7]));
 
-                String rule = "src" + alertMsg.getNetworkSource() + " dst"
-                        + alertMsg.getNetworkDestination() + " pro"
-                        + alertMsg.getNetworkProtocol() + " spo"
-                        + alertMsg.getTransportSource() + " dpo"
-                        + alertMsg.getTransportDestination() + " pri"
-                        + alertMsg.getPriorityAlert() + " des"
-                        + alertDescription + "\n";
+                    // log.debug("getting alerts from IDS:");
+                    // msgAlerta.printMsgAlert();
 
-                sendToBeprocessedByApriori = sendToBeprocessedByApriori + rule;
-                acceptedAlerts++;
+                    String alertDescription = alertMsg.getAlertDescription();
+                    /**
+                     * The next three lines get only the code from alert of
+                     * Snort IDS. And ignore the description of alert.
+                     */
+                    int descriptionIdBegin = alertDescription.indexOf("[");
+                    int descriptionIdEnd = alertDescription.lastIndexOf("]");
+                    alertDescription = alertDescription.substring(
+                            descriptionIdBegin + 1, descriptionIdEnd);
+
+                    String rule = "src" + alertMsg.getNetworkSource() + " dst"
+                            + alertMsg.getNetworkDestination() + " pro"
+                            + alertMsg.getNetworkProtocol() + " spo"
+                            + alertMsg.getTransportSource() + " dpo"
+                            + alertMsg.getTransportDestination() + " pri"
+                            + alertMsg.getPriorityAlert() + " des"
+                            + alertDescription + "\n";
+
+                    sendToBeprocessedByApriori = sendToBeprocessedByApriori
+                            + rule;
+                    acceptedAlerts++;
+                } else {
+                    // For now we don't use some protocols, like IPv6 do create rules!
+                    log.debug(
+                            "ATTENTION - The protocol {} IDS ALERT is not handle for the Of-IDPS for now!", fields[5]);
+                    notAcceptedAlerts++;
+                }
             } else {
                 notAcceptedAlerts++;
                 //log.debug("Alert is out of the required time.");
