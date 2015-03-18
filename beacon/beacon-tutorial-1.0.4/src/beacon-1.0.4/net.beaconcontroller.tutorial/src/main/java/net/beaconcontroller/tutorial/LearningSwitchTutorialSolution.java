@@ -85,14 +85,14 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
      * 
      * This is used, here and in the MemoryAttacks class.
      */
-    public static int disableOfIDPS_UseOfAlerts=0;
+    public static int disableOfIDPS_UseOfAlerts=1;
     /*
      *  Enable or disable the use of IDS message on the Of-IDPS
      *  
      *  This is used in the MemoryAttacks class.
      *  
      */
-    public static int disableOfIDPS_UseIDSAlerts=0; 
+    public static int disableOfIDPS_UseIDSAlerts=0;
     
     /*
      * Used to send and receive OpenFlow statistics messages, like flows
@@ -647,7 +647,7 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
              * 
              */
             acao=AlertMessage.ALERT_PRIORITY_HIGH;
-            log.debug("This alert don't have an related priority. Setting this with a high priority {}.", acao);
+            log.debug("This alert don't have an related priority. Setting this with a high priority {}/{}.", "HIGH",acao);
         }
         //log.debug("-----> Flow from this packet was set with priority: {}", acao);
         return acao;

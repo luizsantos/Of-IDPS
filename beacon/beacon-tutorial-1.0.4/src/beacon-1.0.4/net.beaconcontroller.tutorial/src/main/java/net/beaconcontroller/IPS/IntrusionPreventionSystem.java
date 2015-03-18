@@ -193,8 +193,10 @@ public class IntrusionPreventionSystem extends Thread implements
             alertMsg.setTempo(fields[0].substring(0,18));
             boolean alertIsInTheTime = verifyDateTimeRangeInSeconds(alertMsg.getTempo(), currentDate, MemorysAttacks.timeToAlertsStayAtShortMemory);
             if (alertIsInTheTime) {
-
-                alertMsg.setPriorityAlert(Integer.valueOf(fields[1]));
+                
+                int snortPriority = Integer.valueOf(fields[1]);
+                int ofIDPSPriority = snortPriorityToOfIDPSPriority(snortPriority);
+                alertMsg.setPriorityAlert(ofIDPSPriority);
                 alertMsg.setAlertDescription(fields[2]);
                 // msgAlerta.setNetworkSource(Integer.valueOf(fields[3])); //
                 alertMsg.setNetworkSource(fields[3]);
@@ -262,7 +264,84 @@ public class IntrusionPreventionSystem extends Thread implements
         return sendToBeprocessedByApriori;
     }
 
-    
+    /**  
+     * Convert a Snort alert security priority to a Of-IDPS alert security priority.
+     * @param snortPriority - Snort priority number.
+     * @return Of-IDPS priority number.
+     **/ 
+
+    /* For knowledge:
+     * 
+     * - Alert priority description from Snort!
+     * 
+     * They are currently ordered with 4 default priorities. 
+     * A priority of 1 (high) is the most severe and 4 (very low) is the least severe.
+     * 
+     *  
+Classtype                       |Description                                                    |Priority
++-------------------------------+---------------------------------------------------------------+---------
+attempted-admin                 | Attempted Administrator Privilege Gain                        | high
+attempted-user                  | Attempted User Privilege Gain                                 | high
+inappropriate-content           | Inappropriate Content was Detected                            | high
+policy-violation                | Potential Corporate Privacy Violation                         | high
+shellcode-detect                | Executable code was detected                                  | high
+successful-admin                | Successful Administrator Privilege Gain                       | high
+successful-user                 | Successful User Privilege Gain                                | high
+trojan-activity                 | A Network Trojan was detected                                 | high
+unsuccessful-user               | Unsuccessful User Privilege Gain                              | high
+web-application-attack          | Web Application Attack                                        | high
+attempted-dos                   | Attempted Denial of Service                                   | medium
+attempted-recon                 | Attempted Information Leak                                    | medium
+bad-unknown                     | Potentially Bad Traffic                                       | medium
+default-login-attempt           | Attempt to login by a default username and password           | medium
+denial-of-service               | Detection of a Denial of Service Attack                       | medium
+misc-attack                     | Misc Attack                                                   | medium
+non-standard-protocol           | Detection of a non-standard protocol or event                 | medium
+rpc-portmap-decode              | Decode of an RPC Query                                        | medium
+successful-dos                  | Denial of Service                                             | medium
+successful-recon-largescale     | Large Scale Information Leak                                  | medium
+successful-recon-limited        | Information Leak                                              | medium
+suspicious-filename-detect      | A suspicious filename was detected                            | medium
+suspicious-login                | An attempted login using a suspicious username was detected   | medium
+system-call-detect              | A system call was detected                                    | medium
+unusual-client-port-connection  | A client was using an unusual port                            | medium
+web-application-activity        | Access to a potentially vulnerable web application            | medium
+icmp-event                      | Generic ICMP event                                            | low
+misc-activity                   | Misc activity                                                 | low
+network-scan                    | Detection of a Network Scan                                   | low
+not-suspicious                  | Not Suspicious Traffic                                        | low
+protocol-command-decode         | Generic Protocol Command Decode                               | low
+string-detect                   | A suspicious string was detected                              | low
+unknown                         | Unknown Traffic                                               | low
+tcp-connection                  | A TCP connection was detected                                 | very low
+
+source: http://manual.snort.org/node31.html
+
+     * 
+     * ATTENTION - In the Of-IDPS we consider just 3 alert priorities: 
+     * HIGH, MEDIUM, and LOW. 
+     * Then we will map Snort priority like:
+     * Snort priority   | Of-IDPS priority
+     * -----------------+----------------
+     * HIGH (1)         | HIGH (1)
+     * MEDIUM (2)       | HIGH (1)
+     * LOW (3)          | MEDIUM (2)
+     * VERY LOW (4)     | LOW (3)   
+     * 
+     * In the Of-IDPS we consider that Snort security priority levels HIGH and MEDIUM
+     * affects the network performance, then we block this packets!
+     * 
+     */
+    private int snortPriorityToOfIDPSPriority(int snortPriority) {
+        switch(snortPriority) {
+            case 1: return AlertMessage.ALERT_PRIORITY_HIGH; // snort alert high -> Of-IDPS high
+            case 2: return AlertMessage.ALERT_PRIORITY_HIGH; // snort alert medium -> Of-IDPS high
+            case 3: return AlertMessage.ALERT_PRIORITY_MEDIUM; // snort alert low -> Of-IDPS medium
+            case 4: return AlertMessage.ALERT_PRIORITY_LOW; // snort alert very low -> Of-IDPS low
+        }
+        return Integer.MAX_VALUE; // Alert priority unknown!
+    }
+
     /**
      * Get current datetime.
      *  
