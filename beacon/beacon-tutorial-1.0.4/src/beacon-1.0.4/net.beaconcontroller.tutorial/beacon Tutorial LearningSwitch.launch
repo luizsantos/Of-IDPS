@@ -31,5 +31,5 @@
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useCustomFeatures" value="false"/>
 <booleanAttribute key="useDefaultConfigArea" value="true"/>
-<stringAttribute key="workspace_bundles" value="net.beaconcontroller.core@default:true,net.beaconcontroller.logging.bridge@1:default,net.beaconcontroller.logging.config@default:false,net.beaconcontroller.packet@default:default,net.beaconcontroller.tutorial,net.beaconcontroller.util@default:default,org.openflow@default:default"/>
+<stringAttribute key="workspace_bundles" value="net.beaconcontroller.core@default:true,net.beaconcontroller.logging.bridge@1:default,net.beaconcontroller.logging.config@default:false,net.beaconcontroller.packet@default:default,net.beaconcontroller.tutorial@default:default,net.beaconcontroller.util@default:default,org.openflow@default:default"/>
 </launchConfiguration>

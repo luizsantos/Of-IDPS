@@ -3,8 +3,8 @@ maxBandwidth=100000000
 medBandwidth=20000
 minBandwidth=10000
 
-switch="$( ovs-vsctl show | grep "Bridge" | cut -c13-14)"
-
+switch="$( ovs-vsctl show | grep "Bridge" | sed 's/^[^"]*"\([^"]*\)".*/\1/')"
+# TODO make this for all bridges - we need just a for with switch variale! not just s1!
 ports="$(ovs-vsctl list-ifaces s1)"
 for port in $ports
 do

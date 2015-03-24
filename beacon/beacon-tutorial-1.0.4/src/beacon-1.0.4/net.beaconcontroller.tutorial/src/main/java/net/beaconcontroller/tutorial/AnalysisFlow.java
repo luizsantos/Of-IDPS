@@ -147,14 +147,17 @@ public class AnalysisFlow extends Thread {
         // Processes all current flows in network switches        
         for (StatusFlow currentFlow : allFlowsToByAnalysed) {
             /*
-             * Verify if this flow have few packets (<=5)! if this is true, then we
+             * Verify if this flow have few packets (<=3)! if this is true, then we
              * consider suspicious.
              * 
              * This list have all current flows registered in memory (currentFlows list)
              * and the flows from now until some seconds ago (timePeriodToRecoverFlowFromDB). 
              * 
+             * And protocol is equal 6 (TCP)
+             * TODO - verify others protocols!
+             * 
              */
-            if(currentFlow.getPacketCount() <= 5) {
+            if(currentFlow.getPacketCount() <= 3 && currentFlow.getNetworkProtocol()==6) {
                 // Save this current and suspect flow.
                 flowSuspiciousOfDDoS.putAlertsFlowOnListOfRelatedWithThisConnection(currentFlow);
             }
