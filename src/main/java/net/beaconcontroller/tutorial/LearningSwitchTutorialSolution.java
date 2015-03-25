@@ -37,7 +37,9 @@ import net.beaconcontroller.core.IOFMessageListener;
 import net.beaconcontroller.core.IOFSwitch;
 import net.beaconcontroller.core.IOFSwitchListener;
 import net.beaconcontroller.packet.Ethernet;
+import net.beaconcontroller.packet.IPv4;
 
+import org.json.simple.JSONObject;
 import org.openflow.protocol.OFFlowMod;
 import org.openflow.protocol.OFMatch;
 import org.openflow.protocol.OFMessage;
@@ -149,6 +151,11 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
     private static int countAlertPriorityUnknow=0;
     //All packets handle in switch forward IPS method, not all handle by receive method! 
     private static int countAllArrivedPackets=0;
+    private static int countPacketsToOfController=0;
+    private static int countSentLikeHub=0;
+    
+    // IP of OpenFlow controller
+    private static int controllerOfIP = IPv4.toIPv4Address("192.168.2.111");
 
     // used to print messages!
     protected static Logger log = LoggerFactory
@@ -324,6 +331,17 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
          * Of-IDPS!
          */
         if (outPort != null) {
+        	// If packet if from or to OpenFlow controller the just sent this!
+        	
+        	//log.debug("ipcontroller: {}  pktSrcIP: {} pdtDstIP: {}", controllerOfIP, match.getNetworkSource(), match.getNetworkDestination());
+        	
+        	if (controllerOfIP==match.getNetworkSource() || controllerOfIP==match.getNetworkDestination()) {
+                	//log.debug("CONTROLLER PACKET!");
+                    sendPacketNormally(sw, pi, match, outPort);
+                    countPacketsToOfController++;
+            } else {
+        		
+        	
             
 //            log.debug("Packet being analyzed:");
 //            printPacketMatch(match);
@@ -498,6 +516,7 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
                      * packets are result of attacks or not! Mainly to detect DoS... 
                      * 
                      */
+                    //TESTE
                     if (matchKey!=null) {
                         AlertMessage ruleThatCombine = shortMemoryAttacks.get(matchKey);
                         ruleThatCombine.increasePacketsMatchInOfControllerPerHop();
@@ -558,20 +577,20 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
                     break;
                 case AlertMessage.ALERT_PRIORITY_LOW:
                     //log.debug("!-!-!-! LOW security priority, forward to SOFT decrease bandwidth!");
-                    //log.debug("LOW");
+                    log.debug("LOW");
                     sendPacketUsingBandwidthQueue(sw, QUEUE_BANDWIDTH_MEDIUM, match,
                             outPort, pi);
                     countAlertPriorityLow++;
                     break;
                 case AlertMessage.ALERT_PRIORITY_MEDIUM:
                     //log.debug("!+!+!+! MEDIUM security priority, forward to SEVERE decrease bandwidth!");
-                    //log.debug("MEDIUM");
+                    log.debug("MEDIUM");
                     sendPacketUsingBandwidthQueue(sw, QUEUE_BANDWIDTH_LOW, match,
                             outPort, pi);
                     countAlertPriorityMediun++;
                     break;
                 case AlertMessage.ALERT_PRIORITY_HIGH:
-                    //log.debug("HIGH");
+                    log.debug("HIGH");
                     //log.debug("!*!*!*! HIGH security priority, BLOCK this packet and all subsequent.");
                     countAlertPriorityHigh++;
                     break;
@@ -583,11 +602,23 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
             
 //            log.debug("Controller arrived: {} normal, {} low, {} medium, {} high, {} unknow, total: {}",
 //                    countNormalPackets, countAlertPriorityLow, countAlertPriorityMediun, countAlertPriorityHigh, countAlertPriorityUnknow, countAllArrivedPackets);
-
+        	}
         } else {
             // Destination port unknown, flood packet to all ports
             forwardAsHub(sw, pi);
+            countSentLikeHub++;
         }
+        
+        JSONObject ofIDPSPacketsStatus = new JSONObject();
+        ofIDPSPacketsStatus.put("normalPkts", countNormalPackets);
+        ofIDPSPacketsStatus.put("lowPkts", countAlertPriorityLow);
+        ofIDPSPacketsStatus.put("mediumPkts", countAlertPriorityMediun);
+        ofIDPSPacketsStatus.put("highPkts", countAlertPriorityHigh);
+        ofIDPSPacketsStatus.put("highUnknowPkts", countAlertPriorityUnknow);
+        ofIDPSPacketsStatus.put("allPkts", countAllArrivedPackets);
+        ofIDPSPacketsStatus.put("hugPkts", countSentLikeHub);
+        
+        
     }
 
 
@@ -697,7 +728,7 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
             sw.getOutputStream().write(fm);
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            log.debug("Impossível deletar fluxo");
+            log.debug("Impossï¿½vel deletar fluxo");
             e.printStackTrace();
         }
     }
@@ -726,7 +757,7 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
             sw.getOutputStream().write(fm);
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            log.debug("Impossível deletar fluxo");
+            log.debug("Impossï¿½vel deletar fluxo");
             e.printStackTrace();
         }
 
