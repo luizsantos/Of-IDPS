@@ -1,0 +1,102 @@
+#!/bin/bash
+
+pIDS="vif3.2"
+bridge="xenbr0"
+
+start() {
+        echo -n $"Starting mirror vSwitches ports"
+
+ vms="$(xl list | cut  -d' ' -f1)"
+
+ # To ignore
+ s1="Name" 	# fist line header
+ s2="Domain-0" 	# Xenserver Dom0
+ idsName="IDSOfIDSP"
+ idsPortToMirror=""
+
+ echo
+ vifs=""
+ for vm in $vms
+ do
+  if [ "$vm" != "$s1" ] && [ "$vm" != "$s2" ]; then 
+  
+   ifs="$(xl network-list $vm | grep local | cut  -d'/' -f8,9 | tr '/' ".")"
+   echo -e "VM: $vm"
+
+   if [ "$vm" == "$idsName" ]; then
+	idsP1="vif$(echo -e "$ifs" | cut -d$'\n' -f1)"
+        vifs+=$idsP1
+     	idsPortToMirror="vif$(echo -e "$ifs" | cut -d$'\n' -f2)"
+	echo -e "\t vNIC: $idsP1"
+ 	echo -e "\t vNIC: $idsPortToMirror"
+    else
+ 	vifs+=" vif${ifs}"
+	echo -e "\t vNICs: vif$ifs "
+   fi
+  fi
+ done
+
+ mirrorCmd="ovs-vsctl -- set Bridge $bridge mirrors=@m "
+ for vif in $vifs
+ do
+	mirrorCmd+=" -- --id=@$vif get Port $vif"
+ done
+
+ mirrorCmd+=" -- --id=@$idsPortToMirror get Port $idsPortToMirror"
+ mirrorCmd+=" --   --id=@m    create    Mirror    name=mymirror"
+
+ mirrorCmd+=" select-dst-port="
+ for vif in $vifs
+ do
+	mirrorCmd+="@$vif,"
+ done
+ mirrorCmd=${mirrorCmd%?} # remove the last comma
+
+ mirrorCmd+=" select-src-port="
+ for vif in $vifs
+ do
+         mirrorCmd+="@$vif,"
+ done
+ mirrorCmd=${mirrorCmd%?} # remove the last comma
+
+ mirrorCmd+=" output-port=@$idsPortToMirror"
+
+ echo
+ echo $mirrorCmd
+ echo
+
+ if $mirrorCmd; then
+	echo "Mirror to IDS port OK!"
+  else
+	echo "error to mirror to IDS port"
+ fi
+
+ echo "ATTENTION - remember that if more vPorts are included in the xen we must puts this ports here!"
+}
+
+stop() {
+        echo -n $"Stopping mirror vSwitches ports"
+	ovs-vsctl clear bridge $bridge mirrors
+}
+
+restart(){
+	stop
+	start
+}
+
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  restart)
+	restart
+        ;;
+  *)
+	echo $"Usage: $0 {start|stop|restart}"
+	RETVAL=1
+esac
+
+exit $RETVAL

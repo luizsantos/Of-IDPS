@@ -1,0 +1,92 @@
+#!/bin/bash
+
+maxBandwidth=100000000
+medBandwidth=20000
+minBandwidth=10000
+
+ vms="$(xl list | cut  -d' ' -f1)"
+
+ # To ignore
+ s1="Name" 	# fist line header
+ s2="Domain-0" 	# Xenserver Dom0
+ idsName="IDSOfIDSP"
+ idsPortToMirror=""
+
+ echo
+ vifs=""
+ for vm in $vms
+ do
+  if [ "$vm" != "$s1" ] && [ "$vm" != "$s2" ]; then 
+  
+   ifs="$(xl network-list $vm | grep local | cut  -d'/' -f8,9 | tr '/' ".")"
+   echo -e "VM: $vm"
+
+   if [ "$vm" == "$idsName" ]; then
+	idsP1="vif$(echo -e "$ifs" | cut -d$'\n' -f1)"
+        vifs+=$idsP1
+     	idsPortToMirror="vif$(echo -e "$ifs" | cut -d$'\n' -f2)"
+	echo -e "\t vNIC: $idsP1"
+ 	echo -e "\t vNIC: $idsPortToMirror"
+    else
+ 	vifs+=" vif${ifs}"
+	echo -e "\t vNICs: vif$ifs "
+   fi
+  fi
+ done
+ 
+ # Add also the eth0 interface!
+ vifs+=" eth0"
+
+start() {
+       echo -n $"Starting Of-IDPS scripts "
+       
+       for port in $vifs
+	do
+	  echo $port
+	  ovs-vsctl -- set Port $port qos=@newqos -- \
+  	   --id=@newqos create QoS type=linux-htb other-config:max-rate=$maxBandwidth queues=0=@q0,1=@q1,2=@q2 -- \
+  	   --id=@q0 create Queue other-config:min-rate=$maxBandwidth other-config:max-rate=$maxBandwidth -- \
+  	   --id=@q1 create Queue other-config:min-rate=$medBandwidth other-config:max-rate=$medBandwidth -- \
+  	   --id=@q2 create Queue other-config:min-rate=$minBandwidth other-config:max-rate=$minBandwidth
+	done
+}
+
+stop() {
+	echo -n $"Stopping Of-IDPS scripts"
+        cmd="ovs-vsctl -- destroy QoS eth0 " 
+	for port in $vifs 
+	do
+	  cmd+=" -- clear Port $port qos "
+	done
+	
+	echo 
+	echo $cmd
+
+	if $cmd; then
+		echo "QoS OK!"
+  	else
+		echo "QoS Error!!!"
+ 	fi
+}
+
+restart(){
+	stop
+	start
+}
+
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  restart)
+	restart
+        ;;
+  *)
+	echo $"Usage: $0 {start|stop|restart}"
+	RETVAL=1
+esac
+
+exit $RETVAL
