@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.OfIDPS.memoryAttacks.MemorysAttacks;
 import net.beaconcontroller.IPS.AlertMessage;
@@ -155,7 +156,14 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
     private static int countSentLikeHub=0;
     
     // IP of OpenFlow controller
-    private static int controllerOfIP = IPv4.toIPv4Address("192.168.2.111");
+    //private static int controllerOfIP = IPv4.toIPv4Address("192.168.2.111");
+    private static Set<Integer> allowIPs = new HashSet<Integer>();
+    static {
+    	allowIPs.add(IPv4.toIPv4Address("192.168.2.111")); 	// OpenFlow controller;
+    	allowIPs.add(IPv4.toIPv4Address("192.168.2.112")); 	// Xen Controller - on eth1;
+    	allowIPs.add(IPv4.toIPv4Address("172.16.2.130")); 	// Xen Controller - on eth0;
+    	allowIPs.add(IPv4.toIPv4Address("192.168.2.133")); 	// IDS;
+    }
 
     // used to print messages!
     protected static Logger log = LoggerFactory
@@ -332,12 +340,13 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
          */
         if (outPort != null) {
         	// If packet if from or to OpenFlow controller the just sent this!
-        	
-        	//log.debug("ipcontroller: {}  pktSrcIP: {} pdtDstIP: {}", controllerOfIP, match.getNetworkSource(), match.getNetworkDestination());
-        	
-        	if (controllerOfIP==match.getNetworkSource() || controllerOfIP==match.getNetworkDestination()) {
-                	//log.debug("CONTROLLER PACKET!");
+        	//if (controllerOfIP==match.getNetworkSource() || controllerOfIP==match.getNetworkDestination()) {
+        	if(allowIPs.contains(match.getNetworkSource()) || allowIPs.contains(match.getNetworkDestination())) {
                     sendPacketNormally(sw, pi, match, outPort);
+                    log.debug(">>>>>>   ATTENTION - Packets from {}->{} " +
+                    		"combines with allowed IPs, thus a flow was added without be submitted to Of-IDPS security rules. " +
+                    		"(ex. OpenFlow controller, IDS, XenServer, etc...)!", 
+                    		IPv4.fromIPv4Address(match.getNetworkSource()),IPv4.fromIPv4Address(match.getNetworkDestination()));
                     countPacketsToOfController++;
             } else {
         		
@@ -609,14 +618,14 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
             countSentLikeHub++;
         }
         
-        JSONObject ofIDPSPacketsStatus = new JSONObject();
-        ofIDPSPacketsStatus.put("normalPkts", countNormalPackets);
-        ofIDPSPacketsStatus.put("lowPkts", countAlertPriorityLow);
-        ofIDPSPacketsStatus.put("mediumPkts", countAlertPriorityMediun);
-        ofIDPSPacketsStatus.put("highPkts", countAlertPriorityHigh);
-        ofIDPSPacketsStatus.put("highUnknowPkts", countAlertPriorityUnknow);
-        ofIDPSPacketsStatus.put("allPkts", countAllArrivedPackets);
-        ofIDPSPacketsStatus.put("hugPkts", countSentLikeHub);
+//        JSONObject ofIDPSPacketsStatus = new JSONObject();
+//        ofIDPSPacketsStatus.put("normalPkts", countNormalPackets);
+//        ofIDPSPacketsStatus.put("lowPkts", countAlertPriorityLow);
+//        ofIDPSPacketsStatus.put("mediumPkts", countAlertPriorityMediun);
+//        ofIDPSPacketsStatus.put("highPkts", countAlertPriorityHigh);
+//        ofIDPSPacketsStatus.put("highUnknowPkts", countAlertPriorityUnknow);
+//        ofIDPSPacketsStatus.put("allPkts", countAllArrivedPackets);
+//        ofIDPSPacketsStatus.put("hugPkts", countSentLikeHub);
         
         
     }

@@ -156,8 +156,10 @@ public class AnalysisFlow extends Thread {
              * And protocol is equal 6 (TCP)
              * TODO - verify others protocols!
              * 
+             * 120 just TCP header!
+             * 
              */
-            if(currentFlow.getPacketCount() <= 3 && currentFlow.getNetworkProtocol()==6) {
+            if(currentFlow.getPacketCount() <= 2 && currentFlow.getNetworkProtocol()==6 && currentFlow.getByteCount()<=120) {
                 // Save this current and suspect flow.
                 flowSuspiciousOfDDoS.putAlertsFlowOnListOfRelatedWithThisConnection(currentFlow);
             }
