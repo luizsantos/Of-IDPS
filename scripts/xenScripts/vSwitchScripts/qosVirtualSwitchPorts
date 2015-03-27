@@ -37,8 +37,10 @@ minBandwidth=10000
  # Add also the eth0 interface!
  vifs+=" eth0"
 
+echo
+
 start() {
-       echo -n $"Starting Of-IDPS scripts "
+       echo -n $"Starting QoS"
        
        for port in $vifs
 	do
@@ -52,7 +54,7 @@ start() {
 }
 
 stop() {
-	echo -n $"Stopping Of-IDPS scripts"
+	echo -n $"Stopping QoS"
         cmd="ovs-vsctl -- destroy QoS eth0 " 
 	for port in $vifs 
 	do
@@ -60,12 +62,12 @@ stop() {
 	done
 	
 	echo 
-	echo $cmd
+#	echo $cmd
 
 	if $cmd; then
 		echo "QoS OK!"
   	else
-		echo "QoS Error!!!"
+		echo "QoS Error!!! Maybe do not have QoS to remove..."
  	fi
 }
 

@@ -1,0 +1,43 @@
+#!/bin/bash
+dir="vSwitchScripts"
+start() {
+        echo -n $"Starting Of-IDPS scripts "
+	./$dir/mirrorVirtualSwitchPorts start
+	echo
+	./$dir/qosVirtualSwitchPorts start
+	echo
+	./$dir/openFlowController start
+	echo
+}
+
+stop() {
+        echo -n $"Stopping Of-IDPS scripts"
+	./$dir/mirrorVirtualSwitchPorts stop 
+	echo
+        ./$dir/qosVirtualSwitchPorts stop 
+	echo
+        ./$dir/openFlowController stop 
+	echo
+}
+
+restart(){
+	stop
+	start
+}
+
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  restart)
+	restart
+        ;;
+  *)
+	echo $"Usage: $0 {start|stop|restart|reload}"
+	RETVAL=1
+esac
+
+exit $RETVAL

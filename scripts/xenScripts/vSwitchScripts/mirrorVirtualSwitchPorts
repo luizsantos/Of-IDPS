@@ -3,6 +3,7 @@
 pIDS="vif3.2"
 bridge="xenbr0"
 
+echo
 start() {
         echo -n $"Starting mirror vSwitches ports"
 
@@ -28,7 +29,7 @@ start() {
         vifs+=$idsP1
      	idsPortToMirror="vif$(echo -e "$ifs" | cut -d$'\n' -f2)"
 	echo -e "\t vNIC: $idsP1"
- 	echo -e "\t vNIC: $idsPortToMirror"
+ 	echo -e "\t vNIC: $idsPortToMirror - mirror port"
     else
  	vifs+=" vif${ifs}"
 	echo -e "\t vNICs: vif$ifs "
@@ -61,8 +62,8 @@ start() {
 
  mirrorCmd+=" output-port=@$idsPortToMirror"
 
- echo
- echo $mirrorCmd
+ #echo
+ #echo $mirrorCmd
  echo
 
  if $mirrorCmd; then
@@ -70,8 +71,6 @@ start() {
   else
 	echo "error to mirror to IDS port"
  fi
-
- echo "ATTENTION - remember that if more vPorts are included in the xen we must puts this ports here!"
 }
 
 stop() {
