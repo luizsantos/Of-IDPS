@@ -1,25 +1,97 @@
-1. To execute Of-IDPS is necessary have installed these softwares for this follow the tutorials: 
+* Of-IDPS instalation:
 
-Mininet network simulator - http://mininet.org/download/
-Beacon Openflow controller - https://openflow.stanford.edu/display/Beacon/Quick+Start
-Tcpdump - http://www.tcpdump.org/
-Apache - http://www.apache.org/
-Iperf - https://iperf.fr/
+  We have two ways to install and execute Of-IDPS: (i) using a Of-IDPS virtual machine - VM; or (ii) installing source code in your system:
 
-2. Inside of home directory of user mininet of the Mininet simulator:
+  i. The easy way, download the Of-IDPS VM:
 
-a. Uncompress the file: 
-  tar vzxf /home/mininet/scripts.tar.gz
+    1. Make Of-IDPS VM download on:
+     
+      - https://mega.co.nz/#!csZFGKTZ!TZBCROjFBFPJi6D0P0Y6K4VQoDsKKDUeL84i9QU81Uw
+    
+    2. Execute this VM.
 
-  b. Copy the file cenarioTesteLAN-WAN.py to: 
-  cp cenarioTesteLAN-WAN.py /home/mininet/mininet/custon
+    3. The user named "of" will enter automaticaly on the grafic interface, if necessary all passwords are "ofidps" including the "root" password. 
+    The postgres user in the postgres database on the VM also is "ofidps".
 
-3. In the project directory of OpenFlow Beacon controller, 
-replace the content of beacon/beacon-tutorial-1.0.4/src/beacon-1.0.4/net.beaconcontroller.tutorial/src/ 
-directory by content of uncompressed file src-Of-IDPS-2013-12-15.tar.gz, for instance: 
-  tar vzxf src-Of-IDPS-2013-12-15.tar.gz -C beacon/beacon-tutorial-1.0.4/src/beacon-1.0.4/net.beaconcontroller.tutorial/src/
+    
+  ii. To install Of-IDPS in your own system:
 
-Finally, when all is working, execute steps from executionStepsForAutomaticTestsWithOf-IDPS.pdf file to execute tests with Of-IDPS.
+    1. Install Beacon OpenFlow controller using the following tutorial https://openflow.stanford.edu/display/Beacon/Quick+Start
+
+    2. Inside of Beacon directory, make:
+
+      2.1. Remove the content of net.beaconcontroller.tutorial directory, for example:
+
+	$ rm -rf <of-idps home directory>/net.beaconcontroller.tutorial
+
+      2.2. Put the content from this gitgub project on the net.beaconcontroller.tutorial directory. For that, you can use the follow commands:
+
+	$ cd <of-idps home directory>
+	
+	$ git clone https://github.com/luizsantos/Of-IDPS
+	
+	$ ln -s <of-idps home directory>/Of-IDPS <of-idps home directory>/net.beaconcontroller.tutorial
+	
+      2.3. Install and configure postgres database:
+      
+	2.3.1. Install Postgres database (http://www.postgresql.org/);
+	
+	2.3.2. Create database:
+	  $ sh <of-idps home directory>/net.beaconcontroller.tutorial/scripts/DatabaseScripts/createDB_POSTGRES.sh
+	  $ sh <of-idps home directory>/net.beaconcontroller.tutorial/scripts/DatabaseScripts/createTables_POSTGRES.sh
+
+      2.4. Execute the Of-IDPS with the name of net.beaconcontroller.tutorial in the Eclipse project. 
+      For help, you can read the https://openflow.stanford.edu/display/Beacon/Quick+Start 
+      or follow the steps on the executionStepsForAutomaticTestsWithOf-IDPS.pdf tutorial. 
+      More configurations can be necessary in accordance with your network environment.
+
+      2.5. Set up your OpenFlow switches to use the Of-IDPS OpenFlow controller IP address.
+
+      
+* To execute the Of-IDPS in a simulated environment and make tests, you can:
+
+  i. The easy way, download and execute the altered Mininet VM to Of-IDPS tests:
+
+    - https://mega.co.nz/#!E0o01DhZ!I0eIZnJLXpHajhBP6Ss8ZA54o6zWNtXuwUT38hTZ3LI
+
+
+  ii. Install the official Mininet network simulator using the http://mininet.org/download/ tutorial.
+
+  After that you have instaled the Mininet, you can alter this instalation to execute our custom tests. To this execute the steps:
+    
+    1. Inside of mininet user home directory:
+
+      1.1 Clone the Of-IDPS gitgub project:
+
+	$ git clone https://github.com/luizsantos/Of-IDPS
+	
+      1.2 Copy the scripts to execute custom tests to mininet home:
+      
+	$ cp -R <ofidps github directory>/shHosts /home/mininet
+	$ cp -R <ofidps github directory>/shIDS /home/mininet
+	$ cp -R <ofidps github directory>/shSwithes /home/mininet
+	
+	or just
+	
+	$ cp -R <ofidps github directory>/sh* /home/mininet
+      
+      1.3 Copy the script with the custom tests written using Python Mininet API:
+
+	$ cp <ofidps github directory>/mininet/custom/cenarioTesteLAN-WAN.py /home/mininet/mininet/custom
+	
+      1.4 Depending from your installation method you will have to install on mininet machine some softwares 
+      to execute the custom Of-IDPS tests, like:
+	- Tcpdump - http://www.tcpdump.org/
+	- Apache - http://www.apache.org/
+	- Iperf - https://iperf.fr/
+	- Snort IDS - https://www.snort.org/
+	- Hyenae - http://sourceforge.net/projects/hyenae/
+	- Nmap - http://nmap.org/
+	- NTP client on mininet and NTP server on Of-IDPS controller - http://www.ntp.org/ 
+	- SSHFS - http://fuse.sourceforge.net/sshfs.html
+        
+
+  Finally, when all is working, you can execute the steps from executionStepsForAutomaticTestsWithOf-IDPS.pdf tutorial to execute Of-IDPS custom tests.
 
 
  
