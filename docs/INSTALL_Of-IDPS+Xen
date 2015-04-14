@@ -1,0 +1,51 @@
+* Of-IDPS instalation:
+
+  Read the INSTALL_Of-IDPS file to install Of-IDPS.
+  
+  Attention, if you want to use the Snort NIDS as a sensor in the Of-IDPS is recommended to install the sshfs on the Of-IDPS host, to share the security alerts generated from Snort IDS to Of-IDPS controller.
+
+      
+* To execute Of-IDPS in a virtual Xen environment:
+
+  1. Install the Xen Server (http://xenserver.org/) with vSwitch (http://openvswitch.org/).
+  
+  2. Copy xenScripts directory from this github project to Xen server, for example:
+    $ cp -R <ofidps github directory>/xenScripts ~
+  
+  3. Then start the Of-IDPS script:
+    $ sh ~/xenScripts/ofidps start
+  
+  
++ Attention, unfortunately each time that you stop and start one VM you must rerun the ofidps script (step 3).
+
++ Attention! The ofidps script presumed that the Snort IDS is a VM in the Xen server. 
+  The Snort VM must be set with the IDSOfIDSP name, yet this VM must have two network interfaces: 
+    eth0 - used to access the network, can be used for example to manage the IDS;
+    eth1 - that is the mirror port used to collect all network traffic. 
+
+  IF YOU, WON'T USE THIS CONFIGURATIONS YOU MUST MANUALLY CONFIGURE THE XEN SCRIPTS.
+
++ The scripts also presumed that Xen server have two real network interfaces eth0 (xenbr0) and eth1 (xenbr1). 
+  In the script, we use xenbr0 to VMs (common network) and xenbr1 to connect the vSwitch in the Xen server to the 
+  Of-IDPS controller (OpenFlow network).
+  
++ In the Xen network environment is necessary add the IP address of some network elements to avoid problems like false positives. The recommended IP are:
+  - Of-IDPS controller;
+  - Xen Domain 0;
+  - IDS;
+  For now, you can make it directly in the source code, on the class LearningSwitchTutorialSoution.java in allowIPs method, example:
+
+    // IP of OpenFlow controller
+    //private static int controllerOfIP = IPv4.toIPv4Address("192.168.2.111");
+    private static Set<Integer> allowIPs = new HashSet<Integer>();
+    static {
+        allowIPs.add(IPv4.toIPv4Address("192.168.2.111")); 	// OpenFlow controller;
+    	allowIPs.add(IPv4.toIPv4Address("192.168.2.112")); 	// Xen Controller - on eth1;
+    	allowIPs.add(IPv4.toIPv4Address("172.16.2.130")); 	// Xen Controller - on eth0;
+    	allowIPs.add(IPv4.toIPv4Address("192.168.2.133")); 	// IDS;
+    }
+
++  Finally, when all is working, you can execute the steps from executionStepsForAutomaticTestsWithOf-IDPS.pdf tutorial to execute Of-IDPS custom tests.
+
+
+ 

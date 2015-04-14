@@ -1,0 +1,56 @@
+* Of-IDPS instalation:
+
+  We have two ways to install and execute Of-IDPS: (i) using a Of-IDPS virtual machine - VM; or (ii) installing source code in your system:
+
+  i. The easy way, download the Of-IDPS VM:
+
+    1. Make Of-IDPS VM download on the URL:
+     
+      - https://mega.co.nz/#!csZFGKTZ!TZBCROjFBFPJi6D0P0Y6K4VQoDsKKDUeL84i9QU81Uw
+    
+    2. Execute this VM. The user named "of" will enter automaticaly on the grafic interface, if necessary all passwords are "ofidps" including the "root" password. 
+    The postgres user in the postgres database on the VM also is "ofidps".
+
+    
+  ii. To install Of-IDPS in your own system:
+
+    1. Install Beacon OpenFlow controller using the following tutorial: https://openflow.stanford.edu/display/Beacon/Quick+Start
+
+    2. Inside of Beacon directory, make:
+
+      2.1. Remove the net.beaconcontroller.tutorial directory, for example:
+
+	$ rm -rf <of-idps home directory>/net.beaconcontroller.tutorial
+
+      2.2. Clone this github project:
+
+	$ cd <of-idps home directory>
+	
+	$ git clone https://github.com/luizsantos/Of-IDPS
+  
+      2.3. Create a link from Of-IDPS home directory to net.beaconcontroller.tutorial directory:
+	
+	$ ln -s <of-idps home directory>/Of-IDPS <of-idps home directory>/net.beaconcontroller.tutorial
+	
+      2.4. Install and configure postgres database:
+      
+	2.4.1. Install Postgres database (http://www.postgresql.org/);
+	
+	2.4.2. Create database:
+	  $ sh <of-idps home directory>/net.beaconcontroller.tutorial/scripts/DatabaseScripts/createDB_POSTGRES.sh
+	  $ sh <of-idps home directory>/net.beaconcontroller.tutorial/scripts/DatabaseScripts/createTables_POSTGRES.sh
+
+      2.5. Execute the Of-IDPS with the name of net.beaconcontroller.tutorial in the Eclipse project. 
+      For help, you can read the https://openflow.stanford.edu/display/Beacon/Quick+Start 
+      or follow the steps on the executionStepsForAutomaticTestsWithOf-IDPS.pdf tutorial. 
+      More configurations can be necessary in accordance with your network environment.
+
+      2.6. Set up your OpenFlow switches to use the Of-IDPS OpenFlow controller IP address.
+
+
++ Attention, if you want to use the Snort NIDS as a sensor in the Of-IDPS is recommended to install the sshfs on the Of-IDPS host, to share the security alerts generated from Snort IDS to Of-IDPS controller.    
+
++ It is recomended see the executionStepsForAutomaticTestsWithOf-IDPS.pdf tutorial.
+
+
+ 

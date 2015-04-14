@@ -1,0 +1,54 @@
+* Of-IDPS instalation:
+
+  Read the INSTALL_Of-IDPS file to install Of-IDPS.
+  
+  Attention, if you want to use the Snort NIDS as a sensor in the Of-IDPS is recommended to install the sshfs on the Of-IDPS host, to share the security alerts generated from Snort IDS to Of-IDPS controller.
+
+      
+* To execute the Of-IDPS in a simulated environment and make tests, you can (It is optional but recommended for tests):
+
+  i. The easy way, download and execute the altered Mininet VM to Of-IDPS tests:
+
+    - https://mega.co.nz/#!E0o01DhZ!I0eIZnJLXpHajhBP6Ss8ZA54o6zWNtXuwUT38hTZ3LI
+
+
+  ii. Install the official Mininet network simulator using the http://mininet.org/download/ tutorial.
+
+  After that you have instaled the Mininet, you can alter this instalation to execute our custom tests. To this execute the steps:
+    
+    1. Inside of mininet user home directory:
+
+      1.1 Clone the Of-IDPS gitgub project:
+
+	$ git clone https://github.com/luizsantos/Of-IDPS
+	
+      1.2 Copy the scripts to execute custom tests to mininet home:
+      
+	$ cp -R <ofidps github directory>/shHosts /home/mininet
+	$ cp -R <ofidps github directory>/shIDS /home/mininet
+	$ cp -R <ofidps github directory>/shSwithes /home/mininet
+	
+	or just
+	
+	$ cp -R <ofidps github directory>/sh* /home/mininet
+      
+      1.3 Copy the script with the custom tests written using Python Mininet API:
+
+	$ cp <ofidps github directory>/mininet/custom/cenarioTesteLAN-WAN.py /home/mininet/mininet/custom
+	
+      1.4 Depending from your installation method you will have to install on mininet machine some softwares 
+      to execute the custom Of-IDPS tests, like:
+	- Tcpdump - http://www.tcpdump.org/
+	- Apache - http://www.apache.org/
+	- Iperf - https://iperf.fr/
+	- Snort IDS - https://www.snort.org/
+	- Hyenae - http://sourceforge.net/projects/hyenae/
+	- Nmap - http://nmap.org/
+	- NTP client on mininet and NTP server on Of-IDPS controller - http://www.ntp.org/ 
+	- SSHFS - http://fuse.sourceforge.net/sshfs.html
+        
+
++  Finally, when all is working, you can execute the steps from executionStepsForAutomaticTestsWithOf-IDPS.pdf tutorial to execute Of-IDPS custom tests.
+
+
+ 
