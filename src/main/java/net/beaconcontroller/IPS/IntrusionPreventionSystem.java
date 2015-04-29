@@ -20,9 +20,11 @@ import java.util.List;
 import java.util.Scanner;
 
 import net.OfIDPS.memoryAttacks.MemorysAttacks;
+import net.beaconcontroller.DAO.SnortAlertMessageDAO;
 import net.beaconcontroller.core.IBeaconProvider;
 import net.beaconcontroller.core.IOFMessageListener;
 import net.beaconcontroller.core.IOFSwitch;
+import net.beaconcontroller.packet.IPv4;
 import net.beaconcontroller.tools.FileManager;
 import net.beaconcontroller.tools.ProtocolsNumbers;
 import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
@@ -148,6 +150,50 @@ public class IntrusionPreventionSystem extends Thread implements
             return false; // Alert out of time
         }        
     }
+    
+    /**
+     * Gets alerts from Snort database (fast log) IDS, it must be in the format:
+     * 
+     * time,priorityAlert,alertDescription,networkSource,networkDestination,
+     * networkProtocol,transportSource,transportDestination
+     * 1,3,alerta1,167772162,167772161,6,0,666
+     * 2,2,alerta2,167772162,167772161,6,0,777
+     * 3,1,alerta3,167772162,167772161,6,0,888
+     * 
+     * In this example there are three alerts from host 10.0.0.2 to 10.0.0.1,
+     * originated from port 0 and destined to ports 666,777,888 with alerts of
+     * priority low, medium, and high.
+     * 
+     * @return a string with a list of attacks to be processed by SPMF
+     * 
+     */
+    public String getAlertsFromSnortIDS() {
+        String sendToBeprocessedByApriori = "";
+        SnortAlertMessageDAO snortAlertMessageDAO = new SnortAlertMessageDAO();
+        //List<AlertMessage> listOfSnortAlerts = snortAlertMessageDAO.getSnortAlerts();
+        List<AlertMessage> listOfSnortAlerts = snortAlertMessageDAO.getSnortAlertsUpToSecondsAgo(MemorysAttacks.timeToAlertsStayAtShortMemory);
+        
+        for(AlertMessage alertMsg: listOfSnortAlerts) {
+//            alertMsg.printMsgAlert();
+//            log.debug("{}->{}", 
+//                    IPv4.fromIPv4Address(alertMsg.getNetworkSource()), 
+//                    IPv4.fromIPv4Address(alertMsg.getNetworkDestination()));
+            String rule = "src" + alertMsg.getNetworkSource() + " dst"
+                    + alertMsg.getNetworkDestination() + " pro"
+                    + alertMsg.getNetworkProtocol() + " spo"
+                    + alertMsg.getTransportSource() + " dpo"
+                    + alertMsg.getTransportDestination() + " pri"
+                    + alertMsg.getPriorityAlert() + " des"
+                    + alertMsg.getAlertDescription() + "\n";
+
+            sendToBeprocessedByApriori = sendToBeprocessedByApriori
+                    + rule;
+            
+        }
+//        log.debug("\n"+sendToBeprocessedByApriori);
+        return sendToBeprocessedByApriori;
+        
+    }
 
     /**
      * Gets alerts from Snort (fast log) IDS, it must be in the format:
@@ -165,7 +211,7 @@ public class IntrusionPreventionSystem extends Thread implements
      * @return a string with a list of attacks to be processed by SPMF
      * 
      */
-    public String getAlertsFromSnortIDS() {
+    public String getAlertsFromSnortIDSFromFile() {
         
         int acceptedAlerts=0;
         int notAcceptedAlerts=0;

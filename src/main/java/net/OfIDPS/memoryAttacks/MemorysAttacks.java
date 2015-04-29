@@ -89,6 +89,14 @@ public class MemorysAttacks extends Thread {
      */
     public static final int TIME_TO_WAIT= CONFIG.TIME_BETWEEN_RUN_MEMORY_ATTACKS;
     
+    /*
+     * USED TO IDENTIFY THE MEMORY TYPE.
+     */
+    public static final int SENSORIAL_MEMORY=1;
+    public static final int SHORT_MEMORY=2;
+    public static final int LONG_MEMORY=3;
+    
+    
     // Set when class start at first time!
     private static Date dateTimeStartObject = new Date();
     
@@ -211,9 +219,11 @@ public class MemorysAttacks extends Thread {
 //            if (shortMemoryAttacks.size() > 0) {
 //                writeRulesInShortMemoryToFile();
 //            }
+            
             /**
              * TODO - Feed long memory
              */
+            
             if (CONFIG.DISABLE_JSON_OUTPUT==false) {
                 writeRulesInShortMemoryToJsonFile();
             }

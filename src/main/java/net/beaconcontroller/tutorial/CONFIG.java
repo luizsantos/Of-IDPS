@@ -16,6 +16,14 @@
 package net.beaconcontroller.tutorial;
 
 public class CONFIG {
+    
+    // Memory Attacks variables/constants:
+    /*
+     * This time is the period of time to execute memory attacks thread.
+     * In this thread is executed the mainly methods from MemorysAttacks class,
+     * like for example, the time to construct security rules based on alerts security.  
+     */
+    public static final int TIME_BETWEEN_RUN_MEMORY_ATTACKS = 3; // tempo criacao regras autonomicas
 
     /*
      * Period of time, in seconds, that an alert will be processed. This period
@@ -25,7 +33,7 @@ public class CONFIG {
     // TODO for SBRC tests we are changing this variable
     public static int TIME_TO_ALERTS_STAY_AT_SHORT_MEMORY=30; // tempo memoria curta
     // TODO SBRC 2015 with times 10,30,60
-    public static int TIME_TO_ALERTS_STAY_AT_SENSORIAL_MEMORY=0; // disable for now!
+    public static int TIME_TO_ALERTS_STAY_AT_SENSORIAL_MEMORY=TIME_BETWEEN_RUN_MEMORY_ATTACKS; // disable for now!
     public static int TIME_TO_ALERTS_STAY_AT_LONG_MEMOY=0; // disable for now!
 
     
@@ -37,13 +45,7 @@ public class CONFIG {
     public static final int TIME_BETWEEN_RUN_SENSOR_OPENFLOW = 3; // tempo sensor
 
         
-    // Memory Attacks variables/constants:
-    /*
-     * This time is the period of time to execute memory attacks thread.
-     * In this thread is executed the mainly methods from MemorysAttacks class,
-     * like for example, the time to construct security rules based on alerts security.  
-     */
-    public static final int TIME_BETWEEN_RUN_MEMORY_ATTACKS = 3; // tempo criacao regras autonomicas
+    
     
     
     // Analyzes flows variables/constants:
