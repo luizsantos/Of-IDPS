@@ -9,7 +9,18 @@
   traffic to correctly analyse threats, then you probably will need mirror all switches traffic to the Snort host or put 
   it in a strategic local.
   
-  1. Share the Snort alerts with the Of-IDPS controller:
+  1. Install and configure IDS Snort (https://www.snort.org/) to monitor the network;
+  
+  2. Install and configure Barnyard (https://github.com/firnsy/barnyard2) to get the snort alerts and save in the postgres 
+    database (we recommend that the Snort database stay on the Of-IDPS machine).
+    
+
++ It is recomented see the executionStepsForAutomaticTestsWithOf-IDPS.pdf tutorial.
+
+
+The other way (old - non database):
+
+1. Share the Snort alerts with the Of-IDPS controller:
 
     1.1. Install a SSH server on the IDS (http://www.openssh.com/).
     
@@ -24,11 +35,5 @@
       1.3.2. Use the sshfs command to mount the snort alerts:
       
 	$ sshfs mininet@192.168.1.200:/home/mininet/alertas /mnt/armazem/openflow/tmp/alertas
-
-    For now, we are sharing this information using a secure ssh channel, but in the future we can use database methods.
-
-    
-+ It is recomented see the executionStepsForAutomaticTestsWithOf-IDPS.pdf tutorial.
-
 
  
