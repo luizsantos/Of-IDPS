@@ -25,6 +25,7 @@ import net.beaconcontroller.core.IBeaconProvider;
 import net.beaconcontroller.core.IOFMessageListener;
 import net.beaconcontroller.core.IOFSwitch;
 import net.beaconcontroller.packet.IPv4;
+import net.beaconcontroller.tools.DateTimeManager;
 import net.beaconcontroller.tools.FileManager;
 import net.beaconcontroller.tools.ProtocolsNumbers;
 import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
@@ -114,85 +115,33 @@ public class IntrusionPreventionSystem extends Thread implements
         return AlertMessage.NORMAL_PACKET;
     }
     
-    /**
-     * 
-     * Verify if the alert is between a period of time. This period is the
-     * current time of the system and this same time minus one amount of time in
-     * seconds (periodInSeconds param).
-     * 
-     * @param analysedDate - Datetime from the alert
-     * @param currentDate - current date from the system
-     * @param periodInSeconds - the analysis will be between current date less this camp in
-     *            seconds and current time.
-     * @return true if it's on the required period of time or false if not!
-     */
-    public static boolean verifyDateTimeRangeInSeconds(Date analysedDate,
-            Calendar currentDate, int periodInSeconds) {
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss.SSS");
-        Calendar currentDateLessPeriodInSeconds = Calendar.getInstance();
-        currentDateLessPeriodInSeconds.setTime(currentDate.getTime());
-        currentDateLessPeriodInSeconds.add(Calendar.SECOND,(periodInSeconds * -1));
-        
-        // Test if the alert is on the time
-        if (analysedDate.after(currentDateLessPeriodInSeconds.getTime()) 
-                || analysedDate.equals(currentDateLessPeriodInSeconds.getTime())) {
-            
-//            log.debug("Alert datetime accepted: {} <{}> {}.", sdf.format(currentDateLessPeriodInSeconds.getTime()),
-//                    sdf.format(analysedDate), sdf.format(currentDate.getTime()));            
-            
-            return true; // alert on the time
-        } else {
-            
-//            log.debug("Alert datetime NOT accepted: {} {} <{}>.", sdf.format(currentDateLessPeriodInSeconds.getTime()),
-//                    sdf.format(currentDate.getTime()), sdf.format(analysedDate));
-            
-            return false; // Alert out of time
-        }        
-    }
     
     /**
-     * Gets alerts from Snort database (fast log) IDS, it must be in the format:
+     * Gets alerts from Snort database (fast log) IDS.
      * 
-     * time,priorityAlert,alertDescription,networkSource,networkDestination,
-     * networkProtocol,transportSource,transportDestination
-     * 1,3,alerta1,167772162,167772161,6,0,666
-     * 2,2,alerta2,167772162,167772161,6,0,777
-     * 3,1,alerta3,167772162,167772161,6,0,888
-     * 
-     * In this example there are three alerts from host 10.0.0.2 to 10.0.0.1,
-     * originated from port 0 and destined to ports 666,777,888 with alerts of
-     * priority low, medium, and high.
-     * 
-     * @return a string with a list of attacks to be processed by SPMF
+     * @return list of alerts from Snort in the format of Of-IDPS AlertMessages.
      * 
      */
-    public String getAlertsFromSnortIDS() {
-        String sendToBeprocessedByApriori = "";
+    public List<AlertMessage> getAlertsFromSnortIDS() {
         SnortAlertMessageDAO snortAlertMessageDAO = new SnortAlertMessageDAO();
         //List<AlertMessage> listOfSnortAlerts = snortAlertMessageDAO.getSnortAlerts();
         List<AlertMessage> listOfSnortAlerts = snortAlertMessageDAO.getSnortAlertsUpToSecondsAgo(MemorysAttacks.timeToAlertsStayAtShortMemory);
-        
-        for(AlertMessage alertMsg: listOfSnortAlerts) {
-//            alertMsg.printMsgAlert();
-//            log.debug("{}->{}", 
-//                    IPv4.fromIPv4Address(alertMsg.getNetworkSource()), 
-//                    IPv4.fromIPv4Address(alertMsg.getNetworkDestination()));
-            String rule = "src" + alertMsg.getNetworkSource() + " dst"
-                    + alertMsg.getNetworkDestination() + " pro"
-                    + alertMsg.getNetworkProtocol() + " spo"
-                    + alertMsg.getTransportSource() + " dpo"
-                    + alertMsg.getTransportDestination() + " pri"
-                    + alertMsg.getPriorityAlert() + " des"
-                    + alertMsg.getAlertDescription() + "\n";
-
-            sendToBeprocessedByApriori = sendToBeprocessedByApriori
-                    + rule;
-            
-        }
-//        log.debug("\n"+sendToBeprocessedByApriori);
-        return sendToBeprocessedByApriori;
-        
+        return listOfSnortAlerts;  
+    }
+    
+    /**
+     * Gets alerts from Snort database (fast log) IDS using a period of time 
+     * (from current datetime minus an amount of seconds).
+     * 
+     * @param timeInSeconds - amount of time in seconds to be decreased from the current datetime system.
+     * @return list of alerts from Snort in the format of Of-IDPS AlertMessages.
+     * 
+     */
+    public List<AlertMessage> getAlertsFromSnortIDS(int timeInSeconds) {
+        SnortAlertMessageDAO snortAlertMessageDAO = new SnortAlertMessageDAO();
+        //List<AlertMessage> listOfSnortAlerts = snortAlertMessageDAO.getSnortAlerts();
+        List<AlertMessage> listOfSnortAlerts = snortAlertMessageDAO.getSnortAlertsUpToSecondsAgo(timeInSeconds);
+        return listOfSnortAlerts;  
     }
 
     /**
@@ -237,7 +186,7 @@ public class IntrusionPreventionSystem extends Thread implements
             AlertMessage alertMsg = new AlertMessage();
             
             alertMsg.setTempo(fields[0].substring(0,18));
-            boolean alertIsInTheTime = verifyDateTimeRangeInSeconds(alertMsg.getTempo(), currentDate, MemorysAttacks.timeToAlertsStayAtShortMemory);
+            boolean alertIsInTheTime = DateTimeManager.verifyDateTimeRangeInSeconds(alertMsg.getTempo(), currentDate, MemorysAttacks.timeToAlertsStayAtShortMemory);
             if (alertIsInTheTime) {
                 
                 int snortPriority = Integer.valueOf(fields[1]);

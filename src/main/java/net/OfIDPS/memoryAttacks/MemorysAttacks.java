@@ -43,6 +43,7 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -57,6 +58,7 @@ import net.beaconcontroller.IPS.AlertMessageSharePriority;
 import net.beaconcontroller.IPS.IntrusionPreventionSystem;
 import net.beaconcontroller.IPS.AlertMessage;
 import net.beaconcontroller.core.IBeaconProvider;
+import net.beaconcontroller.tools.DateTimeManager;
 import net.beaconcontroller.tools.FileManager;
 import net.beaconcontroller.tutorial.ActuatorOpenFlow;
 import net.beaconcontroller.tutorial.AnalysisFlow;
@@ -122,22 +124,106 @@ public class MemorysAttacks extends Thread {
         log.debug("Start Thread that is responsible to construct memory from attacks");
         while (true) {
             
-            /**
+            /*
+             * Get current datetime from system - to be used on to verify if alerts
+             * will be in sensorial, short or long memory of attacks.
+             */
+            Calendar currentDate = Calendar.getInstance();
+            
+            // To recover alerts from IDS
+            IntrusionPreventionSystem ids = new IntrusionPreventionSystem();
+            
+            
+            /*******************************
              * TODO - Feed sensorial memory.
              */
             
             
-            /**
+            // Get alerts from IDS using the time of sensorial memory. 
+            List<AlertMessage> listOfSnortAlertsSensorial = ids.getAlertsFromSnortIDS(timeToAlertsStayAtSensorialMemory);
+            
+            // Remove old rules from sensorial memory to rerun the sensorial memory algorithm. 
+            sensorialMemoryAttacks.clear();
+            
+            //controlar a remoção de regras como é feito no short memory tal como na função updateRulesInShortMemoryAndApplieThisRulesOnSwitches
+            
+            ActuatorOpenFlow actuator = new ActuatorOpenFlow();
+            actuator.startUp(beaconProvider);
+            
+            // Using returned alerts to create the rules of sensorial memory! Each returned alert will form a rule.
+            for(AlertMessage alertMsg: listOfSnortAlertsSensorial) {
+                /*
+                 *  Attention, each alert must create two security rules!
+                 *  
+                 *      srcIP:* -> dstIP:dstPort (going)
+                 *      srcIP:srcPort -> dstIP:* (coming)
+                 *      
+                 *  It is necessary because, if we just create a rule with 
+                 *      srcIP:srcPort->dstIP:dstPort, 
+                 *  and remove this rule from network elements, the malicious 
+                 *  host will probably send again a new connection, that not will 
+                 *  combine with this rule, because will have, at least, 
+                 *  a new source port, that is random... 
+                 *  Then, it is better create a generic rule to the source port.
+                 */
+                
+                
+                // Alert to packet that is going - srcIP:srcPort -> dstIP:*
+                AlertMessage alertGoing = new AlertMessage();
+                alertGoing.setNetworkSource(alertMsg.getNetworkSource());
+                alertGoing.setTransportSource(Integer.MAX_VALUE);
+                alertGoing.setNetworkDestination(alertMsg.getNetworkDestination());
+                alertGoing.setTransportDestination(alertMsg.getTransportDestination());
+                alertGoing.setNetworkProtocol(alertMsg.getNetworkProtocol());
+                alertGoing.setPriorityAlert(alertMsg.getPriorityAlert());
+                alertGoing.setAlertDescription(alertMsg.getAlertDescription());
+                
+                // Alert to packet that is coming - srcIP:* -> dstIP:dstPort
+                AlertMessage alertComing = new AlertMessage();
+                alertComing.setNetworkSource(alertMsg.getNetworkDestination());
+                alertComing.setTransportSource(alertMsg.getTransportDestination());
+                alertComing.setNetworkDestination(alertMsg.getNetworkSource());
+                alertComing.setTransportDestination(Integer.MAX_VALUE);
+                alertComing.setNetworkProtocol(alertMsg.getNetworkProtocol());
+                alertComing.setPriorityAlert(alertMsg.getPriorityAlert());
+                alertComing.setAlertDescription(alertMsg.getAlertDescription());
+                
+                // Remove the flow responsible from the alert. 
+                // Not is necessary! Because the two more generic rules bellow will remove this flow! Avoid overhead on the network... 
+                // actuator.deleteFlowUsingCampsPresentsOnRuleInAllSwitches(alertMsg);
+                // log.debug("alert.");
+                // alertMsg.printMsgAlert();
+                
+                /*
+                 * Remember that each alert create two rules!
+                 */
+                
+                // Remove flows related with this alerts, if don't already exist this rule on the sensorial memory - to avoid overhead.
+                if (sensorialMemoryAttacks.put(alertGoing.getKeyFromNetworkSocket(), alertGoing)==null) {
+                    actuator.deleteFlowUsingCampsPresentsOnRuleInAllSwitches(alertGoing);
+                    // log.debug("alert going.");
+                    // alertGoing.printMsgAlert();
+                }
+                if (sensorialMemoryAttacks.put(alertComing.getKeyFromNetworkSocket(), alertComing)==null) {
+                    actuator.deleteFlowUsingCampsPresentsOnRuleInAllSwitches(alertComing);
+                    // log.debug("alert coming.");
+                    // alertComing.printMsgAlert();
+                }
+                
+            }
+            log.debug("{} - alerts from sensorial memory from IDS, {} - rules in sensorial memory.", listOfSnortAlertsSensorial.size(), sensorialMemoryAttacks.size());
+            actuator.shutDown();
+            
+            
+            /***************************
              * TODO - Feed short memory.
              */
             String alertsFromIDSSnort = "";
             String alertsFromOpenFlowDoS = "";
             
             if (LearningSwitchTutorialSolution.disableOfIDPS_UseIDSAlerts != 1) {
-                IntrusionPreventionSystem ids = new IntrusionPreventionSystem();
-                alertsFromIDSSnort = ids.getAlertsFromSnortIDS();
-                // log.debug("Alerts obtained from Snort IDS to be processed by itemsets algorithm.");
-                // log.debug(alertsFromIDSSnort);
+                List<AlertMessage> listOfSnortAlerts = ids.getAlertsFromSnortIDS();
+                alertsFromIDSSnort = convertAlertMessagesToBeProcessedByItemsetsAlgorithm(listOfSnortAlerts);
             } else {
                 log.debug("\t!!!!!!!! ATTENTION, Of-IDPS IDS alerts analysis IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variable disableOfIDPS_UseIDSAlerts on LearningSwithTutorialSolution class...");
             }
@@ -220,8 +306,8 @@ public class MemorysAttacks extends Thread {
 //                writeRulesInShortMemoryToFile();
 //            }
             
-            /**
-             * TODO - Feed long memory
+            /**************************
+             * TODO - Feed long memory.
              */
             
             if (CONFIG.DISABLE_JSON_OUTPUT==false) {
@@ -334,6 +420,44 @@ public class MemorysAttacks extends Thread {
     }
     
     /**
+     * Convert Of-IDPS alerts to the required format to be processed by the itemsets algorithm.
+     * 
+     * time,priorityAlert,alertDescription,networkSource,networkDestination,
+     * networkProtocol,transportSource,transportDestination
+     * 1,3,alerta1,167772162,167772161,6,0,666
+     * 2,2,alerta2,167772162,167772161,6,0,777
+     * 3,1,alerta3,167772162,167772161,6,0,888
+     * 
+     * In this example there are three alerts from host 10.0.0.2 to 10.0.0.1,
+     * originated from port 0 and destined to ports 666,777,888 with alerts of
+     * priority low, medium, and high.
+     * 
+     * @return a string with a list of attacks to be processed by SPMF
+     * 
+     */
+    public String convertAlertMessagesToBeProcessedByItemsetsAlgorithm(List<AlertMessage> listOfSnortAlerts) {
+        String sendToBeprocessedByApriori = "";
+        for (AlertMessage alertMsg : listOfSnortAlerts) {
+            // alertMsg.printMsgAlert();
+            // log.debug("{}->{}",
+            // IPv4.fromIPv4Address(alertMsg.getNetworkSource()),
+            // IPv4.fromIPv4Address(alertMsg.getNetworkDestination()));
+            String rule = "src" + alertMsg.getNetworkSource() + " dst"
+                    + alertMsg.getNetworkDestination() + " pro"
+                    + alertMsg.getNetworkProtocol() + " spo"
+                    + alertMsg.getTransportSource() + " dpo"
+                    + alertMsg.getTransportDestination() + " pri"
+                    + alertMsg.getPriorityAlert() + " des"
+                    + alertMsg.getAlertDescription() + "\n";
+
+            sendToBeprocessedByApriori = sendToBeprocessedByApriori + rule;
+
+        }
+        //log.debug("\n"+sendToBeprocessedByApriori);
+        return sendToBeprocessedByApriori;
+    }
+    
+    /**
      * Verify if this rule is new and send a OpenFlow Command to
      * delete/remove the related flows presents in the networks
      * switches.
@@ -367,7 +491,7 @@ public class MemorysAttacks extends Thread {
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMDD_HHmmss");
         Date date = new Date();
         // TODO - Remove the write of output in file, this isn't necessary
-        String output = "/tmp/output"+dateFormat.format(date)+".txt";  // the path for saving the frequent itemsets found
+        String output = "/tmp/OfIDPS_output_rule.txt";  // the path for saving the frequent itemsets found
         AlgoFPGrowth_Strings algo = new AlgoFPGrowth_Strings();
         try {
             // Obtain rules from IDS alerts using itemsets algorithm. 

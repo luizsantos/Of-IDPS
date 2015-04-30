@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.OfIDPS.memoryAttacks.MemoryAttackRuleMatch;
 import net.OfIDPS.memoryAttacks.MemorysAttacks;
 import net.beaconcontroller.IPS.AlertMessage;
 import net.beaconcontroller.IPS.FlowsSuspiciousOfDoS;
@@ -356,195 +357,45 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
 //            printPacketMatch(match);
                         
             if (disableOfIDPS != 1) {
-
-                // test print
-                // for (String key : shortMemoryAttacks.keySet()) {
-                //  MensagemAlerta regraAtual = shortMemoryAttacks.get(key);
-                //  regraAtual.printMsgAlert();
-                // }
-
+                
+                // memoryAttacks.printMemoryAttacks(sensorialMemoryAttacks);
                 // memoryAttacks.printMemoryAttacks(shortMemoryAttacks);
-
-                /*
-                 * Get network socket from the packet that will be analyzed by
-                 * Of-IDPS.
-                 */
-                String analysedPacketKeySocketNetwork = getKeyNetworkSocketFromAnalysedPacket(match);
-                /*
-                 * Search if the analyzed packet have one specific rule on the
-                 * memory of attacks. That's, is this packet have a perfect
-                 * rule, that match with all camps from packet.
-                 */
-                AlertMessage alertMsg = null;
-                alertMsg = shortMemoryAttacks.get(analysedPacketKeySocketNetwork);
-
-                if (alertMsg != null) {
-                    /*
-                     * if the analyzed packet perfectly matches with an alert
-                     * entry, apply the security priority associated with this
-                     * alert!
-                     * 
-                     * Maybe the alert don't have an priority associated, due to
-                     * the logic of itemsets algorithm and, then this is treated
-                     * to the method handlePacketsWithoutPriority()
-                     */
-                    //log.debug("Packet perfectly matches with alert: ");
-                    acao = alertMsg.getPriorityAlert();
+                memoryAttacks.printMemoryAttacks(longMemoryAttacks);
+                
+                MemoryAttackRuleMatch memoryAttackRuleMatch =  new MemoryAttackRuleMatch();
+                
+                // Verify if this packet match with one rule of sensorial memory!
+                memoryAttackRuleMatch = analyzePacketInTheMemoryAttack(match, sensorialMemoryAttacks);
+                if(memoryAttackRuleMatch.isMatch()) {
+                    // If there is a rule, update the action!
+                    acao = memoryAttackRuleMatch.getAction();
+                    log.debug("Packet match with a sensorial memory rule!");
                 } else {
-                    /*
-                     * If the analyzed packet don't matches perfectly with all
-                     * camps, then will be analyzed entry by entry, searching an
-                     * entry what better match with the analyzed packet.
-                     * 
-                     * The itemsets algorithm, produces more generic rules, this
-                     * is, rules with less items to be analyzed. Then here, we
-                     * will compare if exists one entry that better combine with
-                     * the packet using only some camps. Attention! For this,
-                     * camps with the value Integer.MAX_VALUE combine with any
-                     * value, in other words, is a wildcard * (any).
-                     */
-                    // Zero don't combine - different of zero combine
-                    int combine = 0;
-                    // Number of camps from rule that combine with the analyzed
-                    // packet
-                    int numberCampsThatCombinePerfectly = 0;
-                    // Search for all rules in short memory
+                   
+                    // Verify if this packet match with one rule of short memory!
+                    memoryAttackRuleMatch = analyzePacketInTheMemoryAttack(match, shortMemoryAttacks);
+                    if(memoryAttackRuleMatch.isMatch()) {
+                        // If there is a rule, update the action!
+                        acao = memoryAttackRuleMatch.getAction();
+                        log.debug("Packet match with a short memory rule!");
                     
-                    // test
-                    // This will save the key rule that better combine with the packet. We use this to keep alive this rule.
-                    String matchKey=null;
-                    for (String key : shortMemoryAttacks.keySet()) {
-                        int auxCombine = 0;
-                        int auxNumberCampsThatCombinePerfectly = 0;
-                        AlertMessage currentRule = shortMemoryAttacks.get(key);
-
-                        // Analyze NetworkSource
-                        if (currentRule.getNetworkSource() == match.getNetworkSource()) {
-                            // Both camps match perfectly
-                            auxNumberCampsThatCombinePerfectly++;
-                        } else if (currentRule.getNetworkSource() != Integer.MAX_VALUE) {
-                            // If this is true, stop the analysis of rule if one
-                            // camp doesn't match.
-                            continue;
-                            // But, if this is false, then doesn't match
-                            // perfectly, but the same camp on the rule is a
-                            // wildcard (Integer.MAX_VALUE), that represents any
-                            // (*), that forces the matches.
-                        }
-
-                        // Analyze NetworkDestination
-                        if (currentRule.getNetworkDestination() == match.getNetworkDestination()) {
-                            // Both camps match perfectly
-                            auxNumberCampsThatCombinePerfectly++;
-                        } else if (currentRule.getNetworkDestination() != Integer.MAX_VALUE) {
-                            // If this is true, stop the analysis of rule if one
-                            // camp doesn't match.
-                            continue;
-                            // But, if this is false, then doesn't match
-                            // perfectly, but the same camp on the rule is a
-                            // wildcard (Integer.MAX_VALUE), that represents any
-                            // (*), that forces the matches.
-                        }
-
-                        // Analyze NetworkProtocol
-                        if (currentRule.getNetworkProtocol() == match
-                                .getNetworkProtocol()) {
-                            // Both camps match perfectly
-                            auxNumberCampsThatCombinePerfectly++;
-                        } else if (currentRule.getNetworkProtocol() != Integer.MAX_VALUE) {
-                            // If this is true, stop the analysis of rule if one
-                            // camp doesn't match.
-                            continue;
-                            // But, if this is false, then doesn't match
-                            // perfectly, but the same camp on the rule is a
-                            // wildcard (Integer.MAX_VALUE), that represents any
-                            // (*), that forces the matches.
-                        }
-
-                        // Analyze TransportSource
-                        if (currentRule.getTransportSource() == match
-                                .getTransportSource()) {
-                            // Both camps match perfectly
-                            auxNumberCampsThatCombinePerfectly++;
-                        } else if (currentRule.getTransportSource() != Integer.MAX_VALUE) {
-                            // If this is true, stop the analysis of rule if one
-                            // camp doesn't match.
-                            continue;
-                            // But, if this is false, then doesn't match
-                            // perfectly, but the same camp on the rule is a
-                            // wildcard (Integer.MAX_VALUE), that represents any
-                            // (*), that forces the matches.
-                        }
-
-                        // Analyse TransportDestination
-                        if (currentRule.getTransportDestination() == match
-                                .getTransportDestination()) {
-                            // Both camps match perfectly
-                            auxNumberCampsThatCombinePerfectly++;
-                        } else if (currentRule.getTransportDestination() != Integer.MAX_VALUE) {
-                            // If this is true, stop the analysis of rule if one
-                            // camp doesn't match.
-                            continue;
-                            // But, if this is false, then doesn't match
-                            // perfectly, but the same camp on the rule is a
-                            // wildcard (Integer.MAX_VALUE), that represents any
-                            // (*), that forces the matches.
-                        }
-
-                        /*
-                         * If the rule processing, has reached at this point, it
-                         * means that this rule match with the analysed packet.
-                         */
-                        if (auxNumberCampsThatCombinePerfectly > numberCampsThatCombinePerfectly) {
-                            // log.debug("\tCurrent rule math with the packet, the oldest was {} the new is {}",
-                            // numberCampsThatCombinePerfectly,
-                            // auxNumberCampsThatCombinePerfectly);
-                            numberCampsThatCombinePerfectly = auxNumberCampsThatCombinePerfectly;
-                            alertMsg = currentRule;
-
-                            /*
-                             * Attention! Maybe the alert don't have an priority
-                             * associated, due to the logic of itemsets
-                             * algorithm and, then this is treated to the method
-                             * handlePacketsWithoutPriority()
-                             */
-                            acao = currentRule.getPriorityAlert();
-                            // log.debug("\t>>> The priority was set by an AUTONOMIC rule, the value of priority was: "+ acao);
-                            matchKey = key;
-                        }
-                    }
+                    } else {
                     
-                    /*
-                     * Update the counter of packets that combine with this rule! 
-                     * This will revive this rules and help to show that this 
-                     * rules still in use!
-                     * 
-                     * TODO - Maybe we should store the total of packets that combine 
-                     * with this rule during all rule life... and make the average of 
-                     * packets during this time! this can be useful to decide if this 
-                     * packets are result of attacks or not! Mainly to detect DoS... 
-                     * 
-                     */
-                    //TESTE
-                    if (matchKey!=null) {
-                        AlertMessage ruleThatCombine = shortMemoryAttacks.get(matchKey);
-                        ruleThatCombine.increasePacketsMatchInOfControllerPerHop();
-                        /*
-                         * if we use this is necessary to uncomment the code 
-                         * entry.getValue().verifyAndUpdatePacketsMatchInOfController();
-                         * on MemorysAttacks class.
-                         */
-                        ruleThatCombine.increasePacketsMatchInOfControllerPerHop();
-                        /*
-                         * TODO - not is more easy just increase de time live of this rule?
-                         */
-//                        ruleThatCombine.increaseLife();
+                        // Verify if this packet match with one rule of long memory!
+                        memoryAttackRuleMatch = analyzePacketInTheMemoryAttack(match, longMemoryAttacks);
+                        if(memoryAttackRuleMatch.isMatch()) {
+                         // If there is a rule, update the action!
+                            acao = memoryAttackRuleMatch.getAction();
+                            log.debug("Packet match with a long memory rule!");
+                        } else {
+                            log.debug("Packet no match with any memory rule!");
+                        }
                     }
                 }
 
-                //printIfPacketMathWithSecurityRule(alertMsg);
-
-                acao = handlePacketsWithoutPriority(acao);
+                if(memoryAttackRuleMatch.isMatch()) {
+                    acao = handlePacketsWithoutPriority(acao);
+                }
 
             // Use this else case the architecture of Of-IDPS is disable
             } else {
@@ -628,6 +479,208 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
 //        ofIDPSPacketsStatus.put("hugPkts", countSentLikeHub);
         
         
+    }
+
+
+    /**
+     * 
+     * Analyzes if a there is match  with an arriving packet and 
+     * a rule on a specific memory (sensorial, short, and long).
+     * If the arriving packet combine with an already existing rule, 
+     * this method also increase the life of this rule.
+     * 
+     * @param match - packet arriving on the controller.
+     * @param memoryAtacks - memory to be analyzed.
+     * @return - A MemoryAttackRule object that inform if 
+     *  there is match and the level of security priority to be applied as action to the packet. 
+     */
+    private MemoryAttackRuleMatch analyzePacketInTheMemoryAttack(OFMatch match, Map<String, AlertMessage> memoryAtacks) {
+        // To store/return the result!
+        MemoryAttackRuleMatch memoryAttackRuleMatch =  new MemoryAttackRuleMatch();
+        /*
+         * Get network socket from the packet that will be analyzed by
+         * Of-IDPS.
+         */
+        String analysedPacketKeySocketNetwork = getKeyNetworkSocketFromAnalysedPacket(match);
+        /*
+         * Search if the analyzed packet have one specific rule on the
+         * memory of attacks. That's, is this packet have a perfect
+         * rule, that match with all camps from packet.
+         */
+        AlertMessage alertMsg = null;
+        
+        
+        alertMsg = memoryAtacks.get(analysedPacketKeySocketNetwork);
+
+        if (alertMsg != null) {
+            /*
+             * if the analyzed packet perfectly matches with an alert
+             * entry, apply the security priority associated with this
+             * alert!
+             * 
+             * Maybe the alert don't have an priority associated, due to
+             * the logic of itemsets algorithm and, then this is treated
+             * to the method handlePacketsWithoutPriority()
+             */
+            //log.debug("Packet perfectly matches with alert: ");
+            memoryAttackRuleMatch.setMatch(true);
+            memoryAttackRuleMatch.setAction(alertMsg.getPriorityAlert());
+        } else {
+            /*
+             * If the analyzed packet don't matches perfectly with all
+             * camps, then will be analyzed entry by entry, searching an
+             * entry what better match with the analyzed packet.
+             * 
+             * The itemsets algorithm, produces more generic rules, this
+             * is, rules with less items to be analyzed. Then here, we
+             * will compare if exists one entry that better combine with
+             * the packet using only some camps. Attention! For this,
+             * camps with the value Integer.MAX_VALUE combine with any
+             * value, in other words, is a wildcard * (any).
+             */
+            // Zero don't combine - different of zero combine
+            int combine = 0;
+            // Number of camps from rule that combine with the analyzed
+            // packet
+            int numberCampsThatCombinePerfectly = 0;
+            // Search for all rules in short memory
+            
+            // test
+            // This will save the key rule that better combine with the packet. We use this to keep alive this rule.
+            String matchKey=null;
+            for (String key : memoryAtacks.keySet()) {
+                int auxCombine = 0;
+                int auxNumberCampsThatCombinePerfectly = 0;
+                AlertMessage currentRule = memoryAtacks.get(key);
+
+                // Analyze NetworkSource
+                if (currentRule.getNetworkSource() == match.getNetworkSource()) {
+                    // Both camps match perfectly
+                    auxNumberCampsThatCombinePerfectly++;
+                } else if (currentRule.getNetworkSource() != Integer.MAX_VALUE) {
+                    // If this is true, stop the analysis of rule if one
+                    // camp doesn't match.
+                    continue;
+                    // But, if this is false, then doesn't match
+                    // perfectly, but the same camp on the rule is a
+                    // wildcard (Integer.MAX_VALUE), that represents any
+                    // (*), that forces the matches.
+                }
+
+                // Analyze NetworkDestination
+                if (currentRule.getNetworkDestination() == match.getNetworkDestination()) {
+                    // Both camps match perfectly
+                    auxNumberCampsThatCombinePerfectly++;
+                } else if (currentRule.getNetworkDestination() != Integer.MAX_VALUE) {
+                    // If this is true, stop the analysis of rule if one
+                    // camp doesn't match.
+                    continue;
+                    // But, if this is false, then doesn't match
+                    // perfectly, but the same camp on the rule is a
+                    // wildcard (Integer.MAX_VALUE), that represents any
+                    // (*), that forces the matches.
+                }
+
+                // Analyze NetworkProtocol
+                if (currentRule.getNetworkProtocol() == match
+                        .getNetworkProtocol()) {
+                    // Both camps match perfectly
+                    auxNumberCampsThatCombinePerfectly++;
+                } else if (currentRule.getNetworkProtocol() != Integer.MAX_VALUE) {
+                    // If this is true, stop the analysis of rule if one
+                    // camp doesn't match.
+                    continue;
+                    // But, if this is false, then doesn't match
+                    // perfectly, but the same camp on the rule is a
+                    // wildcard (Integer.MAX_VALUE), that represents any
+                    // (*), that forces the matches.
+                }
+
+                // Analyze TransportSource
+                if (currentRule.getTransportSource() == match
+                        .getTransportSource()) {
+                    // Both camps match perfectly
+                    auxNumberCampsThatCombinePerfectly++;
+                } else if (currentRule.getTransportSource() != Integer.MAX_VALUE) {
+                    // If this is true, stop the analysis of rule if one
+                    // camp doesn't match.
+                    continue;
+                    // But, if this is false, then doesn't match
+                    // perfectly, but the same camp on the rule is a
+                    // wildcard (Integer.MAX_VALUE), that represents any
+                    // (*), that forces the matches.
+                }
+
+                // Analyse TransportDestination
+                if (currentRule.getTransportDestination() == match
+                        .getTransportDestination()) {
+                    // Both camps match perfectly
+                    auxNumberCampsThatCombinePerfectly++;
+                } else if (currentRule.getTransportDestination() != Integer.MAX_VALUE) {
+                    // If this is true, stop the analysis of rule if one
+                    // camp doesn't match.
+                    continue;
+                    // But, if this is false, then doesn't match
+                    // perfectly, but the same camp on the rule is a
+                    // wildcard (Integer.MAX_VALUE), that represents any
+                    // (*), that forces the matches.
+                }
+
+                /*
+                 * If the rule processing, has reached at this point, it
+                 * means that this rule match with the analysed packet.
+                 */
+                if (auxNumberCampsThatCombinePerfectly > numberCampsThatCombinePerfectly) {
+                    // log.debug("\tCurrent rule math with the packet, the oldest was {} the new is {}",
+                    // numberCampsThatCombinePerfectly,
+                    // auxNumberCampsThatCombinePerfectly);
+                    numberCampsThatCombinePerfectly = auxNumberCampsThatCombinePerfectly;
+                    alertMsg = currentRule;
+
+                    /*
+                     * Attention! Maybe the alert don't have an priority
+                     * associated, due to the logic of itemsets
+                     * algorithm and, then this is treated to the method
+                     * handlePacketsWithoutPriority()
+                     */
+                    //acao = currentRule.getPriorityAlert();
+                    memoryAttackRuleMatch.setMatch(true);
+                    memoryAttackRuleMatch.setAction(alertMsg.getPriorityAlert());
+                    // log.debug("\t>>> The priority was set by an AUTONOMIC rule, the value of priority was: "+ acao);
+                    matchKey = key;
+                }
+            }
+            
+            /*
+             * Update the counter of packets that combine with this rule! 
+             * This will revive this rules and help to show that this 
+             * rules still in use!
+             * 
+             * TODO - Maybe we should store the total of packets that combine 
+             * with this rule during all rule life... and make the average of 
+             * packets during this time! this can be useful to decide if this 
+             * packets are result of attacks or not! Mainly to detect DoS... 
+             * 
+             */
+            //TESTE
+            if (matchKey!=null) {
+                AlertMessage ruleThatCombine = memoryAtacks.get(matchKey);
+                ruleThatCombine.increasePacketsMatchInOfControllerPerHop();
+                /*
+                 * if we use this is necessary to uncomment the code 
+                 * entry.getValue().verifyAndUpdatePacketsMatchInOfController();
+                 * on MemorysAttacks class.
+                 */
+                ruleThatCombine.increasePacketsMatchInOfControllerPerHop();
+                /*
+                 * TODO - not is more easy just increase the time live of this rule?
+                 */
+//                        ruleThatCombine.increaseLife();
+            }
+        }
+
+        //printIfPacketMathWithSecurityRule(alertMsg);
+        return memoryAttackRuleMatch;
     }
 
 
