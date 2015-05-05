@@ -145,8 +145,6 @@ public class MemorysAttacks extends Thread {
             // Remove old rules from sensorial memory to rerun the sensorial memory algorithm. 
             sensorialMemoryAttacks.clear();
             
-            //controlar a remoção de regras como é feito no short memory tal como na função updateRulesInShortMemoryAndApplieThisRulesOnSwitches
-            
             ActuatorOpenFlow actuator = new ActuatorOpenFlow();
             actuator.startUp(beaconProvider);
             
@@ -210,7 +208,15 @@ public class MemorysAttacks extends Thread {
                     // alertComing.printMsgAlert();
                 }
                 
+                /*
+                 * TODO? - Maybe, implement a control to manage (include/remove/update) the rules, 
+                 * like updateRulesInShortMemoryAndApplieThisRulesOnSwitches(ruleListFromIDS) method. 
+                 * However, perhaps is not necessary this control, because these alerts, and consequently 
+                 * the rules will be send to the short memory, and will be controlled there.
+                 */
+                
             }
+            
             log.debug("{} - alerts from sensorial memory from IDS, {} - rules in sensorial memory.", listOfSnortAlertsSensorial.size(), sensorialMemoryAttacks.size());
             actuator.shutDown();
             

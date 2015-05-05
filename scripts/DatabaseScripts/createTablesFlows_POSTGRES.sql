@@ -23,5 +23,6 @@ create table flows(
                 networkTypeOfService int,
                 transportDestination int,
                 transportSource int, 
-                Wildcards int
+                wildcards int,
+                flowType int
  );

@@ -30,6 +30,10 @@ public class StatusFlow extends  OFFlowStatisticsReply {
     // Postgres
     public static SimpleDateFormat formatterDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // Datetime format required by database.
     
+    public final static int FLOW_NORMAL=0;
+    public final static int FLOW_ABNORMAL=1;
+    
+    
     protected long swID;
     protected Date time;
     protected byte[] dataLayerDestination;
@@ -46,7 +50,8 @@ public class StatusFlow extends  OFFlowStatisticsReply {
     protected short transportSource;
     protected int wildcards;
     private int life=1; // If >=0 rule is alive in memory, if < 0 this must be write on database.
-    
+    private int flowType=FLOW_NORMAL;
+
     protected static Logger log = LoggerFactory
             .getLogger(LearningSwitchTutorialSolution.class);
     
@@ -77,6 +82,21 @@ public class StatusFlow extends  OFFlowStatisticsReply {
     }
     
     /**
+     * Convert the value number of flowtype attribute into a string form.
+     * 
+     * @return "normal" or "abnormal" strings.
+     */
+    private String convertFlowTypeToString() {
+        String stringFlowType = "";
+        if (this.flowType==FLOW_NORMAL) {
+            stringFlowType="NORMAL";
+        } else {
+            stringFlowType="ABNORMAL";
+        }
+        return stringFlowType;
+    }
+    
+    /**
      * Print status flow
      */
     public void printStatusFlow(String text) {
@@ -87,8 +107,9 @@ public class StatusFlow extends  OFFlowStatisticsReply {
                 this.networkSource+":"+this.transportSource+"->"+
                 this.networkDestination+":"+this.transportDestination+" ("+
                 this.networkProtocol+")"+" bytes: " +this.byteCount + " packets: " + this.packetCount +
-                " live: "+ this.life +" - "+ formatter.format(this.time));
+                " live: "+ this.life +" - "+ formatter.format(this.time)+" type: "+ convertFlowTypeToString());
     }
+    
     
     public JSONObject getJSONStatusFlow() {
         JSONObject flowJSON = new JSONObject();
@@ -106,6 +127,7 @@ public class StatusFlow extends  OFFlowStatisticsReply {
         flowJSON.put("packetCount", this.packetCount);
         flowJSON.put("life", this.life);
         flowJSON.put("time", formatter.format(this.time));
+        flowJSON.put("flowType", convertFlowTypeToString());
         return flowJSON;
     }
     
@@ -200,6 +222,12 @@ public class StatusFlow extends  OFFlowStatisticsReply {
     }
     public void setTime(Date time) {
         this.time = time;
+    }
+    public int getFlowType() {
+        return flowType;
+    }
+    public void setFlowType(int flowType) {
+        this.flowType = flowType;
     }
     
     /**

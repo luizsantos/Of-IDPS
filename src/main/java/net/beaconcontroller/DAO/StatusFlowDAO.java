@@ -32,6 +32,8 @@ public class StatusFlowDAO extends Thread {
     // Postgres
     public static SimpleDateFormat formatterDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // Datetime format required by database.
     
+    
+    
     /**
      * Start the class using the object StatusFlow to be written and the name of database.
      * @param sf - StatusFlow object to be written into database.
@@ -51,7 +53,30 @@ public class StatusFlowDAO extends Thread {
     public StatusFlowDAO() throws ClassNotFoundException, SQLException {
 
     }
-
+    
+    public List<StatusFlow> getNormalFlowsUpToSecondsAgo(int seconds) {
+        Calendar currentDateTime = Calendar.getInstance();
+        currentDateTime.add(Calendar.SECOND, (-1 * seconds));
+        String limitDatatime = formatterDB.format(currentDateTime.getTime());
+        String sql = "SELECT * FROM flows WHERE tempo >= \'"+limitDatatime+ "\' and flowType = "+StatusFlow.FLOW_NORMAL+";";
+        return getFlowsUpToSecondsAgo(seconds, sql);
+    }
+    
+    public List<StatusFlow> getAbnormalFlowsUpToSecondsAgo(int seconds) {
+        Calendar currentDateTime = Calendar.getInstance();
+        currentDateTime.add(Calendar.SECOND, (-1 * seconds));
+        String limitDatatime = formatterDB.format(currentDateTime.getTime());
+        String sql = "SELECT * FROM flows WHERE tempo >= \'"+limitDatatime+ "\' and flowType = "+StatusFlow.FLOW_ABNORMAL+";";
+        return getFlowsUpToSecondsAgo(seconds, sql);
+    }
+    
+    public List<StatusFlow> getAllFlowsUpToSecondsAgo(int seconds) {
+        Calendar currentDateTime = Calendar.getInstance();
+        currentDateTime.add(Calendar.SECOND, (-1 * seconds));
+        String limitDatatime = formatterDB.format(currentDateTime.getTime());
+        String sql = "SELECT * FROM flows WHERE tempo >= \'"+limitDatatime+ "\';";
+        return getFlowsUpToSecondsAgo(seconds, sql);
+    }
     
     /**
      * Get flows in the database that are equal or greater than current time
@@ -60,15 +85,12 @@ public class StatusFlowDAO extends Thread {
      * @param seconds - Amount of seconds that will be used as period of time between the current time.
      * @return - A list of flows between the period of time - current time less seconds set by parameter and current time.
      */
-    public synchronized List<StatusFlow> getFlowsUpToSecondsAgo(int seconds) {
+    public synchronized List<StatusFlow> getFlowsUpToSecondsAgo(int seconds, String sql) {
         Connection connection = null;
         Statement stmt = null;
         ResultSet resultSqlSelect = null;
         List<StatusFlow> listOfReturnedFlows = new ArrayList<StatusFlow>();
-        Calendar currentDateTime = Calendar.getInstance();
-        currentDateTime.add(Calendar.SECOND, (-1 * seconds));
-        String limitDatatime = formatterDB.format(currentDateTime.getTime());
-        String sql = "SELECT * FROM flows WHERE tempo >= \'"+limitDatatime+ "\';";
+        
         //log.debug("SQL: "+ sql + " - Current time: "+ formatterDB.format(new Date()));
         
         // Get database connection.
@@ -113,9 +135,10 @@ public class StatusFlowDAO extends Thread {
                 statusFlow.setNetworkTypeOfService((byte) resultSqlSelect.getInt("networkTypeOfService"));
                 statusFlow.setTransportDestination((short) resultSqlSelect.getInt("transportDestination"));
                 statusFlow.setTransportSource((short) resultSqlSelect.getInt("transportSource"));
-                statusFlow.setWildcards(resultSqlSelect.getInt("Wildcards"));
+                statusFlow.setWildcards(resultSqlSelect.getInt("wildcards"));
                 //statusFlow.printStatusFlow(x+" - Inside of StatusFlowDAO:");
                 statusFlow.setLiveAsDead();
+                statusFlow.setFlowType(resultSqlSelect.getInt("flowType"));
                 listOfReturnedFlows.add(statusFlow);
             }
         } catch (SQLException e) {
@@ -188,7 +211,8 @@ public class StatusFlowDAO extends Thread {
                 "networkTypeOfService,"+
                 "transportDestination,"+
                 "transportSource,"+
-                "Wildcards"+
+                "wildcards,"+
+                "flowType"+
                 ")" +
                 " VALUES ("+
                     sf.getSwID()+","+
@@ -215,7 +239,8 @@ public class StatusFlowDAO extends Thread {
                     sf.getNetworkTypeOfService()+","+
                     sf.getTransportDestination()+","+
                     sf.getTransportSource()+","+
-                    sf.getWildcards()+
+                    sf.getWildcards()+","+
+                    sf.getFlowType()+
                     ");";
         //log.debug("sql={}",sql);
         
@@ -304,7 +329,8 @@ public class StatusFlowDAO extends Thread {
                 "networkTypeOfService,"+
                 "transportDestination,"+
                 "transportSource,"+
-                "Wildcards"+
+                "wildcards,"+
+                "flowType"+
                 ")" +
                 " VALUES ("+
                     getStatusFlow().getSwID()+","+
@@ -331,7 +357,8 @@ public class StatusFlowDAO extends Thread {
                     getStatusFlow().getNetworkTypeOfService()+","+
                     getStatusFlow().getTransportDestination()+","+
                     getStatusFlow().getTransportSource()+","+
-                    getStatusFlow().getWildcards()+
+                    getStatusFlow().getWildcards()+","+
+                    getStatusFlow().getFlowType()+
                     ");";
          /*
          * the commented lines below can be used to verify the numbers of

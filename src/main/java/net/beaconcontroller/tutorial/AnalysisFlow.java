@@ -111,7 +111,7 @@ public class AnalysisFlow extends Thread {
         try {
             StatusFlowDAO statusFlowDAO = new StatusFlowDAO();
             // TODO - What time period is better to use?
-            allFlowsToByAnalysed =  statusFlowDAO.getFlowsUpToSecondsAgo(this.timePeriodToRecoverFlowFromDB);
+            allFlowsToByAnalysed =  statusFlowDAO.getAllFlowsUpToSecondsAgo(this.timePeriodToRecoverFlowFromDB);
             log.debug("Number of alert valid alerts from database: {}", allFlowsToByAnalysed.size());
         } catch (ClassNotFoundException e) {
             log.debug("ATTENTION - Sorry wasn't possible to read data in database - SQL error!");
@@ -213,7 +213,7 @@ public class AnalysisFlow extends Thread {
         try {
             StatusFlowDAO statusFlowDAO = new StatusFlowDAO();
             // TODO - What time period is better to use?
-            allFlowsToByAnalysed =  statusFlowDAO.getFlowsUpToSecondsAgo(this.timePeriodToRecoverFlowFromDB);
+            allFlowsToByAnalysed =  statusFlowDAO.getAllFlowsUpToSecondsAgo(this.timePeriodToRecoverFlowFromDB);
             log.debug("Number of alert valid alerts from database: {}", allFlowsToByAnalysed.size());
         } catch (ClassNotFoundException e) {
             log.debug("ATTENTION - Sorry wasn't possible to read data in database - SQL error!");
