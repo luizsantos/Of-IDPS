@@ -40,6 +40,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+import net.beaconcontroller.DAO.StatusFlowDAO;
 import net.beaconcontroller.IPS.AlertMessageSharePriority;
 import net.beaconcontroller.IPS.IntrusionPreventionSystem;
 import net.beaconcontroller.IPS.AlertMessage;
@@ -141,6 +143,7 @@ public class MemorysAttacks extends Thread {
             
             // Get alerts from IDS using the time of sensorial memory. 
             List<AlertMessage> listOfSnortAlertsSensorial = ids.getAlertsFromSnortIDS(timeToAlertsStayAtSensorialMemory);
+            Map<String,AlertMessage> mapOfSnortAlertsSensorialToUpdateBadFlowsDB = new HashMap<String, AlertMessage>();
             
             // Remove old rules from sensorial memory to rerun the sensorial memory algorithm. 
             sensorialMemoryAttacks.clear();
@@ -165,6 +168,8 @@ public class MemorysAttacks extends Thread {
                  *  Then, it is better create a generic rule to the source port.
                  */
                 
+                // Put all alerts on a map/list. After we will use this map to change this related flows to bad flows on database!
+                mapOfSnortAlertsSensorialToUpdateBadFlowsDB.put(alertMsg.getKeyFromNetworkSocket(), alertMsg);
                 
                 // Alert to packet that is going - srcIP:srcPort -> dstIP:*
                 AlertMessage alertGoing = new AlertMessage();
@@ -192,6 +197,8 @@ public class MemorysAttacks extends Thread {
                 // log.debug("alert.");
                 // alertMsg.printMsgAlert();
                 
+                
+                
                 /*
                  * Remember that each alert create two rules!
                  */
@@ -216,6 +223,14 @@ public class MemorysAttacks extends Thread {
                  */
                 
             }
+            
+            /*
+             * TODO - This not work very well, because some flows weren't recorded on database yet...
+             * (we have some seconds to record the flow on database) 
+             * then instead of change the flows when the alert is emitted, we will look for alerts when 
+             * we will record the flow on the database!
+             */
+            //updateBadFlowsDB(currentDate, mapOfSnortAlertsSensorialToUpdateBadFlowsDB);
             
             log.debug("{} - alerts from sensorial memory from IDS, {} - rules in sensorial memory.", listOfSnortAlertsSensorial.size(), sensorialMemoryAttacks.size());
             actuator.shutDown();
@@ -324,6 +339,37 @@ public class MemorysAttacks extends Thread {
             waitTimeInSeconds(TIME_TO_WAIT);
             log.debug("new processing memory attacks\n");
         }        
+    }
+
+    /**
+     * Update flows on database based on IDS alerts!
+     * @param currentDate - Datetime
+     * @param mapOfSnortAlertsSensorialToUpdateBadFlowsDB - Map with alerts that will generate the update on flows.
+     */
+    private void updateBadFlowsDB(
+            Calendar currentDate,
+            Map<String, AlertMessage> mapOfSnortAlertsSensorialToUpdateBadFlowsDB) {
+        try {
+            StatusFlowDAO statusFlowDAO = new StatusFlowDAO();
+            for(String badKey : mapOfSnortAlertsSensorialToUpdateBadFlowsDB.keySet()) {
+                AlertMessage badAlertFlow = new AlertMessage();
+                badAlertFlow = mapOfSnortAlertsSensorialToUpdateBadFlowsDB.get(badKey);
+                statusFlowDAO.updateBadFlow(badAlertFlow.getNetworkSource(),
+                        badAlertFlow.getNetworkDestination(), 
+                        badAlertFlow.getNetworkProtocol(),
+                        badAlertFlow.getTransportSource(),
+                        badAlertFlow.getTransportDestination(),
+                        currentDate,
+                        timeToAlertsStayAtSensorialMemory+2
+                        );
+            }
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     /**

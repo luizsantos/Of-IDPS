@@ -15,6 +15,7 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
@@ -388,6 +389,91 @@ public class StatusFlowDAO extends Thread {
             stmt.setBytes(1, getStatusFlow().getDataLayerDestination());
             stmt.setBytes(2, getStatusFlow().getDataLayerSource());
             stmt.executeUpdate();
+        } catch (SQLException e) {
+            log.debug("ATTENTION - Sorry wasn't possible to record data in database - SQL exception!");
+            e.printStackTrace();
+        } finally {
+            if(stmt != null ) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            
+            if (connection != null ) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            
+        }
+    }
+    
+    /**
+     * Insert a flow table register in a database!
+     * 
+     * Observation: the synchronized parameter was used to avoid that concurrent
+     * threads write on the database at same time. Without this the sqlite
+     * database presented problems during tests.
+     * 
+     * @throws SQLException
+     */
+    public synchronized void updateBadFlow(
+            int networkSource, 
+            int networkDestination,
+            int networkProtocol,
+            int transportSource,
+            int transportDestination,
+            Calendar time,
+            int seconds
+            ) throws SQLException {
+        
+        // The alert time minus an amount of time in seconds to search the flow!
+        time.add(Calendar.SECOND, (-1 * seconds));
+        String limitDatatime = formatterDB.format(time.getTime());
+        
+        Connection connection = null;
+        Statement stmt = null;
+        //log.debug("Inserting register in database");
+        String sql = "UPDATE flows SET flowType = "+ StatusFlow.FLOW_ABNORMAL +
+                " WHERE networkSource = " + networkSource +
+                " AND networkDestination = " + networkDestination +
+                " AND networkProtocol = " + networkProtocol +
+                " AND transportSource = " + transportSource +
+                " AND transportDestination = " + transportDestination +
+                " AND tempo >= \'"+limitDatatime+ "\'"+
+                ";";
+        
+        log.debug("sql-update: {}",sql);
+                
+         /*
+         * the commented lines below can be used to verify the numbers of
+         * threads used to record in the database.
+         */
+//            int nthr = getNthread();
+//            setNthread();
+//            log.debug("Threading {} - >RECORDING<",nthr);
+//         log.debug("sql={}",sql);
+        
+        // Get database connection.
+        try {
+            DataSource ds;
+            try {
+                ds = DataSource.getInstance();
+                connection = ds.getConnection();
+            } catch (PropertyVetoException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            
+            stmt = connection.createStatement();
+            stmt.executeUpdate(sql);
+            
         } catch (SQLException e) {
             log.debug("ATTENTION - Sorry wasn't possible to record data in database - SQL exception!");
             e.printStackTrace();

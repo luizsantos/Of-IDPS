@@ -27,6 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 
+import net.beaconcontroller.DAO.SnortAlertMessageDAO;
 import net.beaconcontroller.DAO.StatusFlow;
 import net.beaconcontroller.DAO.StatusFlowDAO;
 import net.beaconcontroller.DAO.StatusPort;
@@ -60,7 +61,7 @@ import org.slf4j.LoggerFactory;
 public class SensorOpenFlow extends Thread implements IOFMessageListener {
     // Interval of time that the OpenFlow statistics message will be sent to the switches.
     protected static final int timeBetweenRequests = CONFIG.TIME_BETWEEN_RUN_SENSOR_OPENFLOW;
-
+    public static final int TIME_TO_VERIFY_BAD_FLOW_ON_ALERT_DB = 90;
 
     public static final String directoryName = "/mnt/armazem/openflow/tmp/dadosSwitchesOF/";
     public static final String fileName = "OpenFlowStatistics.dat";
@@ -221,8 +222,14 @@ public class SensorOpenFlow extends Thread implements IOFMessageListener {
     /**
      * Remove dead flows from list that represent active flows on network switches. 
      * Dead flows are flows that were removed from flow tables switches. 
+     * 
+     * Also, verify if this flow is good or bad to record on database!
+     * 
      */
     private void removeDeadFlowsFromListThatRepresentsActiveFlowsOnSwitches() {
+        
+        
+        
         for (Iterator<Map.Entry<String, StatusFlow>> flow = currentFlows.entrySet().iterator(); flow.hasNext();) {
             Map.Entry<String, StatusFlow> currentFlow = flow.next();
             currentFlow.getValue().decreaseLife();
@@ -471,6 +478,26 @@ public class SensorOpenFlow extends Thread implements IOFMessageListener {
      * @param existingMessage
      */
     private void recordFlowMessageInDB(StatusFlow existingMessage) {
+        
+        SnortAlertMessageDAO snortAlertMessageDAO = new SnortAlertMessageDAO();
+        // Verify if the flow to be recorded has security alerts.
+        int numberOfAlerts = snortAlertMessageDAO.verifyIfFlowHadSnortAlerts(
+                existingMessage.getNetworkSource(), 
+                existingMessage.getNetworkDestination(),
+                existingMessage.getNetworkProtocol(),
+                existingMessage.getTransportSourceInteger(),
+                existingMessage.getTransportDestinationInteger(),
+                TIME_TO_VERIFY_BAD_FLOW_ON_ALERT_DB
+                );
+        
+        if(numberOfAlerts>0) {
+            //If has any alert save as bad flow!
+            existingMessage.setFlowType(StatusFlow.FLOW_ABNORMAL);
+        } else {
+            //If has not alerts save as normal flow!
+            existingMessage.setFlowType(StatusFlow.FLOW_NORMAL);
+        }
+        
         try {
             StatusFlowDAO statusFlowDao = new StatusFlowDAO(existingMessage);
             statusFlowDao.start();

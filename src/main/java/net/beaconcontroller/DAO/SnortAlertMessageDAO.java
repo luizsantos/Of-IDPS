@@ -15,6 +15,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import net.beaconcontroller.IPS.AlertMessage;
+import net.beaconcontroller.tools.ProtocolsNumbers;
 import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
 
 import org.slf4j.Logger;
@@ -314,6 +315,183 @@ public class SnortAlertMessageDAO {
             
             listOfReturnedSnortAlerts.add(alert);
         }
+    }
+    
+    public int verifyIfFlowHadSnortAlerts(
+            int networkSource, 
+            int networkDestination,
+            int networkProtocol,
+            int transportSource,
+            int transportDestination,
+            int seconds ) {
+        Calendar currentDateTime = Calendar.getInstance();
+        currentDateTime.add(Calendar.SECOND, (-1 * seconds));
+        String limitDatatime = formatterDB.format(currentDateTime.getTime());
+        
+        String sql="";
+        if(networkProtocol==ProtocolsNumbers.TCP) {
+            sql="select count(*) " +
+                    " from event e, iphdr i, tcphdr t " +
+                    " where e.cid=i.cid " +
+                    " and e.sid=i.sid " +
+                    " and t.cid=e.cid " +
+                    " and t.sid=e.sid " +
+                    
+                    " and ((" +
+                    " i.ip_src= " + networkSource +
+                    " and " +
+                    " i.ip_dst= " + networkDestination +
+                    " ) or (" +
+                    " i.ip_src= " + networkDestination +
+                    " and " +
+                    " i.ip_dst= " + networkSource +
+                    "))" +
+                    
+                    " and i.ip_proto= " + networkProtocol +
+                    
+                    " and (" +
+                    "    t.tcp_sport= " + transportSource +
+                    " or t.tcp_dport= " + transportDestination +
+                    " or t.tcp_sport= " + transportDestination +
+                    " or t.tcp_dport= " + transportSource +
+                    ")" +
+                    
+                    " and timestamp >= \'"+ limitDatatime+"\';";
+        } else if (networkProtocol==ProtocolsNumbers.UDP) {
+            sql="select count(*) " +
+                    " from event e, iphdr i, udphdr t " +
+                    " where e.cid=i.cid " +
+                    " and e.sid=i.sid " +
+                    " and t.cid=e.cid " +
+                    " and t.sid=e.sid " +
+
+                    " and ((" +
+                    " i.ip_src= " + networkSource +
+                    " and " +
+                    " i.ip_dst= " + networkDestination +
+                    " ) or (" +
+                    " i.ip_src= " + networkDestination +
+                    " and " +
+                    " i.ip_dst= " + networkSource +
+                    "))" +
+                    
+                    " and i.ip_proto= " + networkProtocol +
+                    
+                    " and ((" +
+                    " t.udp_sport= " + transportSource +
+                    " and " +
+                    " t.udp_dport= " + transportDestination +
+                    " ) or (" +
+                    " t.udp_sport= " + transportDestination +
+                    " and " +
+                    " t.udp_dport= " + transportSource +
+                    "))" +
+                    
+                    " and timestamp >= \'"+ limitDatatime+"\';";
+        } else if (networkProtocol==ProtocolsNumbers.ICMP) {
+            sql="select count(*) " +
+            		" from event e, iphdr i, icmphdr t " +
+            		" where e.cid=i.cid " +
+            		" and e.sid=i.sid " +
+            		" and t.cid=e.cid " +
+            		" and t.sid=e.sid " +
+            		
+            		" and ((" +
+                    " i.ip_src= " + networkSource +
+                    " and " +
+                    " i.ip_dst= " + networkDestination +
+                    " ) or (" +
+                    " i.ip_src= " + networkDestination +
+                    " and " +
+                    " i.ip_dst= " + networkSource +
+                    "))" +
+                    
+                    " and i.ip_proto= " + networkProtocol +
+                    
+                    " and ((" +
+                    " t.icmp_type= " + transportSource +
+                    " and " +
+                    " t.icmp_code= " + transportDestination +
+                    " ) or (" +
+                    " t.icmp_code= " + transportDestination +
+                    " and " +
+                    " t.icmp_type= " + transportSource +
+                    "))" +
+            		
+            		" and timestamp >= \'"+ limitDatatime+"\';";
+        } else {
+            log.debug("ATTENTION! Unknown protocol!");
+            return 0;
+        }
+        
+        int count = getCountOfSnortAlertsReturned(sql);
+        
+        log.debug("Bad alert/flowTCP number {}, from sql {}", count, sql);
+        
+        
+        
+        return count;
+    }
+    
+    /**
+     * Get the number of register returned from a SQL query in the Snort database.
+     * @return - Number of register returned from DB.
+     */
+    public synchronized int getCountOfSnortAlertsReturned(String sql) {
+        int count=0; // store the number of register returned from DB;
+        Connection connection = null;
+        Statement stmt = null;
+        ResultSet resultSqlSelect = null;
+        try {
+            DataSourceSnortIDS ds;
+            try {
+                ds = DataSourceSnortIDS.getInstance();
+                connection = ds.getConnection();
+            } catch (PropertyVetoException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } 
+            
+            stmt = connection.createStatement();
+            
+            resultSqlSelect = stmt.executeQuery(sql);
+            
+            while(resultSqlSelect.next()) {
+                count=resultSqlSelect.getInt(1);
+            }
+            
+        } catch (SQLException e) {
+            log.debug("ATTENTION - Error during SQL select from IDS Snort Alert table!");
+            e.printStackTrace();
+        } finally {
+            if(resultSqlSelect != null) {
+                try {
+                    resultSqlSelect.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+        
+        return count;
+        
     }
     
 

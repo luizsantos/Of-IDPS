@@ -196,11 +196,17 @@ public class StatusFlow extends  OFFlowStatisticsReply {
     public short getTransportDestination() {
         return transportDestination;
     }
+    public int getTransportDestinationInteger() {
+        return transportDestination & 0xFFFF;
+    }
     public void setTransportDestination(short transportDestination) {
         this.transportDestination = transportDestination;
     }
     public short getTransportSource() {
         return transportSource;
+    }
+    public int getTransportSourceInteger() {
+        return transportSource & 0xFFFF;
     }
     public void setTransportSource(short transportSource) {
         this.transportSource = transportSource;

@@ -20,6 +20,7 @@
  */
 package net.beaconcontroller.tutorial;
 
+import java.awt.peer.TextComponentPeer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
