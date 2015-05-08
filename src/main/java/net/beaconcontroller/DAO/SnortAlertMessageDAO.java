@@ -1,10 +1,19 @@
 /*
  * Used to deal Snort IDS security alerts on the database. 
  * Mainly in the alerts recovery, because the Snort IDS is a sensor.  
+ * 
+ * ATTENTION!! - Beacon and snort use different kinds of variables 
+ * to represent network IP and ports, thus are necessary translations.
+ *          | Beacon  | Snort
+ *    ------+---------+-----------
+ *     IP   | Integer | BigInteger
+ *     Port | Short   | Integer
+ * 
  */
 package net.beaconcontroller.DAO;
 
 import java.beans.PropertyVetoException;
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,7 +24,9 @@ import java.util.Calendar;
 import java.util.List;
 
 import net.beaconcontroller.IPS.AlertMessage;
+import net.beaconcontroller.tools.IpAddress;
 import net.beaconcontroller.tools.ProtocolsNumbers;
+import net.beaconcontroller.tools.TransportPorts;
 import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
 
 import org.slf4j.Logger;
@@ -116,6 +127,12 @@ public class SnortAlertMessageDAO {
             }
         }
         
+//        log.debug("Alerts from IDS");
+//        for(AlertMessage alert : listOfReturnedSnortAlerts) {
+//            alert.printMsgAlert();
+//        }
+        
+        
         return listOfReturnedSnortAlerts;
         
     }
@@ -199,6 +216,7 @@ public class SnortAlertMessageDAO {
             }
         }
         
+        
         return listOfReturnedSnortAlerts;
         
     }
@@ -272,8 +290,13 @@ public class SnortAlertMessageDAO {
             alert.setNetworkDestination(intIpDst);
             
             alert.setNetworkProtocol(resultSqlSelect.getInt("ip_proto"));
-            alert.setTransportSource(resultSqlSelect.getInt("udp_sport"));
-            alert.setTransportDestination(resultSqlSelect.getInt("udp_dport"));
+            
+            // Convert integer port number to short port representation number (used on beacon), but yet in integer number!
+            int integerShortSourcePort = TransportPorts.convertIntegerPortToIntegerShortValue(resultSqlSelect.getInt("udp_sport"));
+            alert.setTransportSource(integerShortSourcePort);
+            // Convert integer port number to short port representation number (used on beacon), but yet in integer number!
+            int integerShortDestinationPort = TransportPorts.convertIntegerPortToIntegerShortValue(resultSqlSelect.getInt("udp_dport"));
+            alert.setTransportDestination(integerShortDestinationPort);
             
             listOfReturnedSnortAlerts.add(alert);
         }
@@ -310,8 +333,13 @@ public class SnortAlertMessageDAO {
             alert.setNetworkDestination(intIpDst);
             
             alert.setNetworkProtocol(resultSqlSelect.getInt("ip_proto"));
-            alert.setTransportSource(resultSqlSelect.getInt("tcp_sport"));
-            alert.setTransportDestination(resultSqlSelect.getInt("tcp_dport"));
+            
+            // Convert integer port number to short port representation number (used on beacon), but yet in integer number!
+            int integerShortSourcePort = TransportPorts.convertIntegerPortToIntegerShortValue(resultSqlSelect.getInt("tcp_sport"));
+            alert.setTransportSource(integerShortSourcePort);
+            // Convert integer port number to short port representation number (used on beacon), but yet in integer number!
+            int integerShortDestinationPort = TransportPorts.convertIntegerPortToIntegerShortValue(resultSqlSelect.getInt("tcp_dport"));
+            alert.setTransportDestination(integerShortDestinationPort);
             
             listOfReturnedSnortAlerts.add(alert);
         }
@@ -328,6 +356,13 @@ public class SnortAlertMessageDAO {
         currentDateTime.add(Calendar.SECOND, (-1 * seconds));
         String limitDatatime = formatterDB.format(currentDateTime.getTime());
         
+        /*
+         * Beacon deal integer IP format and snort BigInteger, then we translate it here.
+         */
+        BigInteger networkSourceBig = IpAddress.parseIntegerIPv4toBigInteger(networkSource);
+        BigInteger networkDestinationBig = IpAddress.parseIntegerIPv4toBigInteger(networkDestination);
+        
+        
         String sql="";
         if(networkProtocol==ProtocolsNumbers.TCP) {
             sql="select count(*) " +
@@ -337,14 +372,16 @@ public class SnortAlertMessageDAO {
                     " and t.cid=e.cid " +
                     " and t.sid=e.sid " +
                     
+                    
+                    
                     " and ((" +
-                    " i.ip_src= " + networkSource +
+                    " i.ip_src= " + networkSourceBig.toString() +
                     " and " +
-                    " i.ip_dst= " + networkDestination +
+                    " i.ip_dst= " + networkDestinationBig.toString() +
                     " ) or (" +
-                    " i.ip_src= " + networkDestination +
+                    " i.ip_src= " + networkDestinationBig.toString() +
                     " and " +
-                    " i.ip_dst= " + networkSource +
+                    " i.ip_dst= " + networkSourceBig.toString() +
                     "))" +
                     
                     " and i.ip_proto= " + networkProtocol +
@@ -366,26 +403,23 @@ public class SnortAlertMessageDAO {
                     " and t.sid=e.sid " +
 
                     " and ((" +
-                    " i.ip_src= " + networkSource +
+                    " i.ip_src= " + networkSourceBig.toString() +
                     " and " +
-                    " i.ip_dst= " + networkDestination +
+                    " i.ip_dst= " + networkDestinationBig.toString() +
                     " ) or (" +
-                    " i.ip_src= " + networkDestination +
+                    " i.ip_src= " + networkDestinationBig.toString() +
                     " and " +
-                    " i.ip_dst= " + networkSource +
+                    " i.ip_dst= " + networkSourceBig.toString() +
                     "))" +
                     
                     " and i.ip_proto= " + networkProtocol +
                     
-                    " and ((" +
-                    " t.udp_sport= " + transportSource +
-                    " and " +
-                    " t.udp_dport= " + transportDestination +
-                    " ) or (" +
-                    " t.udp_sport= " + transportDestination +
-                    " and " +
-                    " t.udp_dport= " + transportSource +
-                    "))" +
+                    " and (" +
+                    "    t.udp_sport= " + transportSource +
+                    " or t.udp_dport= " + transportDestination +
+                    " or t.udp_sport= " + transportDestination +
+                    " or t.udp_dport= " + transportSource +
+                    ")" +
                     
                     " and timestamp >= \'"+ limitDatatime+"\';";
         } else if (networkProtocol==ProtocolsNumbers.ICMP) {
@@ -397,13 +431,13 @@ public class SnortAlertMessageDAO {
             		" and t.sid=e.sid " +
             		
             		" and ((" +
-                    " i.ip_src= " + networkSource +
+                    " i.ip_src= " + networkSourceBig.toString() +
                     " and " +
-                    " i.ip_dst= " + networkDestination +
+                    " i.ip_dst= " + networkDestinationBig.toString() +
                     " ) or (" +
-                    " i.ip_src= " + networkDestination +
+                    " i.ip_src= " + networkDestinationBig.toString() +
                     " and " +
-                    " i.ip_dst= " + networkSource +
+                    " i.ip_dst= " + networkSourceBig.toString() +
                     "))" +
                     
                     " and i.ip_proto= " + networkProtocol +

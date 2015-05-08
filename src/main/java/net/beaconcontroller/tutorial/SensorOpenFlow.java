@@ -61,7 +61,7 @@ import org.slf4j.LoggerFactory;
 public class SensorOpenFlow extends Thread implements IOFMessageListener {
     // Interval of time that the OpenFlow statistics message will be sent to the switches.
     protected static final int timeBetweenRequests = CONFIG.TIME_BETWEEN_RUN_SENSOR_OPENFLOW;
-    public static final int TIME_TO_VERIFY_BAD_FLOW_ON_ALERT_DB = 90;
+    public static final int TIME_TO_VERIFY_BAD_FLOW_ON_ALERT_DB = 120;
 
     public static final String directoryName = "/mnt/armazem/openflow/tmp/dadosSwitchesOF/";
     public static final String fileName = "OpenFlowStatistics.dat";
@@ -485,8 +485,8 @@ public class SensorOpenFlow extends Thread implements IOFMessageListener {
                 existingMessage.getNetworkSource(), 
                 existingMessage.getNetworkDestination(),
                 existingMessage.getNetworkProtocol(),
-                existingMessage.getTransportSourceInteger(),
-                existingMessage.getTransportDestinationInteger(),
+                existingMessage.getTransportSource(),
+                existingMessage.getTransportDestination(),
                 TIME_TO_VERIFY_BAD_FLOW_ON_ALERT_DB
                 );
         

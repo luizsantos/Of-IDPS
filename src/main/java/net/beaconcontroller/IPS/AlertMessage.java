@@ -295,6 +295,8 @@ public class AlertMessage {
     public void setTransportSource(int transportSource) {
         this.transportSource = transportSource;
     }
+    
+    
 
     public int getSupportApriori() {
         return supportApriori;
