@@ -1,3 +1,8 @@
+/*
+ * Class that help with some IP tasks, like conversions.
+ * 
+ * For sample convert beacon IP integer address to Snort database.
+ */
 package net.beaconcontroller.tools;
 
 import java.math.BigInteger;

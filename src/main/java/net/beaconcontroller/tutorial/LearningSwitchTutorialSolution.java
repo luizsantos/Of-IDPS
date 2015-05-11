@@ -20,7 +20,6 @@
  */
 package net.beaconcontroller.tutorial;
 
-import java.awt.peer.TextComponentPeer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,7 +33,6 @@ import java.util.Set;
 import net.OfIDPS.memoryAttacks.MemoryAttackRuleMatch;
 import net.OfIDPS.memoryAttacks.MemorysAttacks;
 import net.beaconcontroller.IPS.AlertMessage;
-import net.beaconcontroller.IPS.FlowsSuspiciousOfDoS;
 import net.beaconcontroller.core.IBeaconProvider;
 import net.beaconcontroller.core.IOFMessageListener;
 import net.beaconcontroller.core.IOFSwitch;
@@ -42,7 +40,6 @@ import net.beaconcontroller.core.IOFSwitchListener;
 import net.beaconcontroller.packet.Ethernet;
 import net.beaconcontroller.packet.IPv4;
 
-import org.json.simple.JSONObject;
 import org.openflow.protocol.OFFlowMod;
 import org.openflow.protocol.OFMatch;
 import org.openflow.protocol.OFMessage;
@@ -791,7 +788,7 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
             sw.getOutputStream().write(fm);
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            log.debug("Imposs�vel deletar fluxo");
+            log.debug("Impossible to delete flow");
             e.printStackTrace();
         }
     }
@@ -820,7 +817,7 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
             sw.getOutputStream().write(fm);
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            log.debug("Imposs�vel deletar fluxo");
+            log.debug("Impossible to delete flow");
             e.printStackTrace();
         }
 

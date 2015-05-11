@@ -1,4 +1,6 @@
 /*
+ * Class that help with some network port tasks, like conversions.
+ * 
  * Short port number are used in Beacon OpenFlow Controller. 
  * But, many others software use a integer number to represent network ports, like Snort IDS.
  */
@@ -80,10 +82,6 @@ public class TransportPorts {
             return (short) port;
         }
     }
-    
-    
-    
-    
     
 
 }
