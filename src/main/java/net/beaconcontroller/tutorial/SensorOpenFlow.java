@@ -126,7 +126,7 @@ public class SensorOpenFlow extends Thread implements IOFMessageListener {
     
     /**
      * 
-     * Method responsable to run the Thread and send OpenFlow statistics messages request.
+     * Method responsible to run the Thread and send OpenFlow statistics messages request.
      * 
      */
     public void run() {

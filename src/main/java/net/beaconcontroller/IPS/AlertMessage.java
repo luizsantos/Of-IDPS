@@ -42,6 +42,7 @@ import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
 
 
 public class AlertMessage {
+    public static SimpleDateFormat formatterDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"); // Datetime format required by database.
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss.SSS"); // Used to format datetime.
     private Date tempo = new Date(); // Datatime of alert/rule
     private int life=1; // If >=0 rule is alive/valid.
@@ -150,6 +151,10 @@ public class AlertMessage {
 
     public void setTempo(Date tempo) {
         this.tempo = tempo;
+    }
+    
+    public String getTempoStringBD() {
+        return formatterDB.format(this.tempo).toString();
     }
     
     /**

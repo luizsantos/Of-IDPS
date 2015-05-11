@@ -28,7 +28,7 @@ public class StatusFlow extends  OFFlowStatisticsReply {
     // Mysql
     //private SimpleDateFormat formatterDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     // Postgres
-    public static SimpleDateFormat formatterDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // Datetime format required by database.
+    public static SimpleDateFormat formatterDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"); // Datetime format required by database.
     
     public final static int FLOW_NORMAL=0;
     public final static int FLOW_ABNORMAL=1;
@@ -51,6 +51,7 @@ public class StatusFlow extends  OFFlowStatisticsReply {
     protected int wildcards;
     private int life=1; // If >=0 rule is alive in memory, if < 0 this must be write on database.
     private int flowType=FLOW_NORMAL;
+    private boolean inSwitchesMemory = false; // if true is on switch memory, case false not!
 
     protected static Logger log = LoggerFactory
             .getLogger(LearningSwitchTutorialSolution.class);
@@ -107,7 +108,8 @@ public class StatusFlow extends  OFFlowStatisticsReply {
                 this.networkSource+":"+this.transportSource+"->"+
                 this.networkDestination+":"+this.transportDestination+" ("+
                 this.networkProtocol+")"+" bytes: " +this.byteCount + " packets: " + this.packetCount +
-                " live: "+ this.life +" - "+ formatter.format(this.time)+" type: "+ convertFlowTypeToString());
+                " live: "+ this.life +" - "+ formatter.format(this.time)+" type: "+ convertFlowTypeToString()+
+                " inSwMemory: "+ this.inSwitchesMemory);
     }
     
     
@@ -228,6 +230,22 @@ public class StatusFlow extends  OFFlowStatisticsReply {
     }
     public void setFlowType(int flowType) {
         this.flowType = flowType;
+    }
+    
+    /**
+     * This flow is on switch memory?
+     * @return - True, if yes. False if not!
+     */
+    public boolean isInSwitchesMemory() {
+        return inSwitchesMemory;
+    }
+
+    /**
+     * This flow is on switch memory?
+     * @param inSwitchesMemory - True, if the flow is on switch memory or false if not!
+     */
+    public void setInSwitchesMemory(boolean inSwitchesMemory) {
+        this.inSwitchesMemory = inSwitchesMemory;
     }
     
     /**

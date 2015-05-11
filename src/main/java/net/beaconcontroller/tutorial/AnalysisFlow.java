@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import net.beaconcontroller.DAO.AlertOpenFlowDAO;
 import net.beaconcontroller.DAO.StatusFlow;
 import net.beaconcontroller.DAO.StatusFlowDAO;
 import net.beaconcontroller.IPS.AlertMessage;
@@ -133,6 +134,7 @@ public class AnalysisFlow extends Thread {
          */
         for (String key : SensorOpenFlow.currentFlows.keySet()) {
             StatusFlow currentFlow = SensorOpenFlow.currentFlows.get(key);
+            currentFlow.setInSwitchesMemory(true);
             allFlowsToByAnalysed.add(currentFlow);
         }
         
@@ -177,6 +179,11 @@ public class AnalysisFlow extends Thread {
         if(flowSuspiciousOfDDoS.verifyIfSourceAddressHaveMaliciousFlows()) {
             listOfMaliciousFlows.addAll(flowSuspiciousOfDDoS.getFlowsRelatedWithThisConnection());
             flowSuspiciousOfDDoS.printStatistics();
+        }
+        
+        AlertOpenFlowDAO aletOpenFlowDAO = new AlertOpenFlowDAO();
+        for(AlertMessageSharePriority alertMessageSharePriority : listOfMaliciousFlows) {
+            aletOpenFlowDAO.insert(alertMessageSharePriority);
         }
 
     }
