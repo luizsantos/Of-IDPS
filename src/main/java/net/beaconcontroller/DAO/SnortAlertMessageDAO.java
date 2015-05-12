@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import net.beaconcontroller.IPS.AlertMessage;
+import net.beaconcontroller.tools.DateTimeManager;
 import net.beaconcontroller.tools.IpAddress;
 import net.beaconcontroller.tools.ProtocolsNumbers;
 import net.beaconcontroller.tools.TransportPorts;
@@ -34,10 +35,6 @@ import org.slf4j.LoggerFactory;
 
 public class SnortAlertMessageDAO {
     protected static Logger log = LoggerFactory.getLogger(LearningSwitchTutorialSolution.class);
-    
-    // Postgres
-    public static SimpleDateFormat formatterDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // Datetime format required by database.
-    
     
     /**
      * Get IDS Snort alerts (TCP/UDP/ICMP) in the database that are equal 
@@ -51,7 +48,7 @@ public class SnortAlertMessageDAO {
         
         Calendar currentDateTime = Calendar.getInstance();
         currentDateTime.add(Calendar.SECOND, (-1 * seconds));
-        String limitDatatime = formatterDB.format(currentDateTime.getTime());
+        String limitDatatime = DateTimeManager.formatterDB.format(currentDateTime.getTime());
         
         Connection connection = null;
         Statement stmt = null;
@@ -354,7 +351,7 @@ public class SnortAlertMessageDAO {
             int seconds ) {
         Calendar currentDateTime = Calendar.getInstance();
         currentDateTime.add(Calendar.SECOND, (-1 * seconds));
-        String limitDatatime = formatterDB.format(currentDateTime.getTime());
+        String limitDatatime = DateTimeManager.formatterDB.format(currentDateTime.getTime());
         
         /*
          * Beacon deal integer IP format and snort BigInteger, then we translate it here.

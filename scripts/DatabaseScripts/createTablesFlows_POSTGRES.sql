@@ -1,4 +1,5 @@
 create table flows(
+		flowId serial not null primary key,
 		swID bigint not null,
                 tempo timestamp,
                 byteCount bigint,

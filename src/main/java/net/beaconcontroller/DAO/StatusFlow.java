@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import net.beaconcontroller.tools.DateTimeManager;
 import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
 
 import org.json.simple.JSONObject;
@@ -24,16 +25,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class StatusFlow extends  OFFlowStatisticsReply {
-    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss.SSS");
-    // Mysql
-    //private SimpleDateFormat formatterDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-    // Postgres
-    public static SimpleDateFormat formatterDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"); // Datetime format required by database.
     
     public final static int FLOW_NORMAL=0;
     public final static int FLOW_ABNORMAL=1;
     
-    
+    protected int flowId; // This field is auto increment!
     protected long swID;
     protected Date time;
     protected byte[] dataLayerDestination;
@@ -108,8 +104,8 @@ public class StatusFlow extends  OFFlowStatisticsReply {
                 this.networkSource+":"+this.transportSource+"->"+
                 this.networkDestination+":"+this.transportDestination+" ("+
                 this.networkProtocol+")"+" bytes: " +this.byteCount + " packets: " + this.packetCount +
-                " live: "+ this.life +" - "+ formatter.format(this.time)+" type: "+ convertFlowTypeToString()+
-                " inSwMemory: "+ this.inSwitchesMemory);
+                " live: "+ this.life +" - "+ DateTimeManager.formatter.format(this.time)+" type: "+ convertFlowTypeToString()+
+                " inSwMemory: "+ this.inSwitchesMemory + "flowId"+ this.flowId);
     }
     
     
@@ -128,12 +124,14 @@ public class StatusFlow extends  OFFlowStatisticsReply {
         flowJSON.put("byteCount", this.byteCount);
         flowJSON.put("packetCount", this.packetCount);
         flowJSON.put("life", this.life);
-        flowJSON.put("time", formatter.format(this.time));
+        flowJSON.put("time", DateTimeManager.formatter.format(this.time));
         flowJSON.put("flowType", convertFlowTypeToString());
         return flowJSON;
     }
     
-    
+    public int getFlowId() {
+        return flowId;
+    }
     public byte[] getDataLayerDestination() {
         return dataLayerDestination;
     }
@@ -264,7 +262,7 @@ public class StatusFlow extends  OFFlowStatisticsReply {
      */
     public void setTime(String datetime) {
         try {
-            this.time = formatter.parse(datetime);
+            this.time = DateTimeManager.formatter.parse(datetime);
         } catch (ParseException e) {
             log.debug("ATTENTION!!!, problems to convert datetime on StatusFlow class.");
             e.printStackTrace();
@@ -287,7 +285,7 @@ public class StatusFlow extends  OFFlowStatisticsReply {
      */
     public void setTimeFromDB(String datetime) {
         try {
-            this.time = formatterDB.parse(datetime);
+            this.time = DateTimeManager.formatterDB.parse(datetime);
         } catch (ParseException e) {
             log.debug("ATTENTION!!!, problems to convert datetime on StatusFlow class.");
             e.printStackTrace();
@@ -295,11 +293,11 @@ public class StatusFlow extends  OFFlowStatisticsReply {
     }
     
     public String getTimeString() {
-        return formatter.format(this.time).toString();
+        return DateTimeManager.formatter.format(this.time).toString();
     }
     
     public String getTimeStringBD() {
-        return formatterDB.format(this.time).toString();
+        return DateTimeManager.formatterDB.format(this.time).toString();
     }
     
     /**

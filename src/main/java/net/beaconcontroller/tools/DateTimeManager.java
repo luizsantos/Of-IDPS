@@ -6,6 +6,12 @@ import java.util.Date;
 
 public class DateTimeManager {
     
+    public static SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss.SSS"); // Datetime format used in Of-IDPS.
+    // Mysql
+    //public static SimpleDateFormat formatterDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"); // Datetime format required by database.
+    // Postgres
+    public static SimpleDateFormat formatterDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"); // Datetime format required by database.
+    
     /**
      * 
      * Verify if a datetime is on between a period of time. This period is the

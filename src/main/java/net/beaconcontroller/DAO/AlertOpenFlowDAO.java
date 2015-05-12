@@ -14,8 +14,6 @@ import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
 
 public class AlertOpenFlowDAO {
     protected static Logger log = LoggerFactory.getLogger(LearningSwitchTutorialSolution.class);
-    // Postgres
-    public static SimpleDateFormat formatterDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"); // Datetime format required by database.
     
     /**
      * Insert a OpenFlow security alert into a database!
@@ -67,12 +65,10 @@ public class AlertOpenFlowDAO {
             stmt = connection.prepareStatement(sql);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            log.debug("ATTENTION - Sorry wasn't possible to record alert data in database - SQL exception!");
-            // duplicate register
-            if(e.getSQLState().equals("23505")) {
-                System.out.println("WARNING!!!" + e.getMessage());
-            } else {
-                System.out.println("Erro during insert alert on AlertOpenFlow table!");
+            
+            // 23505 - duplicate register 
+            if(!e.getSQLState().equals("23505")) {
+                log.debug("ATTENTION - Sorry wasn't possible to record OpenFlow alert data in database - SQL exception!");
                 e.printStackTrace();
             }
         } finally {

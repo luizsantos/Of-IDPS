@@ -18,6 +18,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import net.beaconcontroller.tools.DateTimeManager;
 import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
 
 import org.slf4j.Logger;
@@ -27,13 +28,6 @@ public class StatusFlowDAO extends Thread {
     private StatusFlow statusFlow = null;
     protected static Logger log = LoggerFactory.getLogger(LearningSwitchTutorialSolution.class);
     private static int nthread=0;
-    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss.SSS"); // Datetime format used in Of-IDPS.
-    // Mysql
-    //private SimpleDateFormat formatterDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"); // Datetime format required by database.
-    // Postgres
-    public static SimpleDateFormat formatterDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"); // Datetime format required by database.
-    
-    
     
     /**
      * Start the class using the object StatusFlow to be written and the name of database.
@@ -58,7 +52,7 @@ public class StatusFlowDAO extends Thread {
     public List<StatusFlow> getNormalFlowsUpToSecondsAgo(int seconds) {
         Calendar currentDateTime = Calendar.getInstance();
         currentDateTime.add(Calendar.SECOND, (-1 * seconds));
-        String limitDatatime = formatterDB.format(currentDateTime.getTime());
+        String limitDatatime = DateTimeManager.formatterDB.format(currentDateTime.getTime());
         String sql = "SELECT * FROM flows WHERE tempo >= \'"+limitDatatime+ "\' and flowType = "+StatusFlow.FLOW_NORMAL+";";
         return getFlowsUpToSecondsAgo(seconds, sql);
     }
@@ -66,7 +60,7 @@ public class StatusFlowDAO extends Thread {
     public List<StatusFlow> getAbnormalFlowsUpToSecondsAgo(int seconds) {
         Calendar currentDateTime = Calendar.getInstance();
         currentDateTime.add(Calendar.SECOND, (-1 * seconds));
-        String limitDatatime = formatterDB.format(currentDateTime.getTime());
+        String limitDatatime = DateTimeManager.formatterDB.format(currentDateTime.getTime());
         String sql = "SELECT * FROM flows WHERE tempo >= \'"+limitDatatime+ "\' and flowType = "+StatusFlow.FLOW_ABNORMAL+";";
         return getFlowsUpToSecondsAgo(seconds, sql);
     }
@@ -74,7 +68,7 @@ public class StatusFlowDAO extends Thread {
     public List<StatusFlow> getAllFlowsUpToSecondsAgo(int seconds) {
         Calendar currentDateTime = Calendar.getInstance();
         currentDateTime.add(Calendar.SECOND, (-1 * seconds));
-        String limitDatatime = formatterDB.format(currentDateTime.getTime());
+        String limitDatatime = DateTimeManager.formatterDB.format(currentDateTime.getTime());
         String sql = "SELECT * FROM flows WHERE tempo >= \'"+limitDatatime+ "\';";
         return getFlowsUpToSecondsAgo(seconds, sql);
     }
@@ -435,7 +429,7 @@ public class StatusFlowDAO extends Thread {
         
         // The alert time minus an amount of time in seconds to search the flow!
         time.add(Calendar.SECOND, (-1 * seconds));
-        String limitDatatime = formatterDB.format(time.getTime());
+        String limitDatatime = DateTimeManager.formatterDB.format(time.getTime());
         
         Connection connection = null;
         Statement stmt = null;
