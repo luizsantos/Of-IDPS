@@ -69,6 +69,17 @@ public class DateTimeManager {
     }
     
     /**
+     * Get a date less an amount of seconds and return a string in the format database. 
+     * @param date - Date to be reduced.
+     * @param seconds - Seconds to be reduced from the date.
+     * @return - String with the formated database date. 
+     */
+    public static String getStringDBdateLessAmountOfSeconds(Date date, int seconds) {
+        Date dateLessSeconds = dateLessAmountOfSeconds(date, seconds);
+        return dateToDBString(dateLessSeconds);
+    }
+    
+    /**
      * Reduce an amount of seconds from a date.
      * 
      * @param date - Date to be reduced.

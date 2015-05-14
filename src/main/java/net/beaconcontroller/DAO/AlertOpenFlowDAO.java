@@ -35,7 +35,7 @@ public class AlertOpenFlowDAO {
         String stringlimitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);        
         String sql = "SELECT * FROM alertsOpenFlow " +
         		"WHERE tempo >= \'"+ stringlimitDatatime+ "\' " +
-        				" and tempo <= \'" + stringCurrentDateTime + "\' " + 
+        				" and tempo <= \'" + stringCurrentDateTime + "\' " +
         				";";
         log.debug("alertOpenFlow sql: {}", sql);
         return getOpenFlowAlertsUpToSecondsAgo(seconds, sql);
@@ -47,9 +47,6 @@ public class AlertOpenFlowDAO {
         Statement stmt = null;
         ResultSet resultSqlSelect = null;
         List<AlertMessage> listOfOpenFlowAlerts = new ArrayList<AlertMessage>();
-        
-        //log.debug("SQL: "+ sql + " - Current time: "+ formatterDB.format(new Date()));
-        
         // Get database connection.
         try {
             DataSource ds;

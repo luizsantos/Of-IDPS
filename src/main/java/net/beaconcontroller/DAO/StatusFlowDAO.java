@@ -57,10 +57,12 @@ public class StatusFlowDAO extends Thread {
      * @return - List of status flows.
      */
     public List<StatusFlow> getNormalFlowsUpToSecondsAgo(int seconds) {
-        Calendar currentDateTime = Calendar.getInstance();
-        currentDateTime.add(Calendar.SECOND, (-1 * seconds));
-        String limitDatatime = DateTimeManager.formatterDB.format(currentDateTime.getTime());
-        String sql = "SELECT * FROM flows WHERE tempo >= \'"+limitDatatime+ "\' and flowType = "+StatusFlow.FLOW_NORMAL+";";
+        String currentDatetime = DateTimeManager.getStringDBFromCurrentDate();
+        String limitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);
+        String sql = "SELECT * FROM flows WHERE " +
+        		" tempo >= \'"+limitDatatime+ "\' and " +
+        		" tempo <= \'"+currentDatetime +"\' and" + 
+        		" flowType = "+StatusFlow.FLOW_NORMAL+";";
         return getFlowsUpToSecondsAgo(seconds, sql);
     }
     
@@ -71,10 +73,12 @@ public class StatusFlowDAO extends Thread {
      * @return - List of status flows.
      */
     public List<StatusFlow> getAbnormalFlowsUpToSecondsAgo(int seconds) {
-        Calendar currentDateTime = Calendar.getInstance();
-        currentDateTime.add(Calendar.SECOND, (-1 * seconds));
-        String limitDatatime = DateTimeManager.formatterDB.format(currentDateTime.getTime());
-        String sql = "SELECT * FROM flows WHERE tempo >= \'"+limitDatatime+ "\' and flowType = "+StatusFlow.FLOW_ABNORMAL+";";
+        String currentDatetime = DateTimeManager.getStringDBFromCurrentDate();
+        String limitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);
+        String sql = "SELECT * FROM flows WHERE " +
+        		" tempo >= \'"+limitDatatime+ "\' and " +
+        		" tempo <= \'"+currentDatetime +"\' and" + 
+        	    " flowType = "+StatusFlow.FLOW_ABNORMAL+";";
         return getFlowsUpToSecondsAgo(seconds, sql);
     }
     
@@ -85,10 +89,12 @@ public class StatusFlowDAO extends Thread {
      * @return - List of status flows.
      */
     public List<StatusFlow> getAllFlowsUpToSecondsAgo(int seconds) {
-        Calendar currentDateTime = Calendar.getInstance();
-        currentDateTime.add(Calendar.SECOND, (-1 * seconds));
-        String limitDatatime = DateTimeManager.formatterDB.format(currentDateTime.getTime());
-        String sql = "SELECT * FROM flows WHERE tempo >= \'"+limitDatatime+ "\';";
+        String currentDatetime = DateTimeManager.getStringDBFromCurrentDate();
+        String limitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);
+        String sql = "SELECT * FROM flows WHERE " +
+        		" tempo >= \'"+limitDatatime+ "\' and " +
+        		" tempo <= \'"+currentDatetime +"\' and" + 
+        				";";
         return getFlowsUpToSecondsAgo(seconds, sql);
     }
     
@@ -103,12 +109,12 @@ public class StatusFlowDAO extends Thread {
      * @return - List of status flows.
      */
     public List<StatusFlow> getSuspiciousDoSTCPFlowsUpToSecondsAgo(int seconds, int dosTCPPacketCount, int dosTCPByteCount) {
-        Calendar currentDateTime = Calendar.getInstance();
-        currentDateTime.add(Calendar.SECOND, (-1 * seconds));
-        String limitDatatime = DateTimeManager.formatterDB.format(currentDateTime.getTime());
+        String currentDatetime = DateTimeManager.getStringDBFromCurrentDate();
+        String limitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);
         String sql = "SELECT * FROM flows " +
         		" WHERE " +
-        		" tempo >= \'"+limitDatatime+ "\' and" +
+        		" tempo >= \'"+limitDatatime+"\' and" +
+        		" tempo <= \'"+currentDatetime +"\' and" + 
         		" networkProtocol = " + ProtocolsNumbers.TCP + " and" +
         		" packetCount <= "+ dosTCPPacketCount +" and" +
         		" byteCount <= " + dosTCPByteCount +
@@ -474,8 +480,9 @@ public class StatusFlowDAO extends Thread {
             ) throws SQLException {
         
         // The alert time minus an amount of time in seconds to search the flow!
-        time.add(Calendar.SECOND, (-1 * seconds));
-        String limitDatatime = DateTimeManager.formatterDB.format(time.getTime());
+//        time.add(Calendar.SECOND, (-1 * seconds));
+//        String limitDatatime = DateTimeManager.formatterDB.format(time.getTime());
+        String limitDatatime = DateTimeManager.getStringDBdateLessAmountOfSeconds(time.getTime(), seconds);
         
         String sql = "UPDATE flows SET flowType = "+ StatusFlow.FLOW_ABNORMAL +
                 " WHERE networkSource = " + networkSource +
