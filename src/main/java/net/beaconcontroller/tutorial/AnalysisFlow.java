@@ -21,6 +21,7 @@ import net.beaconcontroller.DAO.StatusFlowDAO;
 import net.beaconcontroller.IPS.AlertMessage;
 import net.beaconcontroller.IPS.AlertMessageSharePriority;
 import net.beaconcontroller.IPS.FlowsSuspiciousOfDoS;
+import net.beaconcontroller.tools.ProtocolsNumbers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,6 +97,146 @@ public class AnalysisFlow extends Thread {
      * implemented....
      */
     public void analyzeDoSAttack() {
+        // If the amount of TCP packets in a flow is smaller or equal of this number it is suspect.
+        int dosTCPPacketCount = 2;
+        // If the amount of TCP bytes in a flow is smaller or equal of this number it is suspect. 
+        int dosTCPByteCount = 120;
+        // To store all flows that are suspicious of DDoS
+        FlowsSuspiciousOfDoS flowSuspiciousOfDDoS = new FlowsSuspiciousOfDoS();
+        
+        
+        
+        /*
+         * The OpenFlow flows are split here, the current flows that are
+         * currently installed on network switches have your flows logged in the
+         * currentFlows list, and flows that had already his flows removed from
+         * network switches has this flows registered on the database. In other
+         * words, current flows are in memory and old flows are in database.
+         */
+
+        // Get suspect old flows from database!
+        List<StatusFlow> databaseFlowsToByAnalysed = new ArrayList<StatusFlow>();
+        try {
+            StatusFlowDAO statusFlowDAO = new StatusFlowDAO();
+            // Get the already suspicious flows.
+            // TODO - What time period is better to use?
+            databaseFlowsToByAnalysed =  statusFlowDAO.getSuspiciousDoSTCPFlowsUpToSecondsAgo(this.timePeriodToRecoverFlowFromDB, dosTCPPacketCount, dosTCPByteCount);
+            
+            log.debug("Number of alert valid alerts from database: {}", databaseFlowsToByAnalysed.size());
+        } catch (ClassNotFoundException e) {
+            log.debug("ATTENTION - Sorry wasn't possible to read data in database - SQL error!");
+            e.printStackTrace();
+        } catch (SQLException e) {
+            log.debug("ATTENTION - Error during SQL select from flows table!");
+            e.printStackTrace();
+        }
+                
+        
+        
+        // Get current switches flows and select just the suspect flows.
+        /*
+         * Remember that a flow is just recorded on database when he get out 
+         * of totally of the switches! 
+         * 
+         * Thus, in the union of current and old flows, these flows won't be duplicated.
+         * 
+         * (see processStatusFlowsMessage method on SensorOpenFlow Class)
+         */
+        for (String key : SensorOpenFlow.currentFlows.keySet()) {
+            StatusFlow currentFlow = SensorOpenFlow.currentFlows.get(key);
+            // Set that is a flow from switches memory (not database)
+            currentFlow.setInSwitchesMemory(true);
+
+            /*
+             * Verify if current flow have few packets (<=3)! if this is true, then we
+             * consider suspicious.
+             * 
+             * This list have all current flows registered in memory (currentFlows list)
+             * and the flows from now until some seconds ago (timePeriodToRecoverFlowFromDB). 
+             * 
+             * And protocol is equal 6 (TCP)
+             * TODO - verify others protocols!
+             * 
+             * 120 just TCP header!
+             * 
+             */
+            if(currentFlow.getPacketCount() <= dosTCPPacketCount && 
+                    currentFlow.getNetworkProtocol()==ProtocolsNumbers.TCP && 
+                    currentFlow.getByteCount()<= dosTCPByteCount) {
+                // Save this current and suspect flow.
+                flowSuspiciousOfDDoS.putAlertsFlowOnListOfRelatedWithThisConnection(currentFlow);
+            }
+        }
+           
+        // Join both: current suspect flows and old suspect flows.
+        flowSuspiciousOfDDoS.putListOfAlertsFlowOnListOfRelatedWithThisConnection(databaseFlowsToByAnalysed);
+
+        /*
+         * 
+         * Here, we can put others identification methods to DoS attacks!
+         *
+         * IDEA - to UDP, and ICMP control the time! like 5 seconds with just only 5 packets!
+         * If we implement this we must put the above verification <=5 to only the TCP flows...
+         * 
+         */
+        
+        // Remove all old messages present in the list of malicious flows to do a new list!
+        listOfMaliciousFlows.clear();
+        
+        // Verify if all suspect network flows represents some threat to the system.
+        if(flowSuspiciousOfDDoS.isDanger()) {
+            /*
+             * If is danger add all flows in the list of malicious flows. 
+             * After these flows can be processed by the memory attack, for example!
+             */
+            //listOfMaliciousFlows.addAll(flowSuspiciousOfDDoS.getFlowsRelatedWithThisConnection());
+            // estou duplicando a tarefa, pois estou guardando em memória e em banco de dados! Como está cheio de threads acho que é melhor usar o DB!
+            flowSuspiciousOfDDoS.printStatistics();
+            
+            // Record alerts flow in the database!
+            AlertOpenFlowDAO alertOpenFlowDAO = new AlertOpenFlowDAO();
+            for(AlertMessageSharePriority alertMessageSharePriority : flowSuspiciousOfDDoS.getFlowsRelatedWithThisConnection()) {
+                alertOpenFlowDAO.insert(alertMessageSharePriority);
+            }
+            
+            
+            // Update flows on database as bad flows!
+            try {
+                StatusFlowDAO statusFlowDAO = new StatusFlowDAO();
+                
+                // Set all malicious flows found here as bad flow, on database.
+                for(StatusFlow maliciousFlow : databaseFlowsToByAnalysed) {
+                    if(maliciousFlow.getFlowType()!=StatusFlow.FLOW_ABNORMAL) {
+                        statusFlowDAO.updateBadFlowByFlowId(maliciousFlow.getFlowId());
+                    }
+                }
+                
+            } catch (ClassNotFoundException e) {
+                log.debug("ATTENTION - Sorry wasn't possible to read data in database - SQL error!");
+                e.printStackTrace();
+            } catch (SQLException e) {
+                log.debug("ATTENTION - Error during SQL select from flows table!");
+                e.printStackTrace();
+            }
+            
+            
+        }
+        
+        
+        
+
+
+    }
+    
+    /**
+     * Looking for DoS and DDoS attacks! This is made analyzing the low number 
+     * of packets transmitted in a OpenFlow flow.
+     * 
+     * TODO - For now it's just to prove that is possible use the OpenFlow to
+     * mitigate suspects flow! In the future, new methods should be
+     * implemented....
+     */
+    public void analyzeDoSAttack_2015_04_12() {
         // Remove all old messages present in the list of malicious flows to do a new list!
         listOfMaliciousFlows.clear();
         
@@ -176,7 +317,7 @@ public class AnalysisFlow extends Thread {
              */
         }
         
-        if(flowSuspiciousOfDDoS.verifyIfSourceAddressHaveMaliciousFlows()) {
+        if(flowSuspiciousOfDDoS.isDanger()) {
             listOfMaliciousFlows.addAll(flowSuspiciousOfDDoS.getFlowsRelatedWithThisConnection());
             flowSuspiciousOfDDoS.printStatistics();
         }
@@ -289,7 +430,7 @@ public class AnalysisFlow extends Thread {
             flowsSuspiciousOfDoS.setALLAlertMessageSharePriorityObjectsWithThisGeneralPriority();
             
             // Verify if this source network address have malicious flows!
-            if (flowsSuspiciousOfDoS.verifyIfSourceAddressHaveMaliciousFlows()) {
+            if (flowsSuspiciousOfDoS.isDanger()) {
                 // If yes, stores to be processed by MemorysAttacks itemsets algorithm.
                 listOfMaliciousFlows.addAll(flowsSuspiciousOfDoS.getFlowsRelatedWithThisConnection());
             }

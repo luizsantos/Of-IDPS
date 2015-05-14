@@ -88,6 +88,26 @@ public class FlowsSuspiciousOfDoS {
     }
     
     /**
+     * Add list of flows in the list of related suspicious flow with this source network
+     * address. And automatically: 
+     *  1. convert the flow to alert message, 
+     *  2. put this alert in a list of related alerts, 
+     *  3. update the number of suspicious flow that math with this source address, and
+     *  4. update the general alert security priority!
+     */
+    public void putListOfAlertsFlowOnListOfRelatedWithThisConnection(List<StatusFlow> listStatusFlow) {
+        for (StatusFlow statusFlow : listStatusFlow) {
+            this.networkSource = statusFlow.getNetworkSource();
+            AlertMessageSharePriority alertMessage = new AlertMessageSharePriority();
+            alertMessage = statusFlowToAlertMessage(statusFlow);
+            getFlowsRelatedWithThisConnection().add(alertMessage);
+            this.updateNumberOfSuspiciousFlowsAndGeneralPriority();
+        }
+    }
+    
+    
+    
+    /**
      * Update the number of suspicious flow related with this source network
      * address, and his general alert security priority. We do this looking to
      * size of flows added in flowsRelatedWithThisConnection.
@@ -201,7 +221,7 @@ public class FlowsSuspiciousOfDoS {
      * @return true - have malicious flows.
      *          false - not malicious flows.
      */
-    public boolean verifyIfSourceAddressHaveMaliciousFlows() {
+    public boolean isDanger() {
         if(getGeneralPriorityAlert()==AlertMessage.NORMAL_PACKET) {
             return false; // not malicious!
         }

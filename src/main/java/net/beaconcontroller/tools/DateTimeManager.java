@@ -1,8 +1,14 @@
 package net.beaconcontroller.tools;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DateTimeManager {
     
@@ -11,6 +17,33 @@ public class DateTimeManager {
     //public static SimpleDateFormat formatterDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"); // Datetime format required by database.
     // Postgres
     public static SimpleDateFormat formatterDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"); // Datetime format required by database.
+    
+    protected static Logger log = LoggerFactory.getLogger(LearningSwitchTutorialSolution.class);
+    
+    /**
+     * Convert a string to date, the string must be passed in format:
+     *              yyyy-MM-dd-HH mm:ss.SSS
+     * where: 
+     *  yyyy - year
+     *  MM - month
+     *  dd - day
+     *  HH - hour
+     *  mm - minutes
+     *  ss - seconds
+     *  SSS - milliseconds
+     * 
+     * @param time - yyyy-MM-dd HH:mm:ss.SSS
+     * @return Date.
+     */
+    public static Date convertDBDateToJavaDate(String datetime) {
+        try {
+            return formatterDB.parse(datetime);
+        } catch (ParseException e) {
+            log.debug("ATTENTION!!!, problems to convert datetime on StatusFlow class.");
+            e.printStackTrace();
+        } 
+        return null;
+    }
     
     /**
      * 
@@ -27,7 +60,6 @@ public class DateTimeManager {
     public static boolean verifyDateTimeRangeInSeconds(Date analysedDate,
             Calendar currentDate, int periodInSeconds) {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss.SSS");
         Calendar currentDateLessPeriodInSeconds = Calendar.getInstance();
         currentDateLessPeriodInSeconds.setTime(currentDate.getTime());
         currentDateLessPeriodInSeconds.add(Calendar.SECOND,(periodInSeconds * -1));

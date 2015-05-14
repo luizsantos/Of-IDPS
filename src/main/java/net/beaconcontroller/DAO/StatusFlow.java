@@ -132,6 +132,9 @@ public class StatusFlow extends  OFFlowStatisticsReply {
     public int getFlowId() {
         return flowId;
     }
+    public void setFlowId(int flowId) {
+        this.flowId = flowId;
+    }
     public byte[] getDataLayerDestination() {
         return dataLayerDestination;
     }

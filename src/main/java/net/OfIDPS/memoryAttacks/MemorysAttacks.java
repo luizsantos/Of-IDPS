@@ -55,6 +55,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+import net.beaconcontroller.DAO.AlertOpenFlowDAO;
 import net.beaconcontroller.DAO.StatusFlowDAO;
 import net.beaconcontroller.IPS.AlertMessageSharePriority;
 import net.beaconcontroller.IPS.IntrusionPreventionSystem;
@@ -251,10 +252,19 @@ public class MemorysAttacks extends Thread {
             
             if (LearningSwitchTutorialSolution.disableOfIDPS_UseOfAlerts != 1
                     && LearningSwitchTutorialSolution.disableOfIDPS_UseOfgetStatisticsFromNetwork != 1) {
-                AnalysisFlow analysisFlow = new AnalysisFlow();
-                List<AlertMessageSharePriority> listOfMaliciousFlows = new ArrayList<AlertMessageSharePriority>();
-                listOfMaliciousFlows = analysisFlow.getListOfMaliciousFlows();
-                alertsFromOpenFlowDoS = this.convertOpenFlowDoSAlertsToBeProcessedByItemsetsAlgorithm(listOfMaliciousFlows);
+                // old method
+//                 AnalysisFlow analysisFlow = new AnalysisFlow();
+//                 List<AlertMessageSharePriority> listOfMaliciousFlows = new ArrayList<AlertMessageSharePriority>();
+//                 listOfMaliciousFlows = analysisFlow.getListOfMaliciousFlows();
+//                 alertsFromOpenFlowDoS = this.convertOpenFlowDoSAlertsToBeProcessedByItemsetsAlgorithm(listOfMaliciousFlows);
+//                
+                // new method
+                List<AlertMessage> listOfMaliciousFlows = new ArrayList<AlertMessage>();
+                AlertOpenFlowDAO alertOpenFlowDAO = new AlertOpenFlowDAO();
+                listOfMaliciousFlows = alertOpenFlowDAO.getOpenFlowAlertsUpToSecondsAgo(timeToAlertsStayAtShortMemory);
+                alertsFromOpenFlowDoS = convertAlertMessagesToBeProcessedByItemsetsAlgorithm(listOfMaliciousFlows);
+                
+                
             } else {
                 log.debug("\t!!!!!!!! ATTENTION, Of-IDPS ALERT OPENFLOW STATISTICS IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variables disableOfIDPS_UseOfgetStatisticsFromNetwork and disableOfIDPS_UseOfAlerts on LearningSwithTutorialSolution class...");
             }

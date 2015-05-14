@@ -1,5 +1,5 @@
 create table alertsOpenFlow(
-                tempo timestamp not null,
+                tempo timestamp with time zone not null,
                 priority int,
                 alertDescription varchar(25) not null,
                 networkSource int not null,

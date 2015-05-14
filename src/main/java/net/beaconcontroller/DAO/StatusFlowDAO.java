@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import net.beaconcontroller.tools.DateTimeManager;
+import net.beaconcontroller.tools.ProtocolsNumbers;
 import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
 
 import org.slf4j.Logger;
@@ -49,6 +50,12 @@ public class StatusFlowDAO extends Thread {
 
     }
     
+    /**
+     * Get all normal flows from current time minus an amount of seconds.
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @return - List of status flows.
+     */
     public List<StatusFlow> getNormalFlowsUpToSecondsAgo(int seconds) {
         Calendar currentDateTime = Calendar.getInstance();
         currentDateTime.add(Calendar.SECOND, (-1 * seconds));
@@ -57,6 +64,12 @@ public class StatusFlowDAO extends Thread {
         return getFlowsUpToSecondsAgo(seconds, sql);
     }
     
+    /**
+     * Get all abnormal flows from current time minus an amount of seconds.
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @return - List of status flows.
+     */
     public List<StatusFlow> getAbnormalFlowsUpToSecondsAgo(int seconds) {
         Calendar currentDateTime = Calendar.getInstance();
         currentDateTime.add(Calendar.SECOND, (-1 * seconds));
@@ -65,11 +78,41 @@ public class StatusFlowDAO extends Thread {
         return getFlowsUpToSecondsAgo(seconds, sql);
     }
     
+    /**
+     * Get all flows from current time minus an amount of seconds.
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @return - List of status flows.
+     */
     public List<StatusFlow> getAllFlowsUpToSecondsAgo(int seconds) {
         Calendar currentDateTime = Calendar.getInstance();
         currentDateTime.add(Calendar.SECOND, (-1 * seconds));
         String limitDatatime = DateTimeManager.formatterDB.format(currentDateTime.getTime());
         String sql = "SELECT * FROM flows WHERE tempo >= \'"+limitDatatime+ "\';";
+        return getFlowsUpToSecondsAgo(seconds, sql);
+    }
+    
+    /**
+     * Get flows that are suspicious of DoS attacks.
+     * Select flows from current time minus an amount of seconds, that have few packets, 
+     * and have also few bytes on the flow. 
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @param dosTCPPacketCount - Number of TCP packets in a flow.
+     * @param dosTCPByteCount - Number of TCP bytes in a flow.
+     * @return - List of status flows.
+     */
+    public List<StatusFlow> getSuspiciousDoSTCPFlowsUpToSecondsAgo(int seconds, int dosTCPPacketCount, int dosTCPByteCount) {
+        Calendar currentDateTime = Calendar.getInstance();
+        currentDateTime.add(Calendar.SECOND, (-1 * seconds));
+        String limitDatatime = DateTimeManager.formatterDB.format(currentDateTime.getTime());
+        String sql = "SELECT * FROM flows " +
+        		" WHERE " +
+        		" tempo >= \'"+limitDatatime+ "\' and" +
+        		" networkProtocol = " + ProtocolsNumbers.TCP + " and" +
+        		" packetCount <= "+ dosTCPPacketCount +" and" +
+        		" byteCount <= " + dosTCPByteCount +
+        		";";
         return getFlowsUpToSecondsAgo(seconds, sql);
     }
     
@@ -103,6 +146,7 @@ public class StatusFlowDAO extends Thread {
             resultSqlSelect = stmt.executeQuery(sql);
             while (resultSqlSelect.next()) {
                 StatusFlow statusFlow = new StatusFlow();
+                statusFlow.setFlowId(resultSqlSelect.getInt("flowId"));
                 statusFlow.setSwID(resultSqlSelect.getLong("swID"));
                 statusFlow.setTimeFromDB(resultSqlSelect.getString("tempo"));
                 statusFlow.setByteCount(resultSqlSelect.getLong("byteCount"));
@@ -409,12 +453,14 @@ public class StatusFlowDAO extends Thread {
     }
     
     /**
-     * Insert a flow table register in a database!
-     * 
-     * Observation: the synchronized parameter was used to avoid that concurrent
-     * threads write on the database at same time. Without this the sqlite
-     * database presented problems during tests.
-     * 
+     * Update/set a bad flow using some flow fields.
+     * @param networkSource - Source address IP.
+     * @param networkDestination - Destination address IP.
+     * @param networkProtocol - Network protocol (TCP/UDP/ICMP...).
+     * @param transportSource - Source port or ICMP type.
+     * @param transportDestination - Destination port or ICMP code.
+     * @param time - Datetime.
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
      * @throws SQLException
      */
     public synchronized void updateBadFlow(
@@ -431,9 +477,6 @@ public class StatusFlowDAO extends Thread {
         time.add(Calendar.SECOND, (-1 * seconds));
         String limitDatatime = DateTimeManager.formatterDB.format(time.getTime());
         
-        Connection connection = null;
-        Statement stmt = null;
-        //log.debug("Inserting register in database");
         String sql = "UPDATE flows SET flowType = "+ StatusFlow.FLOW_ABNORMAL +
                 " WHERE networkSource = " + networkSource +
                 " AND networkDestination = " + networkDestination +
@@ -441,19 +484,35 @@ public class StatusFlowDAO extends Thread {
                 " AND transportSource = " + transportSource +
                 " AND transportDestination = " + transportDestination +
                 " AND tempo >= \'"+limitDatatime+ "\'"+
+                " AND flowType <> " + StatusFlow.FLOW_ABNORMAL +
+                ";";
+        this.update(sql);
+    }
+    
+    /**
+     * Update/set a bad flow using the flow identification number.
+     * @param flowId - Flow identification number.
+     * @throws SQLException
+     */
+    public synchronized void updateBadFlowByFlowId(int flowId) throws SQLException {
+        String sql = "UPDATE flows SET flowType = "+ StatusFlow.FLOW_ABNORMAL +
+                " WHERE flowId = " + flowId +
+                " AND flowType <> " + StatusFlow.FLOW_ABNORMAL +
                 ";";
         
-        log.debug("sql-update: {}",sql);
-                
-         /*
-         * the commented lines below can be used to verify the numbers of
-         * threads used to record in the database.
-         */
-//            int nthr = getNthread();
-//            setNthread();
-//            log.debug("Threading {} - >RECORDING<",nthr);
-//         log.debug("sql={}",sql);
+        //log.debug("bad sql: {}",sql);
         
+        this.update(sql);
+    }
+    
+    /**
+     * Update a flow.
+     * @param sql - SQL expression.
+     * @throws SQLException
+     */
+    public synchronized void update(String sql) throws SQLException {
+        Connection connection = null;
+        Statement stmt = null;
         // Get database connection.
         try {
             DataSource ds;
@@ -464,7 +523,6 @@ public class StatusFlowDAO extends Thread {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            
             stmt = connection.createStatement();
             stmt.executeUpdate(sql);
             
@@ -480,7 +538,6 @@ public class StatusFlowDAO extends Thread {
                     e.printStackTrace();
                 }
             }
-            
             if (connection != null ) {
                 try {
                     connection.close();
