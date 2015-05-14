@@ -37,13 +37,12 @@ import org.slf4j.LoggerFactory;
 
 import net.OfIDPS.memoryAttacks.MemorysAttacks;
 import net.beaconcontroller.packet.IPv4;
+import net.beaconcontroller.tools.DateTimeManager;
 import net.beaconcontroller.tutorial.CONFIG;
 import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
 
 
 public class AlertMessage {
-    public static SimpleDateFormat formatterDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"); // Datetime format required by database.
-    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss.SSS"); // Used to format datetime.
     private Date tempo = new Date(); // Datatime of alert/rule
     private int life=1; // If >=0 rule is alive/valid.
     private boolean newRule = true; // If true, is a new rule!
@@ -154,7 +153,7 @@ public class AlertMessage {
     }
     
     public String getTempoStringBD() {
-        return formatterDB.format(this.tempo).toString();
+        return DateTimeManager.dateToDBString(this.tempo);
     }
     
     /**
@@ -219,7 +218,7 @@ public class AlertMessage {
         Date date = new Date();
         // Convert
         try {
-            date = formatter.parse(yearString+"/"+alertDate);
+            date = DateTimeManager.formatter.parse(yearString+"/"+alertDate);
         } catch (ParseException e) {
             log.debug("ATTENTION!!!, problems with time/date on alert message on MensagemAlerta class.");
             e.printStackTrace();
@@ -424,7 +423,7 @@ public class AlertMessage {
                 + this.getAlertDescription() + " support: ["
                 + this.getSupportApriori() + "]"+
                 " rule life: "+ +this.getLife() +
-                " date: " + formatter.format(this.getTempo()));
+                " date: " + DateTimeManager.formatter.format(this.getTempo()));
     }
     
     /**
@@ -442,7 +441,7 @@ public class AlertMessage {
                 + this.getSupportApriori() + " sec desc: "
                 + this.getAlertDescription() + " - "+
                 " rule life: "+ +this.getLife() +
-                " date: " + formatter.format(this.getTempo());
+                " date: " + DateTimeManager.formatter.format(this.getTempo());
     }
     
     /**
@@ -464,7 +463,7 @@ public class AlertMessage {
         alertJson.put("averagePacketsMatchInOfControllerPerHop", this.getAveragePacketsMatchInOfControllerPerHop());
         alertJson.put("totalPacketsMatchInOfController", this.getTotalPacketsMatchInOfController());
         alertJson.put("averageOfTotalPacketsMatchInOfControllerPerSeconds", this.getAverageOfTotalPacketsMatchInOfControllerPerSeconds());
-        alertJson.put("tempo", formatter.format(this.getTempo()));
+        alertJson.put("tempo", DateTimeManager.formatter.format(this.getTempo()));
         return alertJson.toJSONString();
     }
     
