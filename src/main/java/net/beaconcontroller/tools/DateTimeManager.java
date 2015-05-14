@@ -20,6 +20,68 @@ public class DateTimeManager {
     
     protected static Logger log = LoggerFactory.getLogger(LearningSwitchTutorialSolution.class);
     
+    
+    /**
+     * Convert date to a string with database format. 
+     * @param date - A date.
+     * @return - String with database date format. 
+     */
+    public static String dateToDBString(Date date) {
+        return formatterDB.format(date).toString();
+    }
+    
+    
+    /**
+     * Get a string from current date.
+     * @return - A string DB of current date.
+     */
+    public static String getStringDBFromCurrentDate() {
+        return dateToDBString(getCurrentDate());
+    }
+    
+    /**
+     * Get current date.
+     * @return - Current date.
+     */
+    public static Date getCurrentDate() {
+        return Calendar.getInstance().getTime();
+    }
+    
+    
+    /**
+     * Get a string from current date and reduce an amount of seconds.
+     * @param seconds - Seconds to be reduced from the current date.
+     * @return - A string DB from reduce date.
+     */
+    public static String getStringDBFromCurrentDateLessAmountOfSeconds(int seconds) {
+        Date date = getCurrentDateLessAmountOfSeconds(seconds);
+        return dateToDBString(date);
+    }
+    
+    /**
+     * Get the current date and reduce an amount of seconds.
+     * @param seconds - Seconds to be reduced from the current date.
+     * @return - Reduced date.
+     */
+    public static Date getCurrentDateLessAmountOfSeconds(int seconds) {
+        Date currentDate = getCurrentDate();
+        return dateLessAmountOfSeconds(currentDate, seconds);
+    }
+    
+    /**
+     * Reduce an amount of seconds from a date.
+     * 
+     * @param date - Date to be reduced.
+     * @param seconds - Seconds to be reduced from the date.
+     * @return - Reduced date.
+     */
+    public static Date dateLessAmountOfSeconds(Date date, int seconds) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.SECOND, (-1 * seconds));
+        return calendar.getTime();
+    }
+    
     /**
      * Convert a string to date, the string must be passed in format:
      *              yyyy-MM-dd-HH mm:ss.SSS

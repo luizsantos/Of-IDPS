@@ -31,12 +31,10 @@ public class AlertOpenFlowDAO {
      * @return - List of OpenFlow alerts.
      */
     public List<AlertMessage> getOpenFlowAlertsUpToSecondsAgo(int seconds) {
-        Calendar currentDateTime = Calendar.getInstance();
-        String stringCurrentDateTime = DateTimeManager.formatterDB.format(currentDateTime.getTime());
-        currentDateTime.add(Calendar.SECOND, (-1 * seconds));
-        String limitDatatime = DateTimeManager.formatterDB.format(currentDateTime.getTime());
+        String stringCurrentDateTime = DateTimeManager.getStringDBFromCurrentDate();
+        String stringlimitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);        
         String sql = "SELECT * FROM alertsOpenFlow " +
-        		"WHERE tempo >= \'"+limitDatatime+ "\' " +
+        		"WHERE tempo >= \'"+ stringlimitDatatime+ "\' " +
         				" and tempo <= \'" + stringCurrentDateTime + "\' " + 
         				";";
         log.debug("alertOpenFlow sql: {}", sql);

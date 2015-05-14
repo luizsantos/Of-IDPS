@@ -1,7 +1,7 @@
 create table flows(
 		flowId serial not null primary key,
 		swID bigint not null,
-                tempo timestamp with time zone not null,
+                tempo timestamp not null,
                 byteCount bigint,
                 cookie bigint,
                 durationNanoseconds int,
