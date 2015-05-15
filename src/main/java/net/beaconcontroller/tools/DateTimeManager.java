@@ -21,6 +21,19 @@ public class DateTimeManager {
     
     protected static Logger log = LoggerFactory.getLogger(LearningSwitchTutorialSolution.class);
     
+    /**
+     * Verify is a date is between a start date and stop date.
+     * @param dateStart - Start date.
+     * @param dateStop - Stop date
+     * @param dateToAnalyze - Date to be analyzed.
+     * @return - True if is between the dates and False is out of the interval.
+     */
+    public static boolean isBetweenTheDates(Date dateStart, Date dateStop, Date dateToAnalyze) {
+        if(dateToAnalyze.after(dateStart) && dateToAnalyze.before(dateStop)) {
+            return true; // dateToAnalyze is between dateStart and dateStop
+        }
+        return false; // dateToAnalyze is NOT between dateStart and dateStop
+    }
     
     /**
      * Verify if datetime have milliseconds, if don't has, put it.
@@ -110,16 +123,30 @@ public class DateTimeManager {
     }
     
     /**
-     * Reduce an amount of seconds from a date.
+     * Reduce an amount of seconds to a date.
      * 
      * @param date - Date to be reduced.
-     * @param seconds - Seconds to be reduced from the date.
+     * @param seconds - Seconds to be reduced to the date.
      * @return - Reduced date.
      */
     public static Date dateLessAmountOfSeconds(Date date, int seconds) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.SECOND, (-1 * seconds));
+        return calendar.getTime();
+    }
+    
+    /**
+     * Add an amount of seconds to a date.
+     * 
+     * @param date - Date to be added.
+     * @param seconds - Seconds to be added to the date.
+     * @return - Added date.
+     */
+    public static Date datePlusAmountOfSeconds(Date date, int seconds) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.SECOND, (seconds));
         return calendar.getTime();
     }
     

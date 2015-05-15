@@ -45,7 +45,7 @@ public class SnortAlertMessageDAO {
      * @param seconds - Amount of seconds that will be used as period of time between the current time.
      * @return - A list of alerts between the period of time - current time less seconds set by parameter and current time.
      */
-    public synchronized List<AlertMessage> getSnortAlertsUpToSecondsAgo(int seconds) {
+    public synchronized List<AlertMessage> getSnortAlertsUpToSecondsAgo(int seconds, String stringWhoCalled) {
         String limitDatetime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);
         String currentDatetime = DateTimeManager.getStringDBFromCurrentDate();
         Connection connection = null;
@@ -67,7 +67,7 @@ public class SnortAlertMessageDAO {
             // TCP
             String sqlTCP = "SELECT ip_src,ip_dst,ip_proto,t.tcp_sport,t.tcp_dport,sig_id,sig_priority,timestamp " +
                     "FROM event e, iphdr i, signature s, tcphdr t " +
-                    "WHERE timestamp >= \'"+limitDatetime+ "\' and timestamp <= \'"+limitDatetime+ "\'"+
+                    "WHERE timestamp >= \'"+limitDatetime+ "\' and timestamp <= \'"+currentDatetime+ "\'"+
                     		" and e.cid=i.cid and e.sid=i.sid and e.signature=s.sig_id and t.cid=e.cid and t.sid=e.sid;";
             resultSqlSelect = stmt.executeQuery(sqlTCP);
             getTCPAlertsListFromSQLQuery(resultSqlSelect,listOfReturnedSnortAlerts);
@@ -77,7 +77,7 @@ public class SnortAlertMessageDAO {
             // UDP
             String sqlUDP = "SELECT ip_src,ip_dst,ip_proto,t.udp_sport,t.udp_dport,sig_id,sig_priority,timestamp " +
                     "FROM event e, iphdr i, signature s, udphdr t " +
-                    "WHERE timestamp >= \'"+limitDatetime+ "\' and timestamp <= \'"+limitDatetime+ "\'"+
+                    "WHERE timestamp >= \'"+limitDatetime+ "\' and timestamp <= \'"+currentDatetime+ "\'"+
                     		" and e.cid=i.cid and e.sid=i.sid and e.signature=s.sig_id and t.cid=e.cid and t.sid=e.sid;";
             resultSqlSelect = stmt.executeQuery(sqlUDP);
             getUDPAlertsListFromSQLQuery(resultSqlSelect,listOfReturnedSnortAlerts);
@@ -86,13 +86,13 @@ public class SnortAlertMessageDAO {
             // ICMP
             String sqlICMP = "SELECT ip_src,ip_dst,ip_proto,t.icmp_type,t.icmp_code,sig_id,sig_priority,timestamp " +
                     "FROM event e, iphdr i, signature s, icmphdr t " +
-                    "WHERE timestamp >= \'"+limitDatetime+ "\' and timestamp <= \'"+limitDatetime+ "\'"+
+                    "WHERE timestamp >= \'"+limitDatetime+ "\' and timestamp <= \'"+currentDatetime+ "\'"+
                     		" and e.cid=i.cid and e.sid=i.sid and e.signature=s.sig_id and t.cid=e.cid and t.sid=e.sid;";
             resultSqlSelect = stmt.executeQuery(sqlICMP);
             getICMPAlertsListFromSQLQuery(resultSqlSelect,listOfReturnedSnortAlerts);
             
             int totalICMPSnortAlerts = listOfReturnedSnortAlerts.size() - totalTCPSnortAlerts - totalUDPSnortAlerts;
-            log.debug("{} - TCP, {} - UDP, {} ICMP Snort alerts, ", totalTCPSnortAlerts, totalUDPSnortAlerts, totalICMPSnortAlerts);
+            log.debug("{} - TCP, {} - UDP, {} ICMP SNORT alerts - From {}, ", totalTCPSnortAlerts, totalUDPSnortAlerts, totalICMPSnortAlerts, stringWhoCalled);
             
             
         } catch (SQLException e) {

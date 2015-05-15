@@ -143,7 +143,7 @@ public class MemorysAttacks extends Thread {
             
             
             // Get alerts from IDS using the time of sensorial memory. 
-            List<AlertMessage> listOfSnortAlertsSensorial = ids.getAlertsFromSnortIDS(timeToAlertsStayAtSensorialMemory);
+            List<AlertMessage> listOfSnortAlertsSensorial = ids.getAlertsFromSnortIDS(timeToAlertsStayAtSensorialMemory, "Sensorial Memory");
             Map<String,AlertMessage> mapOfSnortAlertsSensorialToUpdateBadFlowsDB = new HashMap<String, AlertMessage>();
             
             // Remove old rules from sensorial memory to rerun the sensorial memory algorithm. 
@@ -244,7 +244,8 @@ public class MemorysAttacks extends Thread {
             String alertsFromOpenFlowDoS = "";
             
             if (LearningSwitchTutorialSolution.disableOfIDPS_UseIDSAlerts != 1) {
-                List<AlertMessage> listOfSnortAlerts = ids.getAlertsFromSnortIDS();
+                //List<AlertMessage> listOfSnortAlerts = ids.getAlertsFromSnortIDS();
+                List<AlertMessage> listOfSnortAlerts = ids.getAlertsFromSnortIDS(timeToAlertsStayAtShortMemory, "Short memory");
                 alertsFromIDSSnort = convertAlertMessagesToBeProcessedByItemsetsAlgorithm(listOfSnortAlerts);
             } else {
                 log.debug("\t!!!!!!!! ATTENTION, Of-IDPS IDS alerts analysis IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variable disableOfIDPS_UseIDSAlerts on LearningSwithTutorialSolution class...");

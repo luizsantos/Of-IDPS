@@ -94,7 +94,7 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
      *  This is used in the MemoryAttacks class.
      *  
      */
-    public static int disableOfIDPS_UseIDSAlerts=1;
+    public static int disableOfIDPS_UseIDSAlerts=0;
     
     /*
      * Used to send and receive OpenFlow statistics messages, like flows

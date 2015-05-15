@@ -117,30 +117,30 @@ public class IntrusionPreventionSystem extends Thread implements
     
     
     /**
-     * Gets alerts from Snort database (fast log) IDS.
+     * Gets alerts from Snort database IDS.
      * 
      * @return list of alerts from Snort in the format of Of-IDPS AlertMessages.
      * 
      */
-    public List<AlertMessage> getAlertsFromSnortIDS() {
-        SnortAlertMessageDAO snortAlertMessageDAO = new SnortAlertMessageDAO();
-        //List<AlertMessage> listOfSnortAlerts = snortAlertMessageDAO.getSnortAlerts();
-        List<AlertMessage> listOfSnortAlerts = snortAlertMessageDAO.getSnortAlertsUpToSecondsAgo(MemorysAttacks.timeToAlertsStayAtShortMemory);
-        return listOfSnortAlerts;  
-    }
+//    public List<AlertMessage> getAlertsFromSnortIDS(String stringWhoCalled) {
+//        SnortAlertMessageDAO snortAlertMessageDAO = new SnortAlertMessageDAO();
+//        //List<AlertMessage> listOfSnortAlerts = snortAlertMessageDAO.getSnortAlerts();
+//        List<AlertMessage> listOfSnortAlerts = snortAlertMessageDAO.getSnortAlertsUpToSecondsAgo(MemorysAttacks.timeToAlertsStayAtShortMemory, stringWhoCalled);
+//        return listOfSnortAlerts;  
+//    }
     
     /**
-     * Gets alerts from Snort database (fast log) IDS using a period of time 
+     * Gets alerts from Snort database IDS using a period of time 
      * (from current datetime minus an amount of seconds).
      * 
      * @param timeInSeconds - amount of time in seconds to be decreased from the current datetime system.
      * @return list of alerts from Snort in the format of Of-IDPS AlertMessages.
      * 
      */
-    public List<AlertMessage> getAlertsFromSnortIDS(int timeInSeconds) {
+    public List<AlertMessage> getAlertsFromSnortIDS(int timeInSeconds, String stringWhoCalled) {
         SnortAlertMessageDAO snortAlertMessageDAO = new SnortAlertMessageDAO();
         //List<AlertMessage> listOfSnortAlerts = snortAlertMessageDAO.getSnortAlerts();
-        List<AlertMessage> listOfSnortAlerts = snortAlertMessageDAO.getSnortAlertsUpToSecondsAgo(timeInSeconds);
+        List<AlertMessage> listOfSnortAlerts = snortAlertMessageDAO.getSnortAlertsUpToSecondsAgo(timeInSeconds, stringWhoCalled);
         return listOfSnortAlerts;  
     }
 

@@ -18,7 +18,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import net.beaconcontroller.DAO.AlertOpenFlowDAO;
 import net.beaconcontroller.DAO.StatusFlow;
 import net.beaconcontroller.DAO.StatusFlowDAO;
-import net.beaconcontroller.IPS.AlertMessage;
 import net.beaconcontroller.IPS.AlertMessageSharePriority;
 import net.beaconcontroller.IPS.FlowsSuspiciousOfDoS;
 import net.beaconcontroller.tools.ProtocolsNumbers;
