@@ -20,6 +20,8 @@ import net.beaconcontroller.IPS.AlertMessageSharePriority;
 import net.beaconcontroller.tools.DateTimeManager;
 import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
 
+//verificar se o problema é nos fluxos que estão nos switches!
+
 public class AlertOpenFlowDAO {
     protected static Logger log = LoggerFactory.getLogger(LearningSwitchTutorialSolution.class);
     
@@ -37,7 +39,7 @@ public class AlertOpenFlowDAO {
         		"WHERE tempo >= \'"+ stringlimitDatatime+ "\' " +
         				" and tempo <= \'" + stringCurrentDateTime + "\' " +
         				";";
-        log.debug("alertOpenFlow sql: {}", sql);
+        //log.debug("alertOpenFlow sql: {}", sql);
         return getOpenFlowAlertsUpToSecondsAgo(seconds, sql);
     }
     
@@ -63,7 +65,7 @@ public class AlertOpenFlowDAO {
             while (resultSqlSelect.next()) {
                 AlertMessage alert = new AlertMessage();
                 
-                Date alertDate = DateTimeManager.convertDBDateToJavaDate(resultSqlSelect.getString("tempo"));
+                Date alertDate = DateTimeManager.stringDateDBtoJavaDate(resultSqlSelect.getString("tempo"));
                 alert.setTempo(alertDate);
                 alert.setPriorityAlert(resultSqlSelect.getInt("priority"));
                 alert.setAlertDescription(resultSqlSelect.getString("alertDescription"));
@@ -119,6 +121,11 @@ public class AlertOpenFlowDAO {
         Connection connection = null;
         PreparedStatement stmt = null;
         //log.debug("Inserting register in database.");
+        
+        //String stringDateAlert = DateTimeManager.formatterDB.format(alert.getTempo());
+        String stringDateAlert = DateTimeManager.dateToStringDBDate(alert.getTempo());
+        //log.debug("alertOpenFlowDAO - insert: {}, {}", stringDate, stringDateAlert);
+        
         String sql = "INSERT INTO alertsOpenFlow ("+
                 "tempo,"+
                 "priority,"+
@@ -130,7 +137,7 @@ public class AlertOpenFlowDAO {
                 "transportDestination"+
                 ")" +
                 " VALUES ("+
-                    '\''+alert.getTempoStringBD()+'\''+","+
+                    '\''+stringDateAlert+'\''+","+
                     alert.getPriorityAlert()+","+
                     '\''+alert.getAlertDescription()+'\''+","+
                     alert.getNetworkSource()+","+

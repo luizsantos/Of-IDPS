@@ -152,9 +152,9 @@ public class AlertMessage {
         this.tempo = tempo;
     }
     
-    public String getTempoStringBD() {
-        return DateTimeManager.dateToDBString(this.tempo);
-    }
+//    public String getTempoStringBD() {
+//        return DateTimeManager.dateToDBString(this.tempo);
+//    }
     
     /**
      * Verify alert time
@@ -423,7 +423,8 @@ public class AlertMessage {
                 + this.getAlertDescription() + " support: ["
                 + this.getSupportApriori() + "]"+
                 " rule life: "+ +this.getLife() +
-                " date: " + DateTimeManager.formatter.format(this.getTempo()));
+                //" date: " + DateTimeManager.formatter.format(this.getTempo()));
+                " date: " + DateTimeManager.dateToStringJavaDate(this.getTempo()));
     }
     
     /**
@@ -441,7 +442,8 @@ public class AlertMessage {
                 + this.getSupportApriori() + " sec desc: "
                 + this.getAlertDescription() + " - "+
                 " rule life: "+ +this.getLife() +
-                " date: " + DateTimeManager.formatter.format(this.getTempo());
+                //" date: " + DateTimeManager.formatter.format(this.getTempo());
+                " date: " + DateTimeManager.dateToStringJavaDate(this.getTempo());
     }
     
     /**
@@ -463,7 +465,8 @@ public class AlertMessage {
         alertJson.put("averagePacketsMatchInOfControllerPerHop", this.getAveragePacketsMatchInOfControllerPerHop());
         alertJson.put("totalPacketsMatchInOfController", this.getTotalPacketsMatchInOfController());
         alertJson.put("averageOfTotalPacketsMatchInOfControllerPerSeconds", this.getAverageOfTotalPacketsMatchInOfControllerPerSeconds());
-        alertJson.put("tempo", DateTimeManager.formatter.format(this.getTempo()));
+        //alertJson.put("tempo", DateTimeManager.formatter.format(this.getTempo()));
+        alertJson.put("tempo", DateTimeManager.dateToStringJavaDate(this.getTempo()));
         return alertJson.toJSONString();
     }
     

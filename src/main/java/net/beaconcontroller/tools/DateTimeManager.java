@@ -16,9 +16,31 @@ public class DateTimeManager {
     // Mysql
     //public static SimpleDateFormat formatterDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"); // Datetime format required by database.
     // Postgres
-    public static SimpleDateFormat formatterDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"); // Datetime format required by database.
+    private static SimpleDateFormat formatterDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"); // Datetime format required by database.
+    private static SimpleDateFormat formatterDBwithoutMilliseconds = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // Datetime format required by database.
     
     protected static Logger log = LoggerFactory.getLogger(LearningSwitchTutorialSolution.class);
+    
+    
+    /**
+     * Verify if datetime have milliseconds, if don't has, put it.
+     * If the milliseconds don't exists the method will put .000 milliseconds.
+     * 
+     * Our datetime format don't have time zone.
+     * 
+     * We need of milliseconds, because the parser of format datetime 
+     * gives an error, if the string datetime doesn't has the milliseconds!
+     * 
+     * @param stringDateDB - Date on format of yyyy-MM-dd HH:mm:ss.SSS or yyyy-MM-dd HH:mm:ss. 
+     * @return - String datetime in the format yyyy-MM-dd HH:mm:ss.SSS.
+     */
+    public static String putMillisecondsOnDatetime(String stringDateDB) {
+        if(!stringDateDB.contains(".")) {
+            stringDateDB = stringDateDB+".000";
+        }
+        return stringDateDB;
+    }
+    
     
     
     /**
@@ -26,17 +48,25 @@ public class DateTimeManager {
      * @param date - A date.
      * @return - String with database date format. 
      */
-    public static String dateToDBString(Date date) {
+    public static String dateToStringDBDate(Date date) {
         return formatterDB.format(date).toString();
     }
     
+    /**
+     * Convert date DB to a string with Java format. 
+     * @param date - A date.
+     * @return - String with database date format. 
+     */
+    public static String dateToStringJavaDate(Date date) {
+        return formatter.format(date).toString();
+    }
     
     /**
      * Get a string from current date.
      * @return - A string DB of current date.
      */
     public static String getStringDBFromCurrentDate() {
-        return dateToDBString(getCurrentDate());
+        return dateToStringDBDate(getCurrentDate());
     }
     
     /**
@@ -55,7 +85,7 @@ public class DateTimeManager {
      */
     public static String getStringDBFromCurrentDateLessAmountOfSeconds(int seconds) {
         Date date = getCurrentDateLessAmountOfSeconds(seconds);
-        return dateToDBString(date);
+        return dateToStringDBDate(date);
     }
     
     /**
@@ -76,7 +106,7 @@ public class DateTimeManager {
      */
     public static String getStringDBdateLessAmountOfSeconds(Date date, int seconds) {
         Date dateLessSeconds = dateLessAmountOfSeconds(date, seconds);
-        return dateToDBString(dateLessSeconds);
+        return dateToStringDBDate(dateLessSeconds);
     }
     
     /**
@@ -108,13 +138,40 @@ public class DateTimeManager {
      * @param time - yyyy-MM-dd HH:mm:ss.SSS
      * @return Date.
      */
-    public static Date convertDBDateToJavaDate(String datetime) {
+    public static Date stringDateDBtoJavaDate(String datetimeDB) {
         try {
-            return formatterDB.parse(datetime);
+            datetimeDB = putMillisecondsOnDatetime(datetimeDB);
+            return formatterDB.parse(datetimeDB);
         } catch (ParseException e) {
-            log.debug("ATTENTION!!!, problems to convert datetime on StatusFlow class.");
-            e.printStackTrace();
-        } 
+                log.debug("ATTENTION!!!, problems to convert datetime.");
+                e.printStackTrace();
+        }
+        return null;
+    }
+    
+    /**
+     * Convert a string to date, the string must be passed in format:
+     *              yyyy-MM-dd-HH mm:ss.SSS
+     * where: 
+     *  yyyy - year
+     *  MM - month
+     *  dd - day
+     *  HH - hour
+     *  mm - minutes
+     *  ss - seconds
+     *  SSS - milliseconds
+     * 
+     * @param time - yyyy/MM/dd-HH:mm:ss.SSS
+     * @return Date.
+     */
+    public static Date stringDatetoJavaDate(String datetime) {
+        try {
+            datetime = putMillisecondsOnDatetime(datetime);
+            return formatter.parse(datetime);
+        } catch (ParseException e) {
+                log.debug("ATTENTION!!!, problems to convert datetime.");
+                e.printStackTrace();
+        }
         return null;
     }
     

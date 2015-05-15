@@ -104,7 +104,7 @@ public class StatusFlow extends  OFFlowStatisticsReply {
                 this.networkSource+":"+this.transportSource+"->"+
                 this.networkDestination+":"+this.transportDestination+" ("+
                 this.networkProtocol+")"+" bytes: " +this.byteCount + " packets: " + this.packetCount +
-                " live: "+ this.life +" - "+ DateTimeManager.formatter.format(this.time)+" type: "+ convertFlowTypeToString()+
+                " live: "+ this.life +" - "+ this.getTimeString() +" type: "+ convertFlowTypeToString()+
                 " inSwMemory: "+ this.inSwitchesMemory + "flowId"+ this.flowId);
     }
     
@@ -124,7 +124,7 @@ public class StatusFlow extends  OFFlowStatisticsReply {
         flowJSON.put("byteCount", this.byteCount);
         flowJSON.put("packetCount", this.packetCount);
         flowJSON.put("life", this.life);
-        flowJSON.put("time", DateTimeManager.formatter.format(this.time));
+        flowJSON.put("time", this.getTimeString());
         flowJSON.put("flowType", convertFlowTypeToString());
         return flowJSON;
     }
@@ -264,12 +264,7 @@ public class StatusFlow extends  OFFlowStatisticsReply {
      * @param time - yyyy/MM/dd-HH:mm:ss.SSS
      */
     public void setTime(String datetime) {
-        try {
-            this.time = DateTimeManager.formatter.parse(datetime);
-        } catch (ParseException e) {
-            log.debug("ATTENTION!!!, problems to convert datetime on StatusFlow class.");
-            e.printStackTrace();
-        }        
+        this.time = DateTimeManager.stringDatetoJavaDate(datetime);
     }
     
     /**
@@ -287,20 +282,15 @@ public class StatusFlow extends  OFFlowStatisticsReply {
      * @param time - yyyy-MM-dd HH:mm:ss.SSS
      */
     public void setTimeFromDB(String datetime) {
-        try {
-            this.time = DateTimeManager.formatterDB.parse(datetime);
-        } catch (ParseException e) {
-            log.debug("ATTENTION!!!, problems to convert datetime on StatusFlow class.");
-            e.printStackTrace();
-        }        
+            this.time = DateTimeManager.stringDateDBtoJavaDate(datetime); 
     }
     
-    public String getTimeString() {
-        return DateTimeManager.formatter.format(this.time).toString();
+    public String getTimeString() { 
+        return DateTimeManager.dateToStringJavaDate(this.time);
     }
     
     public String getTimeStringBD() {
-        return DateTimeManager.formatterDB.format(this.time).toString();
+        return DateTimeManager.dateToStringDBDate(this.time);
     }
     
     /**

@@ -29,6 +29,7 @@ import net.beaconcontroller.tools.IpAddress;
 import net.beaconcontroller.tools.ProtocolsNumbers;
 import net.beaconcontroller.tools.TransportPorts;
 import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
+import net.beaconcontroller.tutorial.SensorOpenFlow;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -349,9 +350,10 @@ public class SnortAlertMessageDAO {
             int transportSource,
             int transportDestination,
             int seconds ) {
-        Calendar currentDateTime = Calendar.getInstance();
-        currentDateTime.add(Calendar.SECOND, (-1 * seconds));
-        String limitDatatime = DateTimeManager.formatterDB.format(currentDateTime.getTime());
+        //Calendar currentDateTime = Calendar.getInstance();
+        //currentDateTime.add(Calendar.SECOND, (-1 * seconds));
+        //String limitDatatime = DateTimeManager.formatterDB.format(currentDateTime.getTime());
+        String limitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);
         
         /*
          * Beacon deal integer IP format and snort BigInteger, then we translate it here.
@@ -457,7 +459,7 @@ public class SnortAlertMessageDAO {
         
         int count = getCountOfSnortAlertsReturned(sql);
         
-        log.debug("Bad alert/flowTCP number {}, from sql {}", count, sql);
+        //log.debug("Bad alert/flowTCP number {}, from sql {}", count, sql);
         
         
         
