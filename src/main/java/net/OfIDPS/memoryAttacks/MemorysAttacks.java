@@ -141,9 +141,29 @@ public class MemorysAttacks extends Thread {
              * TODO - Feed sensorial memory.
              */
             
+            List<AlertMessage> listOfAllAlertsInSensorialMemory =  new ArrayList<AlertMessage>();
             
-            // Get alerts from IDS using the time of sensorial memory. 
-            List<AlertMessage> listOfSnortAlertsSensorial = ids.getAlertsFromSnortIDS(timeToAlertsStayAtSensorialMemory, "Sensorial Memory");
+            
+            // Verify if IDS is enabled.
+            if (LearningSwitchTutorialSolution.disableOfIDPS_UseIDSAlerts != 1) {
+                // Get alerts from IDS using the time of sensorial memory.
+                //listOfAllAlertsInSensorialMemory = ids.getAlertsFromSnortIDS(timeToAlertsStayAtSensorialMemory, "Sensorial Memory");
+                listOfAllAlertsInSensorialMemory.addAll(ids.getAlertsFromSnortIDS(timeToAlertsStayAtSensorialMemory, "Sensorial Memory"));
+            } else {
+                log.debug("\t!!!!!!!! ATTENTION, Of-IDPS IDS alerts analysis IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variable disableOfIDPS_UseIDSAlerts on LearningSwithTutorialSolution class...");
+            }
+            
+            //Verify if the OpenFlow security analysis is enabled.
+            if (LearningSwitchTutorialSolution.disableOfIDPS_UseOfAlerts != 1
+                    && LearningSwitchTutorialSolution.disableOfIDPS_UseOfgetStatisticsFromNetwork != 1) {
+                AlertOpenFlowDAO alertOpenFlowDAO = new AlertOpenFlowDAO();
+                // Get OpenFlow security alerts
+                //listOfMaliciousFlows = alertOpenFlowDAO.getOpenFlowAlertsUpToSecondsAgo(timeToAlertsStayAtSensorialMemory);
+                listOfAllAlertsInSensorialMemory.addAll(alertOpenFlowDAO.getOpenFlowAlertsUpToSecondsAgo(timeToAlertsStayAtSensorialMemory));
+            } else {
+                log.debug("\t!!!!!!!! ATTENTION, Of-IDPS ALERT OPENFLOW STATISTICS IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variables disableOfIDPS_UseOfgetStatisticsFromNetwork and disableOfIDPS_UseOfAlerts on LearningSwithTutorialSolution class...");
+            }
+            
             Map<String,AlertMessage> mapOfSnortAlertsSensorialToUpdateBadFlowsDB = new HashMap<String, AlertMessage>();
             
             // Remove old rules from sensorial memory to rerun the sensorial memory algorithm. 
@@ -153,7 +173,7 @@ public class MemorysAttacks extends Thread {
             actuator.startUp(beaconProvider);
             
             // Using returned alerts to create the rules of sensorial memory! Each returned alert will form a rule.
-            for(AlertMessage alertMsg: listOfSnortAlertsSensorial) {
+            for(AlertMessage alertMsg: listOfAllAlertsInSensorialMemory) {
                 /*
                  *  Attention, each alert must create two security rules!
                  *  
@@ -233,7 +253,7 @@ public class MemorysAttacks extends Thread {
              */
             //updateBadFlowsDB(currentDate, mapOfSnortAlertsSensorialToUpdateBadFlowsDB);
             
-            log.debug("{} - alerts from sensorial memory from IDS, {} - rules in sensorial memory.", listOfSnortAlertsSensorial.size(), sensorialMemoryAttacks.size());
+            log.debug("{} - alerts from sensorial memory from IDS, {} - rules in sensorial memory.", listOfAllAlertsInSensorialMemory.size(), sensorialMemoryAttacks.size());
             actuator.shutDown();
             
             

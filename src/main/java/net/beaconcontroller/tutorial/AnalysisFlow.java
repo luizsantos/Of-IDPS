@@ -220,10 +220,6 @@ public class AnalysisFlow extends Thread {
             
             
         }
-        
-        
-        
-
 
     }
     
@@ -503,6 +499,10 @@ public class AnalysisFlow extends Thread {
     }
 
 
+    /**
+     * Don't use this, now we use the database!
+     * @return
+     */
     public List<AlertMessageSharePriority> getListOfMaliciousFlows() {
         return listOfMaliciousFlows;
     }
