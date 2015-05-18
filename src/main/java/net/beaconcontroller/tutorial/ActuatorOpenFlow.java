@@ -206,25 +206,25 @@ public class ActuatorOpenFlow extends Thread implements IOFMessageListener {
         }
     }
     
-    /**
-     * 
-     * Delete/remove flow related with AUTONOMIC rules in ALL switches in the network.
-     * 
-     * @param - list with alert messages (class MensagemAlerta)
-     * 
-     */
-    public void deleteFlowsRelatedWithRulesInAllSwitches(Map<String,AlertMessage> shortMemoryAttacks) {
-        log.debug("Deleting flows related with security alerts on ALL switches.");
-        Collection<IOFSwitch> switches = new HashSet<IOFSwitch>();
-        switches = getAllSwitchesOnNetwork();
-        for (IOFSwitch s : switches) {
-            IOFSwitch sw = beaconProvider.getSwitches().get(s.getId());
-            for(String key : shortMemoryAttacks.keySet()) {
-                AlertMessage currentRule = shortMemoryAttacks.get(key);
-                //deleteFlowUsingCampsPresentsOnRule(currentRule, sw);
-            }
-        }
-    }
+//    /**
+//     * 
+//     * Delete/remove flow related with AUTONOMIC rules in ALL switches in the network.
+//     * 
+//     * @param - list with alert messages (class MensagemAlerta)
+//     * 
+//     */
+//    public void deleteFlowsRelatedWithRulesInAllSwitches(Map<String,AlertMessage> memoryAttacks) {
+//        log.debug("Deleting flows related with security alerts on ALL switches.");
+//        Collection<IOFSwitch> switches = new HashSet<IOFSwitch>();
+//        switches = getAllSwitchesOnNetwork();
+//        for (IOFSwitch s : switches) {
+//            IOFSwitch sw = beaconProvider.getSwitches().get(s.getId());
+//            for(String key : memoryAttacks.keySet()) {
+//                AlertMessage currentRule = memoryAttacks.get(key);
+//                //deleteFlowUsingCampsPresentsOnRule(currentRule, sw);
+//            }
+//        }
+//    }
     
     /**
      * 
@@ -389,15 +389,15 @@ public class ActuatorOpenFlow extends Thread implements IOFMessageListener {
      * @param match - OpenFlow packet
      * 
      */
-    public void deleteAllFlowUsingCampsPresentsMemoryRulesInAllSwitches(Map<String, AlertMessage> shortMemoryAttacks) {
-        log.debug("Removing/deleting flow using camps presents on security rules in ALL switches.");
+    public void deleteAllFlowUsingCampsPresentsMemoryRulesInAllSwitches(Map<String, AlertMessage> memoryAttacks) {
+        //log.debug("Removing/deleting flow using camps presents on security rules in ALL switches.");
         // get switches on the network.
         Collection<IOFSwitch> switches = new HashSet<IOFSwitch>();
         switches = getAllSwitchesOnNetwork();
         
-        // look for all rules in the short memory attacks
-        for (String key : shortMemoryAttacks.keySet()) {
-            AlertMessage currentRule = shortMemoryAttacks.get(key);
+        // look for all rules in the memory attacks
+        for (String key : memoryAttacks.keySet()) {
+            AlertMessage currentRule = memoryAttacks.get(key);
             // select which camps there are presents on the rule!
             OFMatch match = new OFMatch();
             // the variable "camps" accumulate all camps present in the rule!

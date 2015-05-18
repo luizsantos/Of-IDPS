@@ -135,228 +135,19 @@ public class MemorysAttacks extends Thread {
             
             // To recover alerts from IDS
             IntrusionPreventionSystem ids = new IntrusionPreventionSystem();
+            // To recover alerts from OpenFlow statistics
+            AlertOpenFlowDAO alertOpenFlowDAO = new AlertOpenFlowDAO();
             
             
             /*******************************
-             * TODO - Feed sensorial memory.
-             */
-            
-            List<AlertMessage> listOfAllAlertsInSensorialMemory =  new ArrayList<AlertMessage>();
-            
-            
-            // Verify if IDS is enabled.
-            if (LearningSwitchTutorialSolution.disableOfIDPS_UseIDSAlerts != 1) {
-                // Get alerts from IDS using the time of sensorial memory.
-                //listOfAllAlertsInSensorialMemory = ids.getAlertsFromSnortIDS(timeToAlertsStayAtSensorialMemory, "Sensorial Memory");
-                listOfAllAlertsInSensorialMemory.addAll(ids.getAlertsFromSnortIDS(timeToAlertsStayAtSensorialMemory, "Sensorial Memory"));
-            } else {
-                log.debug("\t!!!!!!!! ATTENTION, Of-IDPS IDS alerts analysis IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variable disableOfIDPS_UseIDSAlerts on LearningSwithTutorialSolution class...");
-            }
-            
-            //Verify if the OpenFlow security analysis is enabled.
-            if (LearningSwitchTutorialSolution.disableOfIDPS_UseOfAlerts != 1
-                    && LearningSwitchTutorialSolution.disableOfIDPS_UseOfgetStatisticsFromNetwork != 1) {
-                AlertOpenFlowDAO alertOpenFlowDAO = new AlertOpenFlowDAO();
-                // Get OpenFlow security alerts
-                //listOfMaliciousFlows = alertOpenFlowDAO.getOpenFlowAlertsUpToSecondsAgo(timeToAlertsStayAtSensorialMemory);
-                listOfAllAlertsInSensorialMemory.addAll(alertOpenFlowDAO.getOpenFlowAlertsUpToSecondsAgo(timeToAlertsStayAtSensorialMemory));
-            } else {
-                log.debug("\t!!!!!!!! ATTENTION, Of-IDPS ALERT OPENFLOW STATISTICS IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variables disableOfIDPS_UseOfgetStatisticsFromNetwork and disableOfIDPS_UseOfAlerts on LearningSwithTutorialSolution class...");
-            }
-            
-            Map<String,AlertMessage> mapOfSnortAlertsSensorialToUpdateBadFlowsDB = new HashMap<String, AlertMessage>();
-            
-            // Remove old rules from sensorial memory to rerun the sensorial memory algorithm. 
-            sensorialMemoryAttacks.clear();
-            
-            ActuatorOpenFlow actuator = new ActuatorOpenFlow();
-            actuator.startUp(beaconProvider);
-            
-            // Using returned alerts to create the rules of sensorial memory! Each returned alert will form a rule.
-            for(AlertMessage alertMsg: listOfAllAlertsInSensorialMemory) {
-                /*
-                 *  Attention, each alert must create two security rules!
-                 *  
-                 *      srcIP:* -> dstIP:dstPort (going)
-                 *      srcIP:srcPort -> dstIP:* (coming)
-                 *      
-                 *  It is necessary because, if we just create a rule with 
-                 *      srcIP:srcPort->dstIP:dstPort, 
-                 *  and remove this rule from network elements, the malicious 
-                 *  host will probably send again a new connection, that not will 
-                 *  combine with this rule, because will have, at least, 
-                 *  a new source port, that is random... 
-                 *  Then, it is better create a generic rule to the source port.
-                 */
-                
-                // Put all alerts on a map/list. After we will use this map to change this related flows to bad flows on database!
-                mapOfSnortAlertsSensorialToUpdateBadFlowsDB.put(alertMsg.getKeyFromNetworkSocket(), alertMsg);
-                
-                // Alert to packet that is going - srcIP:srcPort -> dstIP:*
-                AlertMessage alertGoing = new AlertMessage();
-                alertGoing.setNetworkSource(alertMsg.getNetworkSource());
-                alertGoing.setTransportSource(Integer.MAX_VALUE);
-                alertGoing.setNetworkDestination(alertMsg.getNetworkDestination());
-                alertGoing.setTransportDestination(alertMsg.getTransportDestination());
-                alertGoing.setNetworkProtocol(alertMsg.getNetworkProtocol());
-                alertGoing.setPriorityAlert(alertMsg.getPriorityAlert());
-                alertGoing.setAlertDescription(alertMsg.getAlertDescription());
-                
-                // Alert to packet that is coming - srcIP:* -> dstIP:dstPort
-                AlertMessage alertComing = new AlertMessage();
-                alertComing.setNetworkSource(alertMsg.getNetworkDestination());
-                alertComing.setTransportSource(alertMsg.getTransportDestination());
-                alertComing.setNetworkDestination(alertMsg.getNetworkSource());
-                alertComing.setTransportDestination(Integer.MAX_VALUE);
-                alertComing.setNetworkProtocol(alertMsg.getNetworkProtocol());
-                alertComing.setPriorityAlert(alertMsg.getPriorityAlert());
-                alertComing.setAlertDescription(alertMsg.getAlertDescription());
-                
-                // Remove the flow responsible from the alert. 
-                // Not is necessary! Because the two more generic rules bellow will remove this flow! Avoid overhead on the network... 
-                // actuator.deleteFlowUsingCampsPresentsOnRuleInAllSwitches(alertMsg);
-                // log.debug("alert.");
-                // alertMsg.printMsgAlert();
-                
-                
-                
-                /*
-                 * Remember that each alert create two rules!
-                 */
-                
-                // Remove flows related with this alerts, if don't already exist this rule on the sensorial memory - to avoid overhead.
-                if (sensorialMemoryAttacks.put(alertGoing.getKeyFromNetworkSocket(), alertGoing)==null) {
-                    actuator.deleteFlowUsingCampsPresentsOnRuleInAllSwitches(alertGoing);
-                    // log.debug("alert going.");
-                    // alertGoing.printMsgAlert();
-                }
-                if (sensorialMemoryAttacks.put(alertComing.getKeyFromNetworkSocket(), alertComing)==null) {
-                    actuator.deleteFlowUsingCampsPresentsOnRuleInAllSwitches(alertComing);
-                    // log.debug("alert coming.");
-                    // alertComing.printMsgAlert();
-                }
-                
-                /*
-                 * TODO? - Maybe, implement a control to manage (include/remove/update) the rules, 
-                 * like updateRulesInShortMemoryAndApplieThisRulesOnSwitches(ruleListFromIDS) method. 
-                 * However, perhaps is not necessary this control, because these alerts, and consequently 
-                 * the rules will be send to the short memory, and will be controlled there.
-                 */
-                
-            }
-            
-            /*
-             * TODO - This not work very well, because some flows weren't recorded on database yet...
-             * (we have some seconds to record the flow on database) 
-             * then instead of change the flows when the alert is emitted, we will look for alerts when 
-             * we will record the flow on the database!
-             */
-            //updateBadFlowsDB(currentDate, mapOfSnortAlertsSensorialToUpdateBadFlowsDB);
-            
-            log.debug("{} - alerts from sensorial memory from IDS, {} - rules in sensorial memory.", listOfAllAlertsInSensorialMemory.size(), sensorialMemoryAttacks.size());
-            actuator.shutDown();
-            
+             * Sensorial memory.
+             *******************************/
+            sensorialMemory(ids, alertOpenFlowDAO);
             
             /***************************
-             * TODO - Feed short memory.
-             */
-            String alertsFromIDSSnort = "";
-            String alertsFromOpenFlowDoS = "";
-            
-            if (LearningSwitchTutorialSolution.disableOfIDPS_UseIDSAlerts != 1) {
-                //List<AlertMessage> listOfSnortAlerts = ids.getAlertsFromSnortIDS();
-                List<AlertMessage> listOfSnortAlerts = ids.getAlertsFromSnortIDS(timeToAlertsStayAtShortMemory, "Short memory");
-                alertsFromIDSSnort = convertAlertMessagesToBeProcessedByItemsetsAlgorithm(listOfSnortAlerts);
-            } else {
-                log.debug("\t!!!!!!!! ATTENTION, Of-IDPS IDS alerts analysis IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variable disableOfIDPS_UseIDSAlerts on LearningSwithTutorialSolution class...");
-            }
-            
-            if (LearningSwitchTutorialSolution.disableOfIDPS_UseOfAlerts != 1
-                    && LearningSwitchTutorialSolution.disableOfIDPS_UseOfgetStatisticsFromNetwork != 1) {
-                // old method
-//                 AnalysisFlow analysisFlow = new AnalysisFlow();
-//                 List<AlertMessageSharePriority> listOfMaliciousFlows = new ArrayList<AlertMessageSharePriority>();
-//                 listOfMaliciousFlows = analysisFlow.getListOfMaliciousFlows();
-//                 alertsFromOpenFlowDoS = this.convertOpenFlowDoSAlertsToBeProcessedByItemsetsAlgorithm(listOfMaliciousFlows);
-//                
-                // new method
-                List<AlertMessage> listOfMaliciousFlows = new ArrayList<AlertMessage>();
-                AlertOpenFlowDAO alertOpenFlowDAO = new AlertOpenFlowDAO();
-                listOfMaliciousFlows = alertOpenFlowDAO.getOpenFlowAlertsUpToSecondsAgo(timeToAlertsStayAtShortMemory);
-                alertsFromOpenFlowDoS = convertAlertMessagesToBeProcessedByItemsetsAlgorithm(listOfMaliciousFlows);
-                
-                
-            } else {
-                log.debug("\t!!!!!!!! ATTENTION, Of-IDPS ALERT OPENFLOW STATISTICS IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variables disableOfIDPS_UseOfgetStatisticsFromNetwork and disableOfIDPS_UseOfAlerts on LearningSwithTutorialSolution class...");
-            }
-            
-            // Join alerts
-            String allAlerts = alertsFromIDSSnort+alertsFromOpenFlowDoS;
-            
-            // Obtain rules from IDS alerts using itemsets algorithm.
-            Map<String,AlertMessage> ruleListFromIDS = new HashMap<String, AlertMessage>();
-            ruleListFromIDS = getRulesFromIDSAlertsUsingItensetsAlgorithm(allAlerts);
-            
-            /*
-             * Update rules on short memory and send this for all switches on the network.
-             * here the delete/remove existent flows are inside of this method.
-             * 
-             */
-            updateRulesInShortMemoryAndApplieThisRulesOnSwitches(ruleListFromIDS);
-            
-            /*
-             * This didn't work very well: update rules on short memory, but
-             * with this method all rules generated are sent for all switches
-             * all the time (period that the rules are generated - 
-             * waitTimeInSeconds(TIME_TO_WAIT)), then this
-             * interrupt this flows and sends a lot of the OpenFlow Delete
-             * messages all the time
-             * 
-             * If you want use this method you must implement or use a method
-             * for delete/remove/update all related flows existent that already
-             * are presents on the networks switches. *
-             */
-            //updateRulesInShortMemoryUsingSimpleMethod(ruleListFromIDS);
-            
-            
-            /*
-             * This didn't work very well:
-             * TODO - The use of counter life didn't work very well, when the counter
-             * is incremented by the own rules (if the rule generated is equal
-             * to an existing rule)... maybe this will work if the increment it
-             * is done by the new packets that match with this rules!
-             * 
-             * If you want use this method you must implement or use a method
-             * for delete/remove/update all related flows existent that already
-             * are presents on the networks switches. *
-             * 
-             */
-            //updateRulesInShortMemoryUsingLifeCount(ruleListFromIDS);   
-            
-            // Delete flows that match with new rules in the networks switches.
-            /*
-             * TODO - Implement a method that permit simplify/summarize
-             * the rules generated by itemsets algorithm. It means, if exist a
-             * specific rule that match with a more general rule, we should
-             * remove this specific rule (not send this command) and only send a
-             * command to delete flows via the more generic rule, therefore just
-             * one delete command is send to switches and not two this probably
-             * will reduce the number of interruptions in the flows and probably
-             * will gain performance. ie: 
-             * first rule: 10.0.0.1:*->200.0.0.1:* (ICMP) 
-             * second rule: 10.0.0.1:*->*:* (ICMP) 
-             * 
-             * In this case should be applied just
-             * the second or send a command for the seconds rule because this
-             * command also contemplate the first rule.
-             */
-            //deleteExistentsFlowsThatMatchWithNewRulesOnSwitches();
-            // parei
-            
-            // Record rules at this moment in a file!
-//            if (shortMemoryAttacks.size() > 0) {
-//                writeRulesInShortMemoryToFile();
-//            }
+             * Feed short memory.
+             ***************************/
+            shortMemory(ids, alertOpenFlowDAO);
             
             /**************************
              * TODO - Feed long memory.
@@ -370,6 +161,266 @@ public class MemorysAttacks extends Thread {
             waitTimeInSeconds(TIME_TO_WAIT);
             log.debug("new processing memory attacks\n");
         }        
+    }
+
+    /**
+     * Perform short-term memory methods.
+     * @param ids - An IntrusionPreventionSystem object to recover IDS alerts.
+     * @param alertOpenFlowDAO - An AlertOpenFlowDAO object to recover OpenFlow alerts. 
+     */
+    private void shortMemory(IntrusionPreventionSystem ids, AlertOpenFlowDAO alertOpenFlowDAO) {
+        String alertsFromIDSSnort = "";
+        String alertsFromOpenFlowDoS = "";
+        
+        if (LearningSwitchTutorialSolution.disableOfIDPS_UseIDSAlerts != 1) {
+            //List<AlertMessage> listOfSnortAlerts = ids.getAlertsFromSnortIDS();
+            List<AlertMessage> listOfSnortAlerts = ids.getAlertsFromSnortIDS(timeToAlertsStayAtShortMemory, "Short memory");
+            alertsFromIDSSnort = convertAlertMessagesToBeProcessedByItemsetsAlgorithm(listOfSnortAlerts);
+        } else {
+            log.debug("\t!!!!!!!! ATTENTION, Of-IDPS IDS alerts analysis IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variable disableOfIDPS_UseIDSAlerts on LearningSwithTutorialSolution class...");
+        }
+        
+        if (LearningSwitchTutorialSolution.disableOfIDPS_UseOfAlerts != 1
+                && LearningSwitchTutorialSolution.disableOfIDPS_UseOfgetStatisticsFromNetwork != 1) {
+            // old method
+//                 AnalysisFlow analysisFlow = new AnalysisFlow();
+//                 List<AlertMessageSharePriority> listOfMaliciousFlows = new ArrayList<AlertMessageSharePriority>();
+//                 listOfMaliciousFlows = analysisFlow.getListOfMaliciousFlows();
+//                 alertsFromOpenFlowDoS = this.convertOpenFlowDoSAlertsToBeProcessedByItemsetsAlgorithm(listOfMaliciousFlows);
+//                
+            // new method
+            List<AlertMessage> listOfMaliciousFlows = new ArrayList<AlertMessage>();
+            listOfMaliciousFlows = alertOpenFlowDAO.getOpenFlowAlertsUpToSecondsAgo(timeToAlertsStayAtShortMemory);
+            alertsFromOpenFlowDoS = convertAlertMessagesToBeProcessedByItemsetsAlgorithm(listOfMaliciousFlows);
+            
+            
+        } else {
+            log.debug("\t!!!!!!!! ATTENTION, Of-IDPS ALERT OPENFLOW STATISTICS IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variables disableOfIDPS_UseOfgetStatisticsFromNetwork and disableOfIDPS_UseOfAlerts on LearningSwithTutorialSolution class...");
+        }
+        
+        // Join alerts
+        String allAlerts = alertsFromIDSSnort+alertsFromOpenFlowDoS;
+        
+        // Obtain rules from IDS alerts using itemsets algorithm.
+        Map<String,AlertMessage> ruleListFromIDS = new HashMap<String, AlertMessage>();
+        ruleListFromIDS = getRulesFromIDSAlertsUsingItensetsAlgorithm(allAlerts);
+        
+        /*
+         * Update rules on short memory and send this for all switches on the network.
+         * here the delete/remove existent flows are inside of this method.
+         * 
+         */
+        updateRulesInShortMemoryAndApplieThisRulesOnSwitches(ruleListFromIDS);
+        
+        /*
+         * This didn't work very well: update rules on short memory, but
+         * with this method all rules generated are sent for all switches
+         * all the time (period that the rules are generated - 
+         * waitTimeInSeconds(TIME_TO_WAIT)), then this
+         * interrupt this flows and sends a lot of the OpenFlow Delete
+         * messages all the time
+         * 
+         * If you want use this method you must implement or use a method
+         * for delete/remove/update all related flows existent that already
+         * are presents on the networks switches. *
+         */
+        //updateRulesInShortMemoryUsingSimpleMethod(ruleListFromIDS);
+        
+        
+        /*
+         * This didn't work very well:
+         * TODO - The use of counter life didn't work very well, when the counter
+         * is incremented by the own rules (if the rule generated is equal
+         * to an existing rule)... maybe this will work if the increment it
+         * is done by the new packets that match with this rules!
+         * 
+         * If you want use this method you must implement or use a method
+         * for delete/remove/update all related flows existent that already
+         * are presents on the networks switches. *
+         * 
+         */
+        //updateRulesInShortMemoryUsingLifeCount(ruleListFromIDS);   
+        
+        // Delete flows that match with new rules in the networks switches.
+        /*
+         * TODO - Implement a method that permit simplify/summarize
+         * the rules generated by itemsets algorithm. It means, if exist a
+         * specific rule that match with a more general rule, we should
+         * remove this specific rule (not send this command) and only send a
+         * command to delete flows via the more generic rule, therefore just
+         * one delete command is send to switches and not two this probably
+         * will reduce the number of interruptions in the flows and probably
+         * will gain performance. ie: 
+         * first rule: 10.0.0.1:*->200.0.0.1:* (ICMP) 
+         * second rule: 10.0.0.1:*->*:* (ICMP) 
+         * 
+         * In this case should be applied just
+         * the second or send a command for the seconds rule because this
+         * command also contemplate the first rule.
+         */
+        //deleteExistentsFlowsThatMatchWithNewRulesOnSwitches();
+        // parei
+        
+        // Record rules at this moment in a file!
+//            if (shortMemoryAttacks.size() > 0) {
+//                writeRulesInShortMemoryToFile();
+//            }
+    }
+
+    /**
+     * Perform sensorial memory methods.
+     * @param ids - An IntrusionPreventionSystem object to recover IDS alerts.
+     * @param alertOpenFlowDAO - An AlertOpenFlowDAO object to recover OpenFlow alerts. 
+     */
+    private void sensorialMemory(IntrusionPreventionSystem ids,
+            AlertOpenFlowDAO alertOpenFlowDAO) {
+        // To store all alerts found in the sensorial memory.
+        List<AlertMessage> listOfAllAlertsInSensorialMemory =  new ArrayList<AlertMessage>();
+        
+        // Verify if IDS is enabled.
+        if (LearningSwitchTutorialSolution.disableOfIDPS_UseIDSAlerts != 1) {
+            // Get alerts from IDS using the time of sensorial memory.
+            //listOfAllAlertsInSensorialMemory = ids.getAlertsFromSnortIDS(timeToAlertsStayAtSensorialMemory, "Sensorial Memory");
+            listOfAllAlertsInSensorialMemory.addAll(ids.getAlertsFromSnortIDS(timeToAlertsStayAtSensorialMemory, "Sensorial Memory"));
+        } else {
+            log.debug("\t!!!!!!!! ATTENTION, Of-IDPS IDS alerts analysis IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variable disableOfIDPS_UseIDSAlerts on LearningSwithTutorialSolution class...");
+        }
+        
+        //Verify if the OpenFlow security analysis is enabled.
+        if (LearningSwitchTutorialSolution.disableOfIDPS_UseOfAlerts != 1
+                && LearningSwitchTutorialSolution.disableOfIDPS_UseOfgetStatisticsFromNetwork != 1) {
+            
+            // Get OpenFlow security alerts
+            //listOfMaliciousFlows = alertOpenFlowDAO.getOpenFlowAlertsUpToSecondsAgo(timeToAlertsStayAtSensorialMemory);
+            listOfAllAlertsInSensorialMemory.addAll(alertOpenFlowDAO.getOpenFlowAlertsUpToSecondsAgo(timeToAlertsStayAtSensorialMemory));
+        } else {
+            log.debug("\t!!!!!!!! ATTENTION, Of-IDPS ALERT OPENFLOW STATISTICS IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variables disableOfIDPS_UseOfgetStatisticsFromNetwork and disableOfIDPS_UseOfAlerts on LearningSwithTutorialSolution class...");
+        }
+        
+        // Remove old rules from sensorial memory to rerun the sensorial memory algorithm. 
+        sensorialMemoryAttacks.clear();
+        
+        // Using returned alerts to create the rules of sensorial memory! Each returned alert will form two rules.
+        for(AlertMessage alertMsg: listOfAllAlertsInSensorialMemory) {
+            /*
+             *  Attention, each alert must create two security rules!
+             *  
+             *      srcIP:* -> dstIP:dstPort (going)
+             *      srcIP:srcPort -> dstIP:* (coming)
+             *      
+             *  It is necessary because, if we just create a rule with 
+             *      srcIP:srcPort->dstIP:dstPort, 
+             *  and remove this rule from network elements, the malicious 
+             *  host will probably send again a new connection, that not will 
+             *  combine with this rule, because will have, at least, 
+             *  a new source port, that is random... 
+             *  Then, it is better create a generic rule to the source port.
+             *  
+             *  Thus note that, we don't work with the complete fields from security alert:
+             *  srcIP:srcPort -> dstIP:dstPort (going)
+             *  
+             *  It isn't necessary! Because the two more generic rules going/coming will 
+             *  remove/deal this flow! Avoid overhead on the network...
+             *  
+             */
+            AlertMessage alertGoing = getAlertGoing(alertMsg);
+            AlertMessage alertComing = getAlertComing(alertMsg);
+
+            // To verify if the rule already exists and avoid redundant rules.
+            AlertMessage oldRuleGoing = null;
+            oldRuleGoing = sensorialMemoryAttacks.get(alertGoing.getKeyFromNetworkSocket());
+            
+            // If rule not exist.
+            if (oldRuleGoing == null) {
+                // Put both: coming and going in the sensorial memory.
+                sensorialMemoryAttacks.put(alertGoing.getKeyFromNetworkSocket(), alertGoing);
+                sensorialMemoryAttacks.put(alertComing.getKeyFromNetworkSocket(), alertComing);
+            } else {
+                /*
+                 * But if the rule already exist, get the highest security priority (more dangerous) 
+                 * and put on the rule. Both, coming and going.
+                 */
+                if(alertGoing.getPriorityAlert() > oldRuleGoing.getPriorityAlert()) {
+                    // Going rule.
+                    oldRuleGoing.setPriorityAlert(alertGoing.getPriorityAlert());
+                    oldRuleGoing.setAlertDescription(alertGoing.getAlertDescription());
+                    
+                    // Coming rule. 
+                    AlertMessage oldRuleComing = sensorialMemoryAttacks.get(alertComing.getKeyFromNetworkSocket());
+                    oldRuleComing.setPriorityAlert(alertComing.getPriorityAlert());
+                    oldRuleComing.setAlertDescription(alertComing.getAlertDescription());
+                }
+            }
+            
+        }
+        
+        // Start the actuator module to remove bad flows from the network.
+        /*
+         * The actuator from sensorial memory is used to remove bad 
+         * flows presents on the sensorial memory. 
+         * In the short and long memory, the actuator is different!
+         */
+        if (sensorialMemoryAttacks.size() > 0) {
+            ActuatorOpenFlow actuatorFromSensorialMemory = new ActuatorOpenFlow();
+            actuatorFromSensorialMemory.startUp(beaconProvider);
+            actuatorFromSensorialMemory.deleteAllFlowUsingCampsPresentsMemoryRulesInAllSwitches(sensorialMemoryAttacks);
+            actuatorFromSensorialMemory.shutDown();
+        }
+        
+        /*
+         * TODO - Some bad flows aren't marked like bad on database,
+         * because some flows weren't recorded on database yet...
+         * (we have some seconds to record the flow on database) 
+         * then instead of change the flows when the alert is emitted, we will look for alerts when 
+         * we will record the flow on the database!
+         */
+        
+        log.debug("{} - alerts in sensorial memory, {} - rules in sensorial memory.", listOfAllAlertsInSensorialMemory.size(), sensorialMemoryAttacks.size());
+    }
+
+    /**
+     * Get alert coming! 
+     * The rule will be the alert with the reversed source and destination address/ports. 
+     * 
+     * @param alertMsg - An alert message...
+     * @return - A rule based on security alert.
+     * 
+     * Remember that rule and alert are the same object!
+     * 
+     */
+    private AlertMessage getAlertComing(AlertMessage alertMsg) {
+        // Alert to packet that is coming - srcIP:* -> dstIP:dstPort
+        AlertMessage alertComing = new AlertMessage();
+        alertComing.setNetworkSource(alertMsg.getNetworkDestination());
+        alertComing.setTransportSource(alertMsg.getTransportDestination());
+        alertComing.setNetworkDestination(alertMsg.getNetworkSource());
+        alertComing.setTransportDestination(Integer.MAX_VALUE);
+        alertComing.setNetworkProtocol(alertMsg.getNetworkProtocol());
+        alertComing.setPriorityAlert(alertMsg.getPriorityAlert());
+        alertComing.setAlertDescription(alertMsg.getAlertDescription());
+        return alertComing;
+    }
+
+    /**
+     * Get alert going!
+     * 
+     * @param alertMsg - An alert message...
+     * @return - A rule based on security alert
+     * 
+     * Remember that rule and alert are the same object!
+     * 
+     */
+    private AlertMessage getAlertGoing(AlertMessage alertMsg) {
+        // Alert to packet that is going - srcIP:srcPort -> dstIP:*
+        AlertMessage alertGoing = new AlertMessage();
+        alertGoing.setNetworkSource(alertMsg.getNetworkSource());
+        alertGoing.setTransportSource(Integer.MAX_VALUE);
+        alertGoing.setNetworkDestination(alertMsg.getNetworkDestination());
+        alertGoing.setTransportDestination(alertMsg.getTransportDestination());
+        alertGoing.setNetworkProtocol(alertMsg.getNetworkProtocol());
+        alertGoing.setPriorityAlert(alertMsg.getPriorityAlert());
+        alertGoing.setAlertDescription(alertMsg.getAlertDescription());
+        return alertGoing;
     }
 
     /**
