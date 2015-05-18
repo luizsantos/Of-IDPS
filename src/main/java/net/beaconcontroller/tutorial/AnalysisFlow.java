@@ -121,7 +121,7 @@ public class AnalysisFlow extends Thread {
             // TODO - What time period is better to use?
             databaseFlowsToByAnalysed =  statusFlowDAO.getSuspiciousDoSTCPFlowsUpToSecondsAgo(this.timePeriodToRecoverFlowFromDB, dosTCPPacketCount, dosTCPByteCount);
             
-            log.debug("Number of alert valid alerts from database: {}", databaseFlowsToByAnalysed.size());
+            log.debug("Number of alert valid alerts from database: {} - From AnalysisFlow.", databaseFlowsToByAnalysed.size());
         } catch (ClassNotFoundException e) {
             log.debug("ATTENTION - Sorry wasn't possible to read data in database - SQL error!");
             e.printStackTrace();

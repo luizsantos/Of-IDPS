@@ -145,7 +145,7 @@ public class SensorOpenFlow extends Thread implements IOFMessageListener {
              */
             removeDeadFlowsFromListThatRepresentsActiveFlowsOnSwitches();
             
-            log.debug("Number of flows actives in switches: {}",  currentFlows.size());
+            log.debug("Number of flows actives in switches: {} - From SensorOpenFlow.",  currentFlows.size());
             
             waitTime(timeBetweenRequests);
             if (beaconProvider.getListeningIPAddress().isAnyLocalAddress()) {

@@ -88,7 +88,16 @@ public class MemorysAttacks extends Thread {
     public static int timeToAlertsStayAtShortMemory= CONFIG.TIME_TO_ALERTS_STAY_AT_SHORT_MEMORY;
     public static int timeToAlertsStayAtSensorialMemory= CONFIG.TIME_TO_ALERTS_STAY_AT_SENSORIAL_MEMORY;
     public static int timeToAlertsStayAtLongMemory= CONFIG.TIME_TO_ALERTS_STAY_AT_LONG_MEMOY;
-        
+    
+    /*
+     * Attributes used to disable or enable sensorial, short, and long memory.
+     * 
+     * 1 to disable and any other value to enable!
+     */
+    protected static int disableSensorialMemory=0;
+    protected static int disableShortMemory=0;
+    protected static int disableLongMemory=0;
+    
     /*
      * Time to wait until execute again the main method contained in the Thread (method run).
      */
@@ -142,16 +151,29 @@ public class MemorysAttacks extends Thread {
             /*******************************
              * Sensorial memory.
              *******************************/
-            sensorialMemory(ids, alertOpenFlowDAO);
+            if(disableSensorialMemory!=1) {
+                sensorialMemory(ids, alertOpenFlowDAO);
+            } else {
+                log.debug("\t!!!!!!!! ATTENTION, Sensorial memory is DISABLED!!!!!!!!  to change this setup to 0 (zero) the variable disableSensorialMemory on MemoryAttacks class...");
+            }
             
             /***************************
              * Feed short memory.
              ***************************/
-            shortMemory(ids, alertOpenFlowDAO);
+            if(disableShortMemory!=1) {
+                shortMemory(ids, alertOpenFlowDAO);
+            } else {
+                log.debug("\t!!!!!!!! ATTENTION, Short memory is DISABLED!!!!!!!!  to change this setup to 0 (zero) the variable disableShortMemory on MemoryAttacks class...");
+            }
             
             /**************************
              * TODO - Feed long memory.
              */
+            if(disableLongMemory!=1) {
+                log.debug("TO IMPLEMENT Long memory.");
+            } else {
+                log.debug("\t!!!!!!!! ATTENTION, Long memory is DISABLED!!!!!!!!  to change this setup to 0 (zero) the variable disableLongMemory on MemoryAttacks class...");
+            }
             
             if (CONFIG.DISABLE_JSON_OUTPUT==false) {
                 writeRulesInShortMemoryToJsonFile();

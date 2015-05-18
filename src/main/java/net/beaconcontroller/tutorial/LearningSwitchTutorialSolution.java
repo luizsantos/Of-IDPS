@@ -73,6 +73,7 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
      * disableOfIDPS_UseOfAlerts because we won't have OpenFlow data to do
      * the analysis. 
      */
+    
     public static int disableOfIDPS_UseOfgetStatisticsFromNetwork=0;
     /*
      * Enable or disable the analysis of security threats based on OpenFlow
