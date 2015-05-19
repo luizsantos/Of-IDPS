@@ -34,7 +34,16 @@ public class CONFIG {
     public static int TIME_TO_ALERTS_STAY_AT_SHORT_MEMORY=30; // tempo memoria curta
     // TODO SBRC 2015 with times 10,30,60
     public static int TIME_TO_ALERTS_STAY_AT_SENSORIAL_MEMORY=TIME_BETWEEN_RUN_MEMORY_ATTACKS; // disable for now!
-    public static int TIME_TO_ALERTS_STAY_AT_LONG_MEMOY=0; // disable for now!
+    public static int TIME_TO_ALERTS_STAY_AT_LONG_MEMOY=1800; // one year!
+    /*
+     * 600 - 10 minutes.
+     * 1800 - 30 minutes.
+     * 3600 - one hour.
+     * 86400 - one day.
+     * 604800 - one week.
+     * 2629800 - one month.
+     * 31557600 - one year.
+     */
 
     
     // OpenFlow sensor variables/constants:    

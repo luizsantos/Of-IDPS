@@ -94,8 +94,8 @@ public class MemorysAttacks extends Thread {
      * 
      * 1 to disable and any other value to enable!
      */
-    protected static int disableSensorialMemory=0;
-    protected static int disableShortMemory=0;
+    protected static int disableSensorialMemory=1;
+    protected static int disableShortMemory=1;
     protected static int disableLongMemory=0;
     
     /*
@@ -170,7 +170,7 @@ public class MemorysAttacks extends Thread {
              * TODO - Feed long memory.
              */
             if(disableLongMemory!=1) {
-                log.debug("TO IMPLEMENT Long memory.");
+                longBadMemory(ids, alertOpenFlowDAO);
             } else {
                 log.debug("\t!!!!!!!! ATTENTION, Long memory is DISABLED!!!!!!!!  to change this setup to 0 (zero) the variable disableLongMemory on MemoryAttacks class...");
             }
@@ -183,110 +183,6 @@ public class MemorysAttacks extends Thread {
             waitTimeInSeconds(TIME_TO_WAIT);
             log.debug("new processing memory attacks\n");
         }        
-    }
-
-    /**
-     * Perform short-term memory methods.
-     * @param ids - An IntrusionPreventionSystem object to recover IDS alerts.
-     * @param alertOpenFlowDAO - An AlertOpenFlowDAO object to recover OpenFlow alerts. 
-     */
-    private void shortMemory(IntrusionPreventionSystem ids, AlertOpenFlowDAO alertOpenFlowDAO) {
-        String alertsFromIDSSnort = "";
-        String alertsFromOpenFlowDoS = "";
-        
-        if (LearningSwitchTutorialSolution.disableOfIDPS_UseIDSAlerts != 1) {
-            //List<AlertMessage> listOfSnortAlerts = ids.getAlertsFromSnortIDS();
-            List<AlertMessage> listOfSnortAlerts = ids.getAlertsFromSnortIDS(timeToAlertsStayAtShortMemory, "Short memory");
-            alertsFromIDSSnort = convertAlertMessagesToBeProcessedByItemsetsAlgorithm(listOfSnortAlerts);
-        } else {
-            log.debug("\t!!!!!!!! ATTENTION, Of-IDPS IDS alerts analysis IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variable disableOfIDPS_UseIDSAlerts on LearningSwithTutorialSolution class...");
-        }
-        
-        if (LearningSwitchTutorialSolution.disableOfIDPS_UseOfAlerts != 1
-                && LearningSwitchTutorialSolution.disableOfIDPS_UseOfgetStatisticsFromNetwork != 1) {
-            // old method
-//                 AnalysisFlow analysisFlow = new AnalysisFlow();
-//                 List<AlertMessageSharePriority> listOfMaliciousFlows = new ArrayList<AlertMessageSharePriority>();
-//                 listOfMaliciousFlows = analysisFlow.getListOfMaliciousFlows();
-//                 alertsFromOpenFlowDoS = this.convertOpenFlowDoSAlertsToBeProcessedByItemsetsAlgorithm(listOfMaliciousFlows);
-//                
-            // new method
-            List<AlertMessage> listOfMaliciousFlows = new ArrayList<AlertMessage>();
-            listOfMaliciousFlows = alertOpenFlowDAO.getOpenFlowAlertsUpToSecondsAgo(timeToAlertsStayAtShortMemory);
-            alertsFromOpenFlowDoS = convertAlertMessagesToBeProcessedByItemsetsAlgorithm(listOfMaliciousFlows);
-            
-            
-        } else {
-            log.debug("\t!!!!!!!! ATTENTION, Of-IDPS ALERT OPENFLOW STATISTICS IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variables disableOfIDPS_UseOfgetStatisticsFromNetwork and disableOfIDPS_UseOfAlerts on LearningSwithTutorialSolution class...");
-        }
-        
-        // Join alerts
-        String allAlerts = alertsFromIDSSnort+alertsFromOpenFlowDoS;
-        
-        // Obtain rules from IDS alerts using itemsets algorithm.
-        Map<String,AlertMessage> ruleListFromIDS = new HashMap<String, AlertMessage>();
-        ruleListFromIDS = getRulesFromIDSAlertsUsingItensetsAlgorithm(allAlerts);
-        
-        /*
-         * Update rules on short memory and send this for all switches on the network.
-         * here the delete/remove existent flows are inside of this method.
-         * 
-         */
-        updateRulesInShortMemoryAndApplieThisRulesOnSwitches(ruleListFromIDS);
-        
-        /*
-         * This didn't work very well: update rules on short memory, but
-         * with this method all rules generated are sent for all switches
-         * all the time (period that the rules are generated - 
-         * waitTimeInSeconds(TIME_TO_WAIT)), then this
-         * interrupt this flows and sends a lot of the OpenFlow Delete
-         * messages all the time
-         * 
-         * If you want use this method you must implement or use a method
-         * for delete/remove/update all related flows existent that already
-         * are presents on the networks switches. *
-         */
-        //updateRulesInShortMemoryUsingSimpleMethod(ruleListFromIDS);
-        
-        
-        /*
-         * This didn't work very well:
-         * TODO - The use of counter life didn't work very well, when the counter
-         * is incremented by the own rules (if the rule generated is equal
-         * to an existing rule)... maybe this will work if the increment it
-         * is done by the new packets that match with this rules!
-         * 
-         * If you want use this method you must implement or use a method
-         * for delete/remove/update all related flows existent that already
-         * are presents on the networks switches. *
-         * 
-         */
-        //updateRulesInShortMemoryUsingLifeCount(ruleListFromIDS);   
-        
-        // Delete flows that match with new rules in the networks switches.
-        /*
-         * TODO - Implement a method that permit simplify/summarize
-         * the rules generated by itemsets algorithm. It means, if exist a
-         * specific rule that match with a more general rule, we should
-         * remove this specific rule (not send this command) and only send a
-         * command to delete flows via the more generic rule, therefore just
-         * one delete command is send to switches and not two this probably
-         * will reduce the number of interruptions in the flows and probably
-         * will gain performance. ie: 
-         * first rule: 10.0.0.1:*->200.0.0.1:* (ICMP) 
-         * second rule: 10.0.0.1:*->*:* (ICMP) 
-         * 
-         * In this case should be applied just
-         * the second or send a command for the seconds rule because this
-         * command also contemplate the first rule.
-         */
-        //deleteExistentsFlowsThatMatchWithNewRulesOnSwitches();
-        // parei
-        
-        // Record rules at this moment in a file!
-//            if (shortMemoryAttacks.size() > 0) {
-//                writeRulesInShortMemoryToFile();
-//            }
     }
 
     /**
@@ -399,6 +295,142 @@ public class MemorysAttacks extends Thread {
         
         log.debug("{} - alerts in sensorial memory, {} - rules in sensorial memory.", listOfAllAlertsInSensorialMemory.size(), sensorialMemoryAttacks.size());
     }
+
+    /**
+     * Perform short-term memory methods.
+     * @param ids - An IntrusionPreventionSystem object to recover IDS alerts.
+     * @param alertOpenFlowDAO - An AlertOpenFlowDAO object to recover OpenFlow alerts. 
+     */
+    private void shortMemory(IntrusionPreventionSystem ids, AlertOpenFlowDAO alertOpenFlowDAO) {
+        // Get alerts from IDS and OpenFlow analysis to be processed by itemsets algorithm.
+        String allAlerts = getAlertsFromIDSAndOpenFlowAnalysisToBeProcessedByItemsetsAlgorithm(ids, 
+                alertOpenFlowDAO,
+                timeToAlertsStayAtShortMemory,
+                "Short memory");
+        
+        // Obtain rules from IDS alerts using itemsets algorithm.
+        Map<String,AlertMessage> ruleListFromIDS = new HashMap<String, AlertMessage>();
+        ruleListFromIDS = getRulesFromIDSAlertsUsingItensetsAlgorithm(allAlerts);
+        
+        /*
+         * Update rules on short memory and send this for all switches on the network.
+         * here the delete/remove existent flows are inside of this method.
+         * 
+         */
+        updateRulesInShortMemoryAndApplieThisRulesOnSwitches(ruleListFromIDS);
+        
+        /*
+         * This didn't work very well: update rules on short memory, but
+         * with this method all rules generated are sent for all switches
+         * all the time (period that the rules are generated - 
+         * waitTimeInSeconds(TIME_TO_WAIT)), then this
+         * interrupt this flows and sends a lot of the OpenFlow Delete
+         * messages all the time
+         * 
+         * If you want use this method you must implement or use a method
+         * for delete/remove/update all related flows existent that already
+         * are presents on the networks switches. *
+         */
+        //updateRulesInShortMemoryUsingSimpleMethod(ruleListFromIDS);
+        
+        
+        /*
+         * This didn't work very well:
+         * TODO - The use of counter life didn't work very well, when the counter
+         * is incremented by the own rules (if the rule generated is equal
+         * to an existing rule)... maybe this will work if the increment it
+         * is done by the new packets that match with this rules!
+         * 
+         * If you want use this method you must implement or use a method
+         * for delete/remove/update all related flows existent that already
+         * are presents on the networks switches. *
+         * 
+         */
+        //updateRulesInShortMemoryUsingLifeCount(ruleListFromIDS);   
+        
+        // Delete flows that match with new rules in the networks switches.
+        /*
+         * TODO - Implement a method that permit simplify/summarize
+         * the rules generated by itemsets algorithm. It means, if exist a
+         * specific rule that match with a more general rule, we should
+         * remove this specific rule (not send this command) and only send a
+         * command to delete flows via the more generic rule, therefore just
+         * one delete command is send to switches and not two this probably
+         * will reduce the number of interruptions in the flows and probably
+         * will gain performance. ie: 
+         * first rule: 10.0.0.1:*->200.0.0.1:* (ICMP) 
+         * second rule: 10.0.0.1:*->*:* (ICMP) 
+         * 
+         * In this case should be applied just
+         * the second or send a command for the seconds rule because this
+         * command also contemplate the first rule.
+         */
+        //deleteExistentsFlowsThatMatchWithNewRulesOnSwitches();
+        // parei
+        
+        // Record rules at this moment in a file!
+//            if (shortMemoryAttacks.size() > 0) {
+//                writeRulesInShortMemoryToFile();
+//            }
+    }
+    
+    /**
+     * Perform long-term bad memory methods. This memory deals with bad remembrances, 
+     * created by security alert in the past.
+     * 
+     * @param ids - An IntrusionPreventionSystem object to recover IDS alerts.
+     * @param alertOpenFlowDAO - An AlertOpenFlowDAO object to recover OpenFlow alerts.
+     */
+    private void longBadMemory(IntrusionPreventionSystem ids, AlertOpenFlowDAO alertOpenFlowDAO) {
+        // Get alerts from IDS and OpenFlow analysis to be processed by itemsets algorithm.
+        String allAlerts = getAlertsFromIDSAndOpenFlowAnalysisToBeProcessedByItemsetsAlgorithm(ids, 
+                alertOpenFlowDAO,
+                timeToAlertsStayAtLongMemory,
+                "Long memory");
+    }
+
+    /**
+     * Get both alerts: IDS and OpenFlow.
+     * 
+     * @param ids - An IntrusionPreventionSystem object to recover IDS alerts.
+     * @param alertOpenFlowDAO - An AlertOpenFlowDAO object to recover OpenFlow alerts.
+     * @param timeToAlertsStayOnMemory - It is the time of the memory that will be processed. e.g. time of short or long memory.
+     * @param comment - Just a commentary text to identify for example the type of memory that is in use.
+     * @return - A string ready to be processed by the itemsets algorithm.
+     */
+    private String getAlertsFromIDSAndOpenFlowAnalysisToBeProcessedByItemsetsAlgorithm(
+            IntrusionPreventionSystem ids, 
+            AlertOpenFlowDAO alertOpenFlowDAO,
+            int timeToAlertsStayOnMemory,
+            String comment) {
+        
+        // Strings to store both results: IDS and Analysis flow.
+        String alertsFromIDSSnort = "";
+        String alertsFromOpenFlowDoS = "";
+        
+        // Get IDS alerts.
+        if (LearningSwitchTutorialSolution.disableOfIDPS_UseIDSAlerts != 1) {
+            List<AlertMessage> listOfSnortAlerts = ids.getAlertsFromSnortIDS(timeToAlertsStayOnMemory, comment);
+            alertsFromIDSSnort = convertAlertMessagesToBeProcessedByItemsetsAlgorithm(listOfSnortAlerts);
+        } else {
+            log.debug("\t!!!!!!!! ATTENTION, Of-IDPS IDS alerts analysis IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variable disableOfIDPS_UseIDSAlerts on LearningSwithTutorialSolution class...");
+        }
+        
+        // Get OpenFlow alerts.
+        if (LearningSwitchTutorialSolution.disableOfIDPS_UseOfAlerts != 1
+                && LearningSwitchTutorialSolution.disableOfIDPS_UseOfgetStatisticsFromNetwork != 1) {
+            List<AlertMessage> listOfMaliciousFlows = new ArrayList<AlertMessage>();
+            listOfMaliciousFlows = alertOpenFlowDAO.getOpenFlowAlertsUpToSecondsAgo(timeToAlertsStayOnMemory);
+            alertsFromOpenFlowDoS = convertAlertMessagesToBeProcessedByItemsetsAlgorithm(listOfMaliciousFlows);
+        } else {
+            log.debug("\t!!!!!!!! ATTENTION, Of-IDPS ALERT OPENFLOW STATISTICS IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variables disableOfIDPS_UseOfgetStatisticsFromNetwork and disableOfIDPS_UseOfAlerts on LearningSwithTutorialSolution class...");
+        }
+        
+        // Join alerts
+        String allAlerts = alertsFromIDSSnort+alertsFromOpenFlowDoS;
+        return allAlerts;
+    }
+
 
     /**
      * Get alert coming! 
