@@ -1,45 +1,40 @@
 #!/usr/bin/python
+#-*- coding: utf-8 -*-
 
 """
-Simulate an internal network and external network. 
+Simulates a network with a LAN connected to a WAN:
 
-The internal network is composed by: host1, host2, host3 that is a IDS, OpenFlow controller Of-IDPS, OpenFlow Switch.
++ The LAN has four hosts, being: 
+  - two client/server hosts (h1 and h2); 
+  - one IDS host (h3); 
+  - and one host to Of-IDPS controller (it's the only host that isn't simulated here).
+  
+  * The switch from the LAN (s1) is commanded by the OpenFlow controller, that is represented by the Of-IDPS controller. 
+    The IP address of the Of-IDPS controller is set by the ipControladorOF variable (if necessary change this value!).
+  
++ The WAN has: 
+  - two client/server hosts (h5 and h6).
+  
+  * The switch from the WAN (s2) is commanded by one common local OpenFlow controller (not Of-IDPS).
 
-The external network is composed by: host5, host6, Common OpenFlow controller, and OpenFlow Switch. 
++ One router (h4) is used to forward packets between LAN and WAN.
 
-Internal and external networks are connected by host4 router.
-
-The OpenFlow switch from external network is comanded by a common OpenFlow controller. 
-The OpenFlow switch from internal network can be controlled by a Of-IDPS controller or 
-another OpenFlow controller configured by IP configured ipControladorOf variable.
-
-Network topology:
-
-h1                                                                               controlador                h5                                                                  
-host1(10.0.0.1)    --------                                                        local              ----- host5(192.168.0.5)
+h1                                                                            local OpenFlow               h5                                                                  
+host1(10.0.0.1)    --------                                                      controller           ----- host5(192.168.0.5)
 (00:00:00:00:01:01)        \                                                      127.0.0.1          /     (00:00:00:00:02:05)
-                            \                                -Roteador-                 |           /
+                            \                                -Router-                   |           /
 h2                           \ s1                             h4                         \     s2  /
 host2(10.0.0.2)    -------- switchLAN-------------- (10.0.0.4)host4(192.168.0.4)----------switchWAN
 (00:00:00:00:01:02)         /     \        (00:00:00:00:01:04)     (00:00:00:00:02:04              \
                            /       \                                                                \
 h3                        /         \                                                                \      h6
-host3/IDS(10.0.0.3)-------           controlador                                                      ----- host6(192.168.0.6)
-(00:00:00:00:01:03)                    Remoto                                                                    (00:00:00:00:02:06)
-				       Of-IDPS
+host3/IDS(10.0.0.3)-------           remote                                                           ----- host6(192.168.0.6)
+(00:00:00:00:01:03)                  Of-IDPS                                                                    (00:00:00:00:02:06)
+				    controller
 
 
-Run the simulation in the mininet with command:
- sudo mn --custom /home/mininet/mininet/custom/cenarioTesteLAN-WAN.py
-
-
-Observation 1: after some simulations, the API from mininet some times do not shutdown correctly the OpenFlow controller, 
-in this case will appear one message telling that the OpenFlow port is busy, 
-to fix this just rerun the command (above) that execute the simulation. 
-Or kill then mininet (mn) process in the Linux console.
-
-
-To execute a test, you need uncomment a test scenario in the end of this script.
+Execute this simulation using the script/command:
+ $ ~/executeOfIDPSTests.sh 1 1
 
 """
 
@@ -60,30 +55,26 @@ gwWAN='sh ./shHosts/gwWAN.sh'
 router='sh ./shHosts/router.sh'
 mirror='sh ./shSwithes/mirror.sh'
 qos='sh ./shSwithes/qos.sh'
-ipControladorOF='192.168.1.113'
-#ipControladorOF='172.16.1.113'
+ipControladorOF='192.168.1.157'
+#ipControladorOF='10.1.1.157'
 date = datetime.datetime.now().strftime("%y%m%d-%H%M%S")
-if0 = 'eth0'
-if1 = 'eth1'
-if2 = 's1-eth1'
-if3 = 's1-eth2'
-if4 = 's1-eth3'
-if5 = 's1-eth4'
+
 
 def tcpdump(idhost, net):
     host = net.getNodeByName('h'+idhost)
-    host.cmd('tcpdump -i h'+idhost+'-'+if0+' -s 65535 -w /var/log/tcpdump/'+date+'/host'+idhost+'-'+if0+'.pcap &')
-    #Case route, then capture packets from two interfaces.
+    host.cmd('tcpdump -i h'+idhost+'-eth0 -s 65535 -w /var/log/tcpdump/'+date+'/host'+idhost+'-eth0.pcap &')
+    # For the router get network packets from the two network interfaces.
     if idhost=='4':
-      host.cmd('tcpdump -i h'+idhost+'-'+if1+' -s 65535 -w /var/log/tcpdump/'+date+'/host'+idhost+'-'+if1+'.pcap &')
+      host.cmd('tcpdump -i h'+idhost+'-eth1 -s 65535 -w /var/log/tcpdump/'+date+'/host'+idhost+'-eth1.pcap &')
       
 def tcpdumpSwLAN(net):
     host = net.getNodeByName('s1')
-    host.cmd('tcpdump -i '+if1+' -s 65535 -w /var/log/tcpdump/'+date+'/'+if1+'-controller.pcap &')
-    host.cmd('tcpdump -i '+if2+' -s 65535 -w /var/log/tcpdump/'+date+'/'+if2+'.pcap &')
-    host.cmd('tcpdump -i '+if3+' -s 65535 -w /var/log/tcpdump/'+date+'/'+if3+'.pcap &')
-    host.cmd('tcpdump -i '+if4+' -s 65535 -w /var/log/tcpdump/'+date+'/'+if4+'.pcap &')
-    host.cmd('tcpdump -i '+if5+' -s 65535 -w /var/log/tcpdump/'+date+'/'+if5+'.pcap &')
+    host.cmd('tcpdump -i eth0 -s 65535 -w /var/log/tcpdump/'+date+'/s1-eth0-controller.pcap &')
+    host.cmd('tcpdump -i eth1 -s 65535 -w /var/log/tcpdump/'+date+'/s1-eth1-controller.pcap &')
+    host.cmd('tcpdump -i s1-eth1 -s 65535 -w /var/log/tcpdump/'+date+'/s1-eth1.pcap &')
+    host.cmd('tcpdump -i s1-eth2 -s 65535 -w /var/log/tcpdump/'+date+'/s1-eth2.pcap &')
+    host.cmd('tcpdump -i s1-eth3 -s 65535 -w /var/log/tcpdump/'+date+'/s1-eth3.pcap &')
+    host.cmd('tcpdump -i s1-eth4 -s 65535 -w /var/log/tcpdump/'+date+'/s1-eth4.pcap &')
     #host.cmd('tcpdump -i s1-eth1 -i s1-eth2 -i s1-eth3 -i s1-eth4 -s 65535 -w /var/log/tcpdump/'+date+'/s1-ethLAN.pcap &')
 
 
@@ -91,7 +82,7 @@ def tcpdumpAll(net):
     info('*** tcpdump ALL hosts\n')
     tcpdump('1', net)
     tcpdump('2', net)
-    #tcpdump('3', net) #Dont capute/log IDS packets!
+    #tcpdump('3', net) #Don't capture and log from IDS host.
     tcpdump('4', net)
     tcpdump('5', net)
     tcpdump('6', net)
@@ -110,89 +101,161 @@ class thCmd(t.Thread):
     self.host.cmdPrint(self.comando)
     
 
-# experimentos/testes
-# Ping test.
+# Experiments/tests
 def teste1(net):
     textoTeste = """
-    test 1 - ping (4msgs/for each):\nhost1->host6\nhost2->host1\nhost5->host2\nhost6->host5
+    test1 - ping (4msgs/each):\nhost1->host6\nhost2->host1\nhost5->host2\nhost6->host5
     """
     info(textoTeste)    
-    #Used hosts
+    # Used hosts.
     host1 = net.getNodeByName('h1')
     host2 = net.getNodeByName('h2')
     host5 = net.getNodeByName('h5')
     host6 = net.getNodeByName('h6')
     
-    #Create directory to tcpdump log files (.pcap)
+    # Creates a directory to register captured packets.
     host1.cmd('mkdir /var/log/tcpdump/'+date)
-    #Capture packets from all hosts, except IDS (host3) and switches.
+    #Get all network packets except from IDS host (h3).
     tcpdumpAll(net)
     
-    #Using threads for executing simultaneous commands in hosts
+    # Configures the commands that will be simultaneous executed by the threads.
     th1=thCmd(host1,'ping 192.168.0.6 -c 4')
     th2=thCmd(host2,'ping 10.0.0.1 -c 4')
     th5=thCmd(host5,'ping 10.0.0.2 -c 4')
     th6=thCmd(host6,'ping 192.168.0.5 -c 4')
     
-    #Start commands by threads
+    # Execute commands using the threads.
     th1.start()
     th2.start()
     th5.start()
     th6.start()
 
-    #Wait threads finish
+    # Waiting all commands be executed by the threads.
     th1.join()
     th2.join()
     th5.join()
     th6.join()
 
-    #Finish tcpdump command (logs)
+    # Finish the network packet capture.
     tcpdumpKill(net)
     return textoTeste
 
-#experiment 1
-def testeIperf(net):
+def testePing(net):
     textoTeste = """
-    testeIperf - iperf:\nhost1->host2(porta 80)\nhost3->host2(porta 90)
-    Port 90 will be considered normal in the first 30 seconds, 
-    data rate flow will be softly restricted in 60 seconds, 
-    data rate will be severely (hard) restricted in 90 seconds and blocked in 120 seconds.
+    test1 - ping (2msgs):\nhost1->host2
+    """
+    info(textoTeste)    
+    # Used hosts.
+    host1 = net.getNodeByName('h1')
+    host2 = net.getNodeByName('h2')
+    
+    # Creates a directory to register captured packets.
+    host1.cmd('mkdir /var/log/tcpdump/'+date)
+    # Get all network packets except from IDS host (h3).
+    tcpdumpAll(net)
+    
+    # Configures the commands that will be simultaneous executed by the threads.
+    th1=thCmd(host1,'ping 10.0.0.2 -c 2')
+    
+    
+    # Execute commands using the threads.
+    th1.start()
+    
+    #Espera todos os comandos disparados via thread terminarem!
+    th1.join()
+    
+    sleep(3)
+    # Finish the network packet capture.
+    tcpdumpKill(net)
+    return textoTeste
+
+  
+def testeIperfCompararDDoS(net):
+    textoTeste = """
+    testIperf - iperf:\nhost1->host2(port 80)
+    
+    Send 10.000 packets from WAN to LAN. This can be used to simulate common packets network (not malicious).
     
     \n\n
     """
     info(textoTeste)    
-    #Used hosts
+    # Used hosts.
+    host1 = net.getNodeByName('h1')
+    host2 = net.getNodeByName('h2')
+    
+    # Creates a directory to register captured packets.
+    host1.cmd('mkdir /var/log/tcpdump/'+date)
+    # Get all network packets except from IDS host (h3).
+    tcpdumpAll(net)
+    os.system('mkdir /tmp/alertas/')
+    os.system('rm /tmp/alertas/formatted_log.csv')
+    
+    # Start the server but without threads, otherwise the test won't finish! ;-)
+    host2.cmdPrint('iperf -s -p 80 -D')
+   
+    sleep(5)
+   
+    # Start the server but without threads, otherwise the test won't finish! ;-)
+    data1 = datetime.datetime.now()
+    textoTeste=textoTeste+" Start the test : %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
+    host1.cmdPrint('iperf -p 80 -c 10.0.0.2 -t 5')
+    
+    data2 = datetime.datetime.now()
+    dr=data2-data1
+    textoTeste=textoTeste+"\n\tElapsed time: %s"%dr
+
+    # Finish the network packet capture.
+    sleep(5)
+    tcpdumpKill(net)
+    return textoTeste  
+
+def testeIperf(net):
+    textoTeste = """
+    testIperf - iperf:\nhost1->host2(port 80)\nhost3->host2(port 90)
+    The 90 network port will pass for three security risk levels: 
+      - normal (without security alert), 
+      - low, 
+      - medium, 
+      - and high. 
+    This will occur respectively in interval of 30 seconds.
+    
+    ATTENTION - For now, it doesn't work with the barnyard IDS register log.
+    
+    \n\n
+    """
+    info(textoTeste)    
+    # Used hosts.
     host1 = net.getNodeByName('h1')
     host2 = net.getNodeByName('h2')
     host3 = net.getNodeByName('h3')
     host4 = net.getNodeByName('h4')
 
     
-    #Create directory to tcpdump log files (.pcap)
+    # Creates a directory to register captured packets.
     host1.cmd('mkdir /var/log/tcpdump/'+date)
-    #Capture packets from all hosts, except IDS (host3) and switches.
+    # Get all network packets except from IDS host (h3).
     tcpdumpAll(net)
-    
+    os.system('mkdir /tmp/alertas/')
     os.system('rm /tmp/alertas/formatted_log.csv')
     
-    #Start servers without use threads
+    # Start the server but without threads, otherwise the test won't finish! ;-)
     host2.cmd('iperf -s -p 90 -D')
     host2.cmd('iperf -s -p 80 -D')
     
 
-    #Using threads for executing simultaneous commands in hosts
+    # Configures the commands that will be simultaneous executed by the threads.
     th1=thCmd(host1,'iperf -p 80 -c 10.0.0.2 -t 130')
     th3=thCmd(host3,'iperf -p 90 -c 10.0.0.2 -t 130')
     
         
-    #Start commands by threads
+    # Execute commands using the threads.
     th1.start()
     th3.start()
     
     #
     data1 = datetime.datetime.now()
     #host2.cmdPrint('ping -c 4 -s 92 10.0.0.4')
-    textoTeste=textoTeste+"Begin of test without alert: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
+    textoTeste=textoTeste+"Start test without alerts - normal packets: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
     
     tempo = 30
     sleep(tempo)
@@ -200,68 +263,237 @@ def testeIperf(net):
     data2 = datetime.datetime.now()
     host2.cmdPrint('ping -c 4 -s 93 10.0.0.4')
     dr=data2-data1
-    textoTeste=textoTeste+"\n\telapsed time: %s"%dr
-    textoTeste=textoTeste+"\nBegin of test without alert: %s:%s:%s:%s\n"%(data2.hour,data2.minute,data2.second,data2.microsecond)
+    textoTeste=textoTeste+"\n\tElapsed time: %s"%dr
+    textoTeste=textoTeste+"\nLow risk security alert: %s:%s:%s:%s\n"%(data2.hour,data2.minute,data2.second,data2.microsecond)
     os.system('echo \"11/27-16:56:01.676655,3,[1:1228:7] teste,10.0.0.3,10.0.0.2,TCP,52146,90\" > /tmp/alertas/formatted_log.csv')
     sleep(tempo)
     
     data3 = datetime.datetime.now()
     host2.cmdPrint('ping -c 4 -s 94 10.0.0.4')
     dr=data3-data2
-    textoTeste=textoTeste+"\n\telapsed time: %s"%dr
-    textoTeste=textoTeste+"\nSend alert priority 3 (soft) at: %s:%s:%s:%s\n"%(data3.hour,data3.minute,data3.second,data3.microsecond)
+    textoTeste=textoTeste+"\n\tElapsed time: %s"%dr
+    textoTeste=textoTeste+"\nMedium risk security alert: %s:%s:%s:%s\n"%(data3.hour,data3.minute,data3.second,data3.microsecond)
     os.system('echo \"11/27-16:56:01.676655,2,[1:1228:7] teste,10.0.0.3,10.0.0.2,TCP,52146,90\" > /tmp/alertas/formatted_log.csv')
     sleep(tempo)
     
     data5 = datetime.datetime.now()
     host2.cmdPrint('ping -c 4 -s 95 10.0.0.4')
     dr=data5-data3
-    textoTeste=textoTeste+"\n\telapsed time: %s"%dr
-    textoTeste=textoTeste+"\nSend alert priority 2 (hard) at: %s:%s:%s:%s\n"%(data5.hour,data5.minute,data5.second,data5.microsecond)
+    textoTeste=textoTeste+"\n\tElapsed time: %s"%dr
+    textoTeste=textoTeste+"\nHigh risk security alert: %s:%s:%s:%s\n"%(data5.hour,data5.minute,data5.second,data5.microsecond)
     os.system('echo \"11/27-16:56:01.676655,1,[1:1228:7] teste,10.0.0.3,10.0.0.2,TCP,52146,90\" > /tmp/alertas/formatted_log.csv')
     sleep(tempo)
         
-    #Wait finish threads commands
+    # Waiting all commands be executed by the threads.
     host2.cmdPrint('ping -c 4 -s 95 10.0.0.4')
     os.system('rm /tmp/alertas/formatted_log.csv')
     th1.join()
     th3.join()
     data6 = datetime.datetime.now()
     dr=data6-data5
-    textoTeste=textoTeste+"\n test finished! \n\telapsed time: %s"%dr
+    textoTeste=textoTeste+"\n Finished! \n\tElapsed time: %s"%dr
     
-    #Finish tcpdump command (logs)
+    # Finish the network packet capture.
     sleep(20)
     tcpdumpKill(net)
     return textoTeste
 
+def teste3(net):
+    textoTeste = """
+    teste3 - idswakeup (origem conhecida):\nhost1->host6
+    """
+    info(textoTeste)    
+    #hosts que serao utilizados
+    host1 = net.getNodeByName('h1')
+    host6 = net.getNodeByName('h6')
+    
+    #cria diretorio que recebera arquivos do tcpdump (pacotes de redes)
+    host1.cmd('mkdir /var/log/tcpdump/'+date)
+    #captura pacotes em todos os hosts - exceto switches e IDS(host3)
+    tcpdumpAll(net)
 
-#experiment 2
+    #inicia servidores, esses nao vao na thread se nao o teste nao termina! ;-)
+    host1.cmdPrint('idswakeup 10.0.0.1 192.168.0.6 1 70')
+    
+    #Finaliza tcpdumps
+    tcpdumpKill(net)
+    return textoTeste
+
+def teste4(net):    
+    textoTeste = """
+    teste4 - idswakeup (origem desconhecida):\nhost6->host1
+    """
+    info(textoTeste)  
+    #hosts que serao utilizados
+    host1 = net.getNodeByName('h1')
+    host6 = net.getNodeByName('h6')
+    
+    #cria diretorio que recebera arquivos do tcpdump (pacotes de redes)
+    host1.cmd('mkdir /var/log/tcpdump/'+date)
+    #captura pacotes em todos os hosts - exceto switches e IDS(host3)
+    tcpdumpAll(net)
+
+    #inicia servidores, esses nao vao na thread se nao o teste nao termina! ;-)
+    host6.cmdPrint('idswakeup 0 10.0.0.1 1 70')
+    
+    #Finaliza tcpdumps
+    tcpdumpKill(net)
+    return textoTeste
+
+def teste5(net):
+    textoTeste = """
+    teste5 -  hyenae -I 1 -a tcp -f s -A 4 -s %-10.0.0.1@\%\%\%\% -d 00:00:00:00:01:02-10.0.0.2@80 -c 100000\n
+      host1->host2
+    """
+    info(textoTeste)
+    #hosts que serao utilizados
+    host1 = net.getNodeByName('h1')
+    host2 = net.getNodeByName('h2')
+    
+    #Configura comandos a serem executados simultaneamente via threads
+    #host1.cmd(host2,'apache2ctl start')
+    
+    
+    #cria diretorio que recebera arquivos do tcpdump (pacotes de redes)
+    host1.cmd('mkdir /var/log/tcpdump/'+date)
+    #captura pacotes em todos os hosts - exceto switches e IDS(host3)
+    tcpdumpAll(net)
+    #sleep(5)
+    host1.cmdPrint('ping -c 4 -s 92 10.0.0.2')
+    #sleep(5)
+
+    #inicia servidores, esses nao vao na thread se nao o teste nao termina! ;-)
+    data1 = datetime.datetime.now()
+    textoTeste=textoTeste+"Inicio de teste alertas em tempo de execucao: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
+    host1.cmdPrint('hyenae -I 1 -a tcp -f s -A 4 -s 00:00:00:00:01:01-10.0.0.1@53 -d 00:00:00:00:01:02-10.0.0.2@80 -c 10000 -e 5')
+    
+    tempo = 10
+    #sleep(tempo)
+    #host1.cmdPrint('ping -c 4 -s 92 10.0.0.2')
+    
+    data2 = datetime.datetime.now()
+    dr=data2-data1
+    textoTeste=textoTeste+"\n\ttempo decorrido: %s"%dr
+    textoTeste=textoTeste+"\nInicio de teste com alertas instalados: %s:%s:%s:%s\n"%(data2.hour,data2.minute,data2.second,data2.microsecond)
+    #host1.cmdPrint('hyenae -I 1 -a tcp -f s -A 4 -s 00:00:00:00:01:01-10.0.0.1@53 -d 00:00:00:00:01:02-10.0.0.2@80 -c 10000 -e 5')
+
+    #sleep(tempo)
+    #host1.cmdPrint('ping -c 4 -s 92 10.0.0.2')
+    
+    #host2.cmdPrint('apache2ctl stop')
+    #Finaliza tcpdumps
+    #sleep(10)
+    tcpdumpKill(net)
+    return textoTeste
+
+def testeDDoSIntInt(net, numberPackets):
+    textoTeste = """
+    testeDDoS interno->interno - host1->host2 \n
+    """
+    
+    cmdToExec = "hyenae -I 1 -a tcp -f s -A 4 -s 00:00:00:00:01:01-10.0.0.1@%%%% -d 00:00:00:00:01:02-10.0.0.2@80 -c %d -e 5 "%numberPackets
+    
+    textoTeste = textoTeste + cmdToExec
+    info(textoTeste)
+    #hosts que serao utilizados
+    host1 = net.getNodeByName('h1')
+    host2 = net.getNodeByName('h2')
+        
+    #cria diretorio que recebera arquivos do tcpdump (pacotes de redes)
+    host1.cmd('mkdir /var/log/tcpdump/'+date)
+    #captura pacotes em todos os hosts - exceto switches e IDS(host3)
+    tcpdumpAll(net)
+    sleep(2)
+    host1.cmd('iptables -t mangle -A OUTPUT -p icmp -j TOS --set-tos 1')
+    host1.cmdPrint('ping -c 1 10.0.0.2')
+    host1.cmd('iptables -t mangle -D OUTPUT -p icmp -j TOS --set-tos 1')
+ 
+    #inicia servidores, esses nao vao na thread se nao o teste nao termina! ;-)
+    data1 = datetime.datetime.now()
+    textoTeste=textoTeste+"Inicio de teste alertas em tempo de execucao: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
+    host1.cmdPrint(cmdToExec)
+    
+    host1.cmd('iptables -t mangle -A OUTPUT -p icmp -j TOS --set-tos 1')
+    host1.cmdPrint('ping -c 1 10.0.0.2')
+    host1.cmd('iptables -t mangle -D OUTPUT -p icmp -j TOS --set-tos 1')
+    
+    data2 = datetime.datetime.now()
+    dr=data2-data1
+    textoTeste=textoTeste+"\n\ttempo decorrido: %s"%dr
+    
+    #Finaliza tcpdumps
+    sleep(10)
+    tcpdumpKill(net)
+    return textoTeste
+  
+def testeNewDDoSIntInt(net, numberPackets):
+    textoTeste = """
+    testeDDoS interno->interno - host1->host2 \n
+    """
+    
+    #cmdToExec = "hyenae -I 1 -a tcp -f s -s %-%@%%% -d 00:00:00:00:01:02-10.0.0.2@80 -c %d -e 5 "%numberPackets
+    cmdToExec = "hyenae -I 1 -a tcp -f s -A 4 -s 00:00:00:00:01:01-%%@%%%%%% -d 00:00:00:00:01:02-10.0.0.2@80 -c %d -e 10" %numberPackets
+    
+    
+    textoTeste = textoTeste + cmdToExec
+    info(textoTeste)
+    #hosts que serao utilizados
+    host1 = net.getNodeByName('h1')
+    host2 = net.getNodeByName('h2')
+        
+    #cria diretorio que recebera arquivos do tcpdump (pacotes de redes)
+    host1.cmd('mkdir /var/log/tcpdump/'+date)
+    #captura pacotes em todos os hosts - exceto switches e IDS(host3)
+    tcpdumpAll(net)
+    sleep(2)
+    host1.cmd('iptables -t mangle -A OUTPUT -p icmp -j TOS --set-tos 1')
+    host1.cmdPrint('ping -c 1 10.0.0.2')
+    host1.cmd('iptables -t mangle -D OUTPUT -p icmp -j TOS --set-tos 1')
+ 
+    #inicia servidores, esses nao vao na thread se nao o teste nao termina! ;-)
+    data1 = datetime.datetime.now()
+    textoTeste=textoTeste+"Inicio de teste alertas em tempo de execucao: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
+    host1.cmdPrint(cmdToExec)
+    
+    host1.cmd('iptables -t mangle -A OUTPUT -p icmp -j TOS --set-tos 1')
+    host1.cmdPrint('ping -c 1 10.0.0.2')
+    host1.cmd('iptables -t mangle -D OUTPUT -p icmp -j TOS --set-tos 1')
+    
+    data2 = datetime.datetime.now()
+    dr=data2-data1
+    textoTeste=textoTeste+"\n\ttempo decorrido: %s"%dr
+    
+    #Finaliza tcpdumps
+    sleep(10)
+    tcpdumpKill(net)
+    return textoTeste  
+
 def testeDDoSExtInt(net):
     textoTeste = """
-    test  -  hyenae
+    teste5 -  hyenae
       host6->host2
     """
     info(textoTeste)
-    #Used hosts
+    #hosts que serao utilizados
     host1 = net.getNodeByName('h6')
     host2 = net.getNodeByName('h2')
     
-    #Start servers without use threads (or its commands do not stop)
+    #Configura comandos a serem executados simultaneamente via threads
     host2.cmd(host2,'apache2ctl start')
+      
     
     
-    #Create directory to tcpdump log files (.pcap)
+    #cria diretorio que recebera arquivos do tcpdump (pacotes de redes)
     host1.cmd('mkdir /var/log/tcpdump/'+date)
-    #Capture packets from all hosts, except IDS (host3) and switches.
+    #captura pacotes em todos os hosts - exceto switches e IDS(host3)
     tcpdumpAll(net)
     sleep(5)
     host1.cmdPrint('ping -c 4 -s 92 10.0.0.2')
     sleep(5)
 
-    # run a command
+    #inicia servidores, esses nao vao na thread se nao o teste nao termina! ;-)
     data1 = datetime.datetime.now()
-    textoTeste=textoTeste+"Test started at: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
+    textoTeste=textoTeste+"Inicio de teste alertas em tempo de execucao: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
     host1.cmdPrint('hyenae -I 1 -a tcp -f s -A 4 -s 00:00:00:00:02:06-192.168.0.6@%%%% -d 00:00:00:00:02:04-10.0.0.2@80 -c 10000 -e 5 ')
     
     tempo = 10
@@ -270,40 +502,44 @@ def testeDDoSExtInt(net):
     
     data2 = datetime.datetime.now()
     dr=data2-data1
-    textoTeste=textoTeste+"\n\telapsed time: %s"%dr
+    textoTeste=textoTeste+"\n\ttempo decorrido: %s"%dr
+    #textoTeste=textoTeste+"\nInicio de teste com alertas instalados: %s:%s:%s:%s\n"%(data2.hour,data2.minute,data2.second,data2.microsecond)
+    #host1.cmdPrint('hyenae -I 1 -a tcp -f s -A 4 -s 00:00:00:00:01:01-10.0.0.1@%%%% -d 00:00:00:00:01:02-10.0.0.2@80 -c 100000 -e 5')
+
+    #sleep(tempo)
+    #host1.cmdPrint('ping -c 4 -s 92 10.0.0.2')
     
     host2.cmdPrint('apache2ctl stop')
-    #Finish tcpdump command (logs)
+    #Finaliza tcpdumps
     sleep(30)
     tcpdumpKill(net)
     return textoTeste
 
 def testeDDoSIntExt(net):
     textoTeste = """
-    test -  hyenae
+    teste5 -  hyenae
       host2->host6
     """
     info(textoTeste)
-    #Used hosts
+    #hosts que serao utilizados
     host1 = net.getNodeByName('h2')
     host2 = net.getNodeByName('h6')
     
-    #Start servers without use threads (or its commands do not stop)
+    #Configura comandos a serem executados simultaneamente via threads
     host2.cmd(host2,'apache2ctl start')
     
     
-    #Create directory to tcpdump log files (.pcap)
+    #cria diretorio que recebera arquivos do tcpdump (pacotes de redes)
     host1.cmd('mkdir /var/log/tcpdump/'+date)
-    #Capture packets from all hosts, except IDS (host3) and switches.
+    #captura pacotes em todos os hosts - exceto switches e IDS(host3)
     tcpdumpAll(net)
     sleep(5)
-    
-    #Run commands
     host1.cmdPrint('ping -c 4 -s 92 192.168.0.6')
     sleep(5)
 
+    #inicia servidores, esses nao vao na thread se nao o teste nao termina! ;-)
     data1 = datetime.datetime.now()
-    textoTeste=textoTeste+"Test started at: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
+    textoTeste=textoTeste+"Inicio de teste alertas em tempo de execucao: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
     host1.cmdPrint('hyenae -I 1 -a tcp -f s -A 4 -s 00:00:00:00:01:02-10.0.0.2@%%%% -d 00:00:00:00:01:04-192.168.0.6@80 -c 10000 -e 5 ')
     
     tempo = 10
@@ -312,41 +548,381 @@ def testeDDoSIntExt(net):
     
     data2 = datetime.datetime.now()
     dr=data2-data1
-    textoTeste=textoTeste+"\n\telapsed time: %s"%dr
+    textoTeste=textoTeste+"\n\ttempo decorrido: %s"%dr
+    #textoTeste=textoTeste+"\nInicio de teste com alertas instalados: %s:%s:%s:%s\n"%(data2.hour,data2.minute,data2.second,data2.microsecond)
+    #host1.cmdPrint('hyenae -I 1 -a tcp -f s -A 4 -s 00:00:00:00:01:01-10.0.0.1@%%%% -d 00:00:00:00:01:02-10.0.0.2@80 -c 100000 -e 5')
+
+    #sleep(tempo)
+    #host1.cmdPrint('ping -c 4 -s 92 10.0.0.2')
     
     host2.cmdPrint('apache2ctl stop')
-    #Finish tcpdumps
+    #Finaliza tcpdumps
     sleep(30)
     tcpdumpKill(net)
     return textoTeste
-
-def testeDDoSIntInt(net):
+  
+  
+def testeDDoSTest1(net):
     textoTeste = """
-    test -  hyenae
+    testeDDoSTest1 hyenae -I 1 -a tcp -f s -A 4 -s %-10.0.0.1@\%\%\%\% -d 00:00:00:00:01:02-10.0.0.2@80 -c 5000\n
       host1->host2
     """
     info(textoTeste)
-    #Used hosts
+    #hosts que serao utilizados
     host1 = net.getNodeByName('h1')
     host2 = net.getNodeByName('h2')
     
-    #Start servers without use threads (or its commands do not stop)
-    host2.cmd(host2,'apache2ctl start')
     
-    
-    #Create directory to tcpdump log files (.pcap)
+    #cria diretorio que recebera arquivos do tcpdump (pacotes de redes)
     host1.cmd('mkdir /var/log/tcpdump/'+date)
-    #Capture packets from all hosts, except IDS (host3) and switches.
+    #captura pacotes em todos os hosts - exceto switches e IDS(host3)
+    tcpdumpAll(net)
+    sleep(2)
+
+    #inicia servidores, esses nao vao na thread se nao o teste nao termina! ;-)
+    data1 = datetime.datetime.now()
+    textoTeste=textoTeste+"Inicio de teste alertas em tempo de execucao: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
+    host1.cmdPrint('hyenae -I 1 -a tcp -f s -A 4 -s 00:00:00:00:01:01-10.0.0.1@%%%% -d 00:00:00:00:01:02-10.0.0.2@80 -c 5000 -e 5 ')
+    
+    data2 = datetime.datetime.now()
+    dr=data2-data1
+    textoTeste=textoTeste+"\n\ttempo decorrido: %s"%dr
+    
+    #Finaliza tcpdumps
+    sleep(10)
+    tcpdumpKill(net)
+    return textoTeste  
+  
+def testeNMAP(net):
+    textoTeste = """
+    testeNMAP - nmap host1->host2 duas vezes (Interno->Interno)
+    \n\n
+    """
+    info(textoTeste)    
+    #hosts que serao utilizados
+    host1 = net.getNodeByName('h1')
+    host2 = net.getNodeByName('h2')
+
+    tempo = 5
+    
+    #cria diretorio que recebera arquivos do tcpdump (pacotes de redes)
+    host1.cmd('mkdir /var/log/tcpdump/'+date)
+    #captura pacotes em todos os hosts - exceto switches e IDS(host3)
+    tcpdumpAll(net)
+    sleep(tempo)
+    
+    host1.cmdPrint('ping -c 4 -s 92 10.0.0.2')
+    host2.cmdPrint('ping -c 4 -s 92 10.0.0.1')
+    sleep(tempo)
+
+    #inicia servidores, esses nao vao na thread se nao o teste nao termina! ;-)
+    host2.cmd('apache2ctl start')
+    host2.cmd('iperf -s -p 23 -D')
+    host2.cmd('iperf -s -u -p 53 -D')
+    
+
+    #
+    data1 = datetime.datetime.now()
+    textoTeste=textoTeste+"Inicio de teste alertas em tempo de execucao: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
+    host1.cmdPrint('nmap -A -T4 -O 10.0.0.2 >> /var/log/tcpdump/'+date+'/saidaNmap1.txt')
+    
+
+    sleep(tempo)
+    host1.cmdPrint('ping -c 4 -s 92 10.0.0.2')
+    host2.cmdPrint('ping -c 4 -s 92 10.0.0.1')
+    
+    #data2 = datetime.datetime.now()
+    #dr=data2-data1
+    #textoTeste=textoTeste+"\n\ttempo decorrido: %s"%dr
+    #textoTeste=textoTeste+"\nInicio de teste com alertas instalados: %s:%s:%s:%s\n"%(data2.hour,data2.minute,data2.second,data2.microsecond)
+    #host1.cmdPrint('nmap -A -T4 -O 10.0.0.2 >> /var/log/tcpdump/'+date+'/saidaNmap2.txt')
+    #sleep(tempo)
+    host1.cmdPrint('ping -c 4 -s 92 10.0.0.2')
+    host2.cmdPrint('ping -c 4 -s 92 10.0.0.1')
+    host2.cmd('apache2ctl stop && killall iperf')
+    #Finaliza tcpdumps
+    sleep(20)
+    tcpdumpKill(net)
+    return textoTeste
+
+
+def testeNMAPExternoInterno(net):
+    textoTeste = """
+    testeNMAP - nmap host6->host1 duas vezes
+    \n\n
+    """
+    info(textoTeste)    
+    #hosts que serao utilizados
+    host1 = net.getNodeByName('h6')
+    host2 = net.getNodeByName('h1')
+    host3 = net.getNodeByName('h2')
+
+    tempo = 5
+    
+    #cria diretorio que recebera arquivos do tcpdump (pacotes de redes)
+    host1.cmd('mkdir /var/log/tcpdump/'+date)
+    #captura pacotes em todos os hosts - exceto switches e IDS(host3)
+    tcpdumpAll(net)
+    sleep(tempo)
+    
+    host1.cmd('iptables -t mangle -A OUTPUT -p icmp -j TOS --set-tos 1')
+    host2.cmd('iptables -t mangle -A OUTPUT -p icmp -j TOS --set-tos 1')
+    host3.cmd('iptables -t mangle -A OUTPUT -p icmp -j TOS --set-tos 1')
+    host1.cmdPrint('ping -c 3 -s 92 10.0.0.1')
+    host2.cmdPrint('ping -c 3 -s 92 192.168.0.6')
+    host3.cmdPrint('ping -c 3 -s 92 192.168.0.6')
+    host1.cmd('iptables -t mangle -D OUTPUT -p icmp -j TOS --set-tos 1')
+    host2.cmd('iptables -t mangle -D OUTPUT -p icmp -j TOS --set-tos 1')
+    host3.cmd('iptables -t mangle -D OUTPUT -p icmp -j TOS --set-tos 1')
+
+    
+    sleep(tempo)
+
+    #inicia servidores, esses nao vao na thread se nao o teste nao termina! ;-)
+    host2.cmd('apache2ctl start')
+    host2.cmd('iperf -s -p 23 -D')
+    host3.cmd('apache2ctl start')
+    host3.cmd('iperf -s -p 23 -D')
+    
+
+    #
+    data1 = datetime.datetime.now()
+    textoTeste=textoTeste+"Inicio de teste alertas em tempo de execucao: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
+    host1.cmdPrint('nmap -A -T4 -O 10.0.0.1 >> /var/log/tcpdump/'+date+'/saidaNmap1.txt')
+    
+
+    sleep(tempo)
+    host1.cmd('iptables -t mangle -A OUTPUT -p icmp -j TOS --set-tos 1')
+    host2.cmd('iptables -t mangle -A OUTPUT -p icmp -j TOS --set-tos 1')
+    host3.cmd('iptables -t mangle -A OUTPUT -p icmp -j TOS --set-tos 1')
+    host1.cmdPrint('ping -c 3 -s 92 10.0.0.1')
+    host2.cmdPrint('ping -c 3 -s 92 192.168.0.6')
+    host3.cmdPrint('ping -c 3 -s 92 192.168.0.6')
+    host1.cmd('iptables -t mangle -D OUTPUT -p icmp -j TOS --set-tos 1')
+    host2.cmd('iptables -t mangle -D OUTPUT -p icmp -j TOS --set-tos 1')
+    host3.cmd('iptables -t mangle -D OUTPUT -p icmp -j TOS --set-tos 1')
+    
+    data2 = datetime.datetime.now()
+    dr=data2-data1
+    textoTeste=textoTeste+"\n\ttempo decorrido: %s"%dr
+    textoTeste=textoTeste+"\nInicio de teste com alertas instalados: %s:%s:%s:%s\n"%(data2.hour,data2.minute,data2.second,data2.microsecond)
+    host1.cmdPrint('nmap -A -T4 -O 10.0.0.2 >> /var/log/tcpdump/'+date+'/saidaNmap2.txt')
+    sleep(tempo)
+    
+    host1.cmd('iptables -t mangle -A OUTPUT -p icmp -j TOS --set-tos 1')
+    host2.cmd('iptables -t mangle -A OUTPUT -p icmp -j TOS --set-tos 1')
+    host3.cmd('iptables -t mangle -A OUTPUT -p icmp -j TOS --set-tos 1')
+    host1.cmdPrint('ping -c 3 -s 92 10.0.0.1')
+    host2.cmdPrint('ping -c 3 -s 92 192.168.0.6')
+    host3.cmdPrint('ping -c 3 -s 92 192.168.0.6')
+    host1.cmd('iptables -t mangle -D OUTPUT -p icmp -j TOS --set-tos 1')
+    host2.cmd('iptables -t mangle -D OUTPUT -p icmp -j TOS --set-tos 1')
+    host3.cmd('iptables -t mangle -D OUTPUT -p icmp -j TOS --set-tos 1')
+    
+    host2.cmd('apache2ctl stop ; killall -s 9 iperf')
+    host3.cmd('apache2ctl stop ; killall -s 9 iperf')
+    #Finaliza tcpdumps
+    sleep(20)
+    tcpdumpKill(net)
+    return textoTeste
+
+def testeNMAPInternoExterno(net):
+    textoTeste = """
+    testeNMAP - nmap host1->host6 duas vezes
+    \n\n
+    """
+    info(textoTeste)    
+    #hosts que serao utilizados
+    host1 = net.getNodeByName('h1')
+    host2 = net.getNodeByName('h6')
+
+    tempo = 5
+    
+
+            
+    #Dispara comandos via threads
+    th1.start()
+    #
+    
+    #cria diretorio que recebera arquivos do tcpdump (pacotes de redes)
+    host1.cmd('mkdir /var/log/tcpdump/'+date)
+    #captura pacotes em todos os hosts - exceto switches e IDS(host3)
+    tcpdumpAll(net)
+    sleep(tempo)
+    
+    host1.cmdPrint('ping -c 4 -s 92 192.168.0.6')
+    sleep(tempo)
+
+    #inicia servidores, esses nao vao na thread se nao o teste nao termina! ;-)
+    host2.cmd('apache2ctl start')
+    host2.cmd('iperf -s -p 23 -D')
+    host2.cmd('iperf -s -u -p 53 -D')
+    
+
+    #
+    data1 = datetime.datetime.now()
+    textoTeste=textoTeste+"Inicio de teste alertas em tempo de execucao: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
+    host1.cmdPrint('nmap -A -T4 -O 192.168.0.6 >> /var/log/tcpdump/'+date+'/saidaNmap1.txt')
+    
+
+    sleep(tempo)
+    host1.cmdPrint('ping -c 4 -s 92 192.168.0.6')
+    
+    data2 = datetime.datetime.now()
+    dr=data2-data1
+    textoTeste=textoTeste+"\n\ttempo decorrido: %s"%dr
+    textoTeste=textoTeste+"\nInicio de teste com alertas instalados: %s:%s:%s:%s\n"%(data2.hour,data2.minute,data2.second,data2.microsecond)
+    host1.cmdPrint('nmap -A -T4 -O 192.168.0.6 >> /var/log/tcpdump/'+date+'/saidaNmap2.txt')
+    sleep(tempo)
+    host1.cmdPrint('ping -c 4 -s 92 192.168.0.6')
+    host2.cmd('apache2ctl stop && killall iperf')
+    #Finaliza tcpdumps
+    sleep(10)
+    tcpdumpKill(net)
+    return textoTeste  
+  
+  
+  
+def testeIDSWakeup(net):
+    textoTeste = """
+    testeIDSWakeup - host1->host2 duas vezes
+    \n\n
+    """
+    info(textoTeste)    
+    #hosts que serao utilizados
+    host1 = net.getNodeByName('h1')
+    #host2 = net.getNodeByName('h2')
+
+    
+    #cria diretorio que recebera arquivos do tcpdump (pacotes de redes)
+    host1.cmd('mkdir /var/log/tcpdump/'+date)
+    #captura pacotes em todos os hosts - exceto switches e IDS(host3)
     tcpdumpAll(net)
     sleep(5)
     
-    #Run commands
+    host1.cmdPrint('ping -c 4 -s 92 10.0.0.2')
+    sleep(1)
+
+    #inicia servidores, esses nao vao na thread se nao o teste nao termina! ;-)
+    #host2.cmd('apache2ctl start')
+    #host2.cmd('iperf -s -p 23 -D')
+   
+
+    #
+    data1 = datetime.datetime.now()
+    textoTeste=textoTeste+"Inicio de teste alertas em tempo de execucao: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
+    host1.cmdPrint('idswakeup 10.0.0.1 10.0.0.2 1 70 >> /var/log/tcpdump/'+date+'/saidaIDSWakeup1.txt')
+    
+    sleep(1)
+    host1.cmdPrint('ping -c 4 -s 92 10.0.0.2')
+    
+    data2 = datetime.datetime.now()
+    dr=data2-data1
+    textoTeste=textoTeste+"\n\ttempo decorrido: %s"%dr
+    textoTeste=textoTeste+"\nInicio de teste com alertas instalados: %s:%s:%s:%s\n"%(data2.hour,data2.minute,data2.second,data2.microsecond)
+    host1.cmdPrint('idswakeup 10.0.0.1 10.0.0.2 1 70 >> /var/log/tcpdump/'+date+'/saidaIDSWakeup2.txt')
+    #sleep(tempo)
+    
+    sleep(1)
+    host1.cmdPrint('ping -c 4 -s 92 10.0.0.2')
+    #host2.cmd('apache2ctl stop && killall iperf')
+    #Finaliza tcpdumps
+    sleep(20)
+    tcpdumpKill(net)
+    return textoTeste  
+  
+def testeIDSWakeupExternoInterno(net):
+    textoTeste = """
+    testeIDSWakeup - host6->host1 duas vezes novo (Externo -> Interno)
+    \n\n
+    """
+    info(textoTeste)    
+    #hosts que serao utilizados
+    host1 = net.getNodeByName('h6')
+    host2 = net.getNodeByName('h1')
+
+    
+    #cria diretorio que recebera arquivos do tcpdump (pacotes de redes)
+    host1.cmd('mkdir /var/log/tcpdump/'+date)
+    #captura pacotes em todos os hosts - exceto switches e IDS(host3)
+    tcpdumpAll(net)
+    sleep(3)
+    
+    # marcar o pacote para poder achar ele depois, pois o idswakeup envia pacotes icmp o que dificulta achar somente com o ping.
+    host1.cmd('iptables -t mangle -A OUTPUT -p icmp -j TOS --set-tos 1')
+    host2.cmd('iptables -t mangle -A OUTPUT -p icmp -j TOS --set-tos 1')
+    host1.cmdPrint('ping -c 3 -s 92 10.0.0.1')
+    host2.cmdPrint('ping -c 3 -s 92 192.168.0.6')
+    host1.cmd('iptables -t mangle -D OUTPUT -p icmp -j TOS --set-tos 1')
+    host2.cmd('iptables -t mangle -D OUTPUT -p icmp -j TOS --set-tos 1')
+    sleep(5)
+
+    #inicia servidores, esses nao vao na thread se nao o teste nao termina! ;-)
+    #host2.cmd('apache2ctl start')
+    #host2.cmd('iperf -s -p 23 -D')
+   
+
+    #
+    data1 = datetime.datetime.now()
+    textoTeste=textoTeste+"Inicio de teste alertas em tempo de execucao: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
+    host1.cmdPrint('idswakeup 192.168.0.6 10.0.0.1 1 70 >> /var/log/tcpdump/'+date+'/saidaIDSWakeup1.txt')
+    
+    sleep(5)
+    host1.cmd('iptables -t mangle -A OUTPUT -p icmp -j TOS --set-tos 1')
+    host2.cmd('iptables -t mangle -A OUTPUT -p icmp -j TOS --set-tos 1')
+    host1.cmdPrint('ping -c 3 -s 92 10.0.0.1')
+    host2.cmdPrint('ping -c 3 -s 92 192.168.0.6')
+    host1.cmd('iptables -t mangle -D OUTPUT -p icmp -j TOS --set-tos 1')
+    host2.cmd('iptables -t mangle -D OUTPUT -p icmp -j TOS --set-tos 1')
+    
+    data2 = datetime.datetime.now()
+    dr=data2-data1
+    textoTeste=textoTeste+"\n\ttempo decorrido: %s"%dr
+    textoTeste=textoTeste+"\nInicio de teste com alertas instalados: %s:%s:%s:%s\n"%(data2.hour,data2.minute,data2.second,data2.microsecond)
+    host1.cmdPrint('idswakeup 192.168.0.6 10.0.0.1 1 70 >> /var/log/tcpdump/'+date+'/saidaIDSWakeup2.txt')
+    
+    sleep(5)
+    host1.cmd('iptables -t mangle -A OUTPUT -p icmp -j TOS --set-tos 1')
+    host2.cmd('iptables -t mangle -A OUTPUT -p icmp -j TOS --set-tos 1')
+    host1.cmdPrint('ping -c 3 -s 92 10.0.0.1')
+    host2.cmdPrint('ping -c 3 -s 92 192.168.0.6')
+    host1.cmd('iptables -t mangle -D OUTPUT -p icmp -j TOS --set-tos 1')
+    host2.cmd('iptables -t mangle -D OUTPUT -p icmp -j TOS --set-tos 1')
+    #host2.cmd('apache2ctl stop && killall iperf')
+    #Finaliza tcpdumps
+    sleep(20)
+    tcpdumpKill(net)
+    return textoTeste    
+  
+def testeIDSWakeupInternoExterno(net):
+    textoTeste = """
+    testeIDSWakeup - host1->host6 duas vezes
+    \n\n
+    """
+    info(textoTeste)    
+    #hosts que serao utilizados
+    host1 = net.getNodeByName('h1')
+    #host2 = net.getNodeByName('h2')
+
+    
+    #cria diretorio que recebera arquivos do tcpdump (pacotes de redes)
+    host1.cmd('mkdir /var/log/tcpdump/'+date)
+    #captura pacotes em todos os hosts - exceto switches e IDS(host3)
+    tcpdumpAll(net)
+    sleep(5)
+    
     host1.cmdPrint('ping -c 4 -s 92 192.168.0.6')
     sleep(5)
 
+    #inicia servidores, esses nao vao na thread se nao o teste nao termina! ;-)
+    #host2.cmd('apache2ctl start')
+    #host2.cmd('iperf -s -p 23 -D')
+   
+
+    #
     data1 = datetime.datetime.now()
-    textoTeste=textoTeste+"Test started at: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
-    host1.cmdPrint('hyenae -I 1 -a tcp -f s -A 4 -s 00:00:00:00:01:01-10.0.0.1@%%%% -d 00:00:00:00:01:02-10.0.0.2@80 -c 10000 -e 5 ')
+    textoTeste=textoTeste+"Inicio de teste alertas em tempo de execucao: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
+    host1.cmdPrint('idswakeup  10.0.0.1 192.168.0.6 1 70 >> /var/log/tcpdump/'+date+'/saidaIDSWakeup1.txt')
     
     tempo = 10
     sleep(tempo)
@@ -354,57 +930,20 @@ def testeDDoSIntInt(net):
     
     data2 = datetime.datetime.now()
     dr=data2-data1
-    textoTeste=textoTeste+"\n\telapsed time: %s"%dr
-    
-    host2.cmdPrint('apache2ctl stop')
-    #Finish tcpdumps
-    sleep(30)
-    tcpdumpKill(net)
-    return textoTeste
-  
-#experiment 3  
-def testeIDSWakeupExternoInterno(net):
-    textoTeste = """
-    test IDSWakeup - host6->host1 twice times
-    \n\n
-    """
-    info(textoTeste)    
-    #Used hosts
-    host1 = net.getNodeByName('h6')
-    host2 = net.getNodeByName('h1')
-
-    
-    #Create directory to tcpdump log files (.pcap)
-    host1.cmd('mkdir /var/log/tcpdump/'+date)
-    #Capture packets from all hosts, except IDS (host3) and switches.
-    tcpdumpAll(net)
-    sleep(5)
-    
-    host1.cmdPrint('ping -c 3 -s 92 10.0.0.1')
-    host2.cmdPrint('ping -c 3 -s 92 192.168.0.6')
-    sleep(5)
-    #First execution
-    data1 = datetime.datetime.now()
-    textoTeste=textoTeste+"Test 1 started at: %s:%s:%s:%s\n"%(data1.hour,data1.minute,data1.second,data1.microsecond)
-    host1.cmdPrint('idswakeup 192.168.0.6 10.0.0.1 1 70 >> /var/log/tcpdump/'+date+'/saidaIDSWakeup1.txt')
+    textoTeste=textoTeste+"\n\ttempo decorrido: %s"%dr
+    textoTeste=textoTeste+"\nInicio de teste com alertas instalados: %s:%s:%s:%s\n"%(data2.hour,data2.minute,data2.second,data2.microsecond)
+    host1.cmdPrint('idswakeup 10.0.0.1 192.168.0.6 1 70 >> /var/log/tcpdump/'+date+'/saidaIDSWakeup2.txt')
+    #sleep(tempo)
     
     sleep(5)
-    host1.cmdPrint('ping -c 3 -s 92 10.0.0.1')
-    host2.cmdPrint('ping -c 3 -s 92 192.168.0.6')
-    #Second execution
-    data2 = datetime.datetime.now()
-    dr=data2-data1
-    textoTeste=textoTeste+"\n\telapsed time: %s"%dr
-    textoTeste=textoTeste+"\nTest 2 started at: %s:%s:%s:%s\n"%(data2.hour,data2.minute,data2.second,data2.microsecond)
-    host1.cmdPrint('idswakeup 192.168.0.6 10.0.0.1 1 70 >> /var/log/tcpdump/'+date+'/saidaIDSWakeup2.txt')
-    
-    sleep(10)
-    host1.cmdPrint('ping -c 3 -s 92 10.0.0.1')
-    host2.cmdPrint('ping -c 3 -s 92 192.168.0.6')
-    #Finish tcpdump command (logs)
+    host1.cmdPrint('ping -c 4 -s 92 192.168.0.6')
+    #host2.cmd('apache2ctl stop && killall iperf')
+    #Finaliza tcpdumps
     sleep(20)
     tcpdumpKill(net)
     return textoTeste    
+
+
   
 
 # commands for IDS
@@ -412,24 +951,41 @@ def ids(host, apagar):
   #host.cmd('killall snort')
   if(apagar=='sim'):
     #host.sendCmd(idsApagaLog)
-    print 'Delete! a backup will be in /var/log/bkpSnort/'+date+' \n'
+    print 'apagar! um backup ficara em /var/log/bkpSnort/'+date+' \n'
     host.cmd('mkdir /var/log/bkpSnort/'+date)
     host.cmd('mv /var/log/snort/* /var/log/bkpSnort/'+date)
     host.cmd('rm /var/log/snort/*')
     host.cmd('snort -c /etc/snort/snort.conf -D')
+    #sleep(10)
+    #host.cmd('barnyard2 -c /etc/snort/barnyard2.conf -d /var/log/snort -f snort.log -w /var/log/barnyard2/bylog.waldo -C /etc/snort/classification.config &')
   else:
-    print 'starting IDS without delete logs\n'
+    print 'iniciando IDS sem apagar logs\n'
     host.cmd('snort -c /etc/snort/snort.conf -D')
+    #sleep(5)
+    #host.cmd('barnyard2 -c /etc/snort/barnyard2.conf -d /var/log/snort -f snort.log -w /var/log/barnyard2/bylog.waldo -C /etc/snort/classification.config &')
   info("""
 	 ***********************
-	 \n\n IDS READY!!!!!!!!\n\n
+	 \n\n IDS PRONTO!!!!!!!!\n\n
 	 ***********************
-	 """)
-    #host.sendCmd(ids)
+	 
+	 
+	 >>>>>>>>>>>>>>>>> Ligando script de conversao de log para o Of-IDPS 
+			    na maquina no com controlador Of-IDPS executa:
+			    
+			    sshfs mininet@192.168.1.200:/home/mininet/alertas /mnt/armazem/openflow/tmp/alertas/ 
+			    """)
+  host.cmd('rm /home/mininet/alertas/formatted_log.csv')
+  #sleep(1)
+  #host.cmd('python /home/mininet/snort_fast_alert_processor_antigo.py &')
+  #host.sendCmd(ids)
 
 def desligarIDS(net,h):
     host = net.getNodeByName(h)
     host.cmd('killall snort')
+    #host.cmd('killall python /home/mininet/snort_fast_alert_processor_antigo.py')
+    #host.cmd('killall barnyard2')
+    sleep(1)
+    host.cmd('rm /home/mininet/alertas/formatted_log.csv')
 
 # command for configuring default gateway
 def gw(rede, host):
@@ -513,12 +1069,12 @@ def emptyNet():
     info( '*** Adding controller\n' )
     ctrlRemote = RemoteController( 'c0', ip=ipControladorOF )
     net.addController(ctrlRemote)
-    info('--> remote IP controller - c0:' + ctrlRemote.IP() +'\n')
+    info('--> IP controlador remoto c0:' + ctrlRemote.IP() +'\n')
     
     #ctrlLocal = RemoteController('c1', port=6633, ip="127.0.0.1")
     ctrlLocal = Controller('c1', port=6634)
     net.addController(ctrlLocal)
-    info('--> local IP controller - c1:' + ctrlLocal.IP() +'\n')
+    info('--> IP controlador local c1:' + ctrlLocal.IP() +'\n')
     
     
     
@@ -542,77 +1098,89 @@ def emptyNet():
     net.addLink(lanRouter, wanSw)
     net.addLink(wanH1, wanSw)
     net.addLink(wanH2, wanSw)
+    
+    
+    
 
     info( '*** Starting network\n')
     net.start()
     
     info('*** Starting controllers and switches')
-    #link remote controller to s0 internal network swith
+    #liga controlador remoto ao switch da rede local s0
     ctrlRemote.start()
-    #use remote controller
+    #utiliza controlador remoto
     lanSw.start([ctrlRemote])
     
-    #use local controller
-    #info('\n\n\n************ using local controller for swLAN')
+    # uutiliza controlador local
+    #info('\n\n\n************ utilizando controlador local para swLAN')
     #lanSw.start([ctrlLocal])
     
-    #start local controller to switch from s1 external network
+    #liga controlador local ao switch da rede WAM s1
     ctrlLocal.start()
     wanSw.start([ctrlLocal])
     
     info( '*** Executing hosts scripts\n')
     execCmds(net)
     
-    sleep(5) # wai 5 seconds to start IDS!
+    sleep(5) # espera uns 5 segundos para o IDS ligar!
     
-    #log tests in files, the name of file and directory will be composed by date/time of start execution of test
+    #Grava em um arquivo o testes feito e o horario de inicio e fim do teste
     hst1 = net.getNodeByName('h1')
     hst1.cmdPrint('mkdir /var/log/tcpdump/'+date)
     arquivo = open('/var/log/tcpdump/'+date+'/teste.txt', 'w')
     textoTeste = """
-    Test -
-    \n Begin at:\n
+    \n Inicio:\n
     """
     data = datetime.datetime.now()
     textoTeste=textoTeste+"%s/%s/%s as %s:%s:%s:%s\n"%(data.year,data.month,data.day,data.hour,data.minute,data.second,data.microsecond)
     arquivo.write(textoTeste)
     
-    ### Tests
-    
-    #
-    # Start the testes here!
-    #
-    # Select the test to run. For that uncomment the line of the desired test.
-	   
+    ### testes a serem executados
+		   
     info( '*** Executing Tests\n')
-    textoTeste = textoTeste =teste1(net)
+    #textoTeste = textoTeste =teste1(net)
     #textoTeste = testeIperf(net)
+    #textoTeste = teste3(net)
+    #textoTeste = teste4(net)
+    #textoTeste = teste5(net)
+    #textoTeste = testeNMAP(net)
+    #textoTeste = testeNMAPExternoInterno(net)
+    #textoTeste = testeNMAPInternoExterno(net)
+    #textoTeste = testeIDSWakeup(net)
     #textoTeste = testeIDSWakeupExternoInterno(net)
+    #textoTeste = testeIDSWakeupInternoExterno(net)
+    #textoTeste = testeDDoSIntInt(net, 10000)
+    textoTeste = testeNewDDoSIntInt(net, 1000)
     #textoTeste = testeDDoSExtInt(net)
     #textoTeste = testeDDoSIntExt(net)
-    #textoTeste = testeDDoSIntInt(net)
-    
-    # record attack test!
+    #testeIperfCompararDDoS(net)
+    #testePing(net)
+    #testeDDoSTest1(net)
+    # grava tipo do ataque!
     textoTeste = textoTeste+"""
      
-    put comment of test here
     
     """
     
     arquivo.write(textoTeste)
 
-    ### end of test!
+    ### fim dos testes!
     
-    # register the time that test was finished
+    # Grava em arquivo o tempo do termino do teste
     data = datetime.datetime.now()
-    textoTeste=' \nFinished at:\n '+"%s/%s/%s as %s:%s:%s:%s\n"%(data.year,data.month,data.day,data.hour,data.minute,data.second,data.microsecond)
+    textoTeste=' \nTermino:\n '+"%s/%s/%s as %s:%s:%s:%s\n"%(data.year,data.month,data.day,data.hour,data.minute,data.second,data.microsecond)
     arquivo.write(textoTeste)
     arquivo.close()
 
     info( '*** Running CLI\n' )
-    #Uncomment below line for execute the test with CLI console
+    # para usar o terminal e executar comandos manualmente descomente a linha a seguir:
+    # para teste do nmap manual
+    #host1 = net.getNodeByName('h1')
+    #host1.cmd("iperf -s -p 80 -D")
+    #host1.cmd("iperf -s -p 8080 -D")
+    
     #CLI( net )
-    sleep(5)
+    sleep(2)
     info('*** Stoping IDS process\n')
     desligarIDS(net,'h3')
     #thIds.join()
