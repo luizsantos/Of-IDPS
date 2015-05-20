@@ -34,7 +34,7 @@ public class CONFIG {
     public static int TIME_TO_ALERTS_STAY_AT_SHORT_MEMORY=30; // tempo memoria curta
     // TODO SBRC 2015 with times 10,30,60
     public static int TIME_TO_ALERTS_STAY_AT_SENSORIAL_MEMORY=TIME_BETWEEN_RUN_MEMORY_ATTACKS; // disable for now!
-    public static int TIME_TO_ALERTS_STAY_AT_LONG_MEMOY=1800; // one year!
+    public static int TIME_TO_ALERTS_STAY_AT_LONG_MEMOY=196400; // one year!
     /*
      * 600 - 10 minutes.
      * 1800 - 30 minutes.

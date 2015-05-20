@@ -143,6 +143,20 @@ public class IntrusionPreventionSystem extends Thread implements
         List<AlertMessage> listOfSnortAlerts = snortAlertMessageDAO.getSnortAlertsUpToSecondsAgo(timeInSeconds, stringWhoCalled);
         return listOfSnortAlerts;  
     }
+    
+    /**
+     * Get an itemset algorithm string of Snort alerts from dabatase.
+     * (from current datetime minus an amount of seconds).
+     * 
+     * @param timeInSeconds - amount of time in seconds to be decreased from the current datetime system.
+     * @return list of alerts from Snort in the format of Of-IDPS AlertMessages.
+     * 
+     */
+    public String getItemsetsStringFromAlertsFromSnortIDS(int timeInSeconds, String stringWhoCalled) {
+        SnortAlertMessageDAO snortAlertMessageDAO = new SnortAlertMessageDAO();
+        //return snortAlertMessageDAO.getSnortAlertsUpToSecondsAgo(timeInSeconds, stringWhoCalled);
+        return snortAlertMessageDAO.getItemsetsStringFromSnortAlertsUpToSecondsAgo(timeInSeconds, stringWhoCalled);
+    }
 
     /**
      * Gets alerts from Snort (fast log) IDS, it must be in the format:

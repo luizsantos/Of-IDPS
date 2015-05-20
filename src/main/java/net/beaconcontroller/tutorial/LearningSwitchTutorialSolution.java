@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.OfIDPS.memoryAttacks.LongTermMemory;
 import net.OfIDPS.memoryAttacks.MemoryAttackRuleMatch;
 import net.OfIDPS.memoryAttacks.MemorysAttacks;
 import net.beaconcontroller.IPS.AlertMessage;

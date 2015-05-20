@@ -72,6 +72,9 @@ public class MemorysAttacks extends Thread {
     
     protected IBeaconProvider beaconProvider;
     
+    // To run the long-term memory
+    LongTermMemory longTermMemory = new LongTermMemory();
+    
     protected static Logger log = LoggerFactory
             .getLogger(LearningSwitchTutorialSolution.class);
     
@@ -94,9 +97,9 @@ public class MemorysAttacks extends Thread {
      * 
      * 1 to disable and any other value to enable!
      */
-    protected static int disableSensorialMemory=1;
-    protected static int disableShortMemory=1;
-    protected static int disableLongMemory=0;
+    protected static int disableSensorialMemory=0;
+    protected static int disableShortMemory=0;
+    public static int disableLongMemory=0;
     
     /*
      * Time to wait until execute again the main method contained in the Thread (method run).
@@ -167,21 +170,26 @@ public class MemorysAttacks extends Thread {
             }
             
             /**************************
-             * TODO - Feed long memory.
+             * Feed long memory.
              */
-            if(disableLongMemory!=1) {
-                longBadMemory(ids, alertOpenFlowDAO);
-            } else {
-                log.debug("\t!!!!!!!! ATTENTION, Long memory is DISABLED!!!!!!!!  to change this setup to 0 (zero) the variable disableLongMemory on MemoryAttacks class...");
-            }
+            /*
+             * The long memory was moved to your own class, to run as thread! 
+             * 
+             * It was necessary because long memory normally has a lot of alerts, 
+             * and recover this alerts from database and to process this, was 
+             * consuming many time and disturbing both, sensorial and short memory.
+             * 
+             */
+
             
             if (CONFIG.DISABLE_JSON_OUTPUT==false) {
                 writeRulesInShortMemoryToJsonFile();
             }
             
             // Time to waiting
+            log.debug("Waiting {} seconds to rerun Sensorial and Short-Term memory attacks\n", TIME_TO_WAIT);
             waitTimeInSeconds(TIME_TO_WAIT);
-            log.debug("new processing memory attacks\n");
+            
         }        
     }
 
@@ -192,6 +200,7 @@ public class MemorysAttacks extends Thread {
      */
     private void sensorialMemory(IntrusionPreventionSystem ids,
             AlertOpenFlowDAO alertOpenFlowDAO) {
+        Date dateStart = DateTimeManager.getCurrentDate();
         // To store all alerts found in the sensorial memory.
         List<AlertMessage> listOfAllAlertsInSensorialMemory =  new ArrayList<AlertMessage>();
         
@@ -207,10 +216,9 @@ public class MemorysAttacks extends Thread {
         //Verify if the OpenFlow security analysis is enabled.
         if (LearningSwitchTutorialSolution.disableOfIDPS_UseOfAlerts != 1
                 && LearningSwitchTutorialSolution.disableOfIDPS_UseOfgetStatisticsFromNetwork != 1) {
-            
             // Get OpenFlow security alerts
             //listOfMaliciousFlows = alertOpenFlowDAO.getOpenFlowAlertsUpToSecondsAgo(timeToAlertsStayAtSensorialMemory);
-            listOfAllAlertsInSensorialMemory.addAll(alertOpenFlowDAO.getOpenFlowAlertsUpToSecondsAgo(timeToAlertsStayAtSensorialMemory));
+            listOfAllAlertsInSensorialMemory.addAll(alertOpenFlowDAO.getOpenFlowAlertsUpToSecondsAgo(timeToAlertsStayAtSensorialMemory, "Sensorial Memory"));
         } else {
             log.debug("\t!!!!!!!! ATTENTION, Of-IDPS ALERT OPENFLOW STATISTICS IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variables disableOfIDPS_UseOfgetStatisticsFromNetwork and disableOfIDPS_UseOfAlerts on LearningSwithTutorialSolution class...");
         }
@@ -293,7 +301,14 @@ public class MemorysAttacks extends Thread {
          * we will record the flow on the database!
          */
         
-        log.debug("{} - alerts in sensorial memory, {} - rules in sensorial memory.", listOfAllAlertsInSensorialMemory.size(), sensorialMemoryAttacks.size());
+        log.debug("> {} - alerts in sensorial memory, {} - rules in sensorial memory.", listOfAllAlertsInSensorialMemory.size(), sensorialMemoryAttacks.size());
+        
+        Date dateStop = DateTimeManager.getCurrentDate();
+        long diffSeconds = DateTimeManager.differenceBetweenTwoDatesInMilliseconds(dateStart, dateStop);
+        log.debug("End of SENSORIAL memory! {} - {} -> {} milliseconds", 
+                DateTimeManager.dateToStringJavaDate(dateStart), 
+                DateTimeManager.dateToStringJavaDate(dateStop),
+                diffSeconds);
     }
 
     /**
@@ -302,6 +317,7 @@ public class MemorysAttacks extends Thread {
      * @param alertOpenFlowDAO - An AlertOpenFlowDAO object to recover OpenFlow alerts. 
      */
     private void shortMemory(IntrusionPreventionSystem ids, AlertOpenFlowDAO alertOpenFlowDAO) {
+        Date dateStart = DateTimeManager.getCurrentDate();
         // Get alerts from IDS and OpenFlow analysis to be processed by itemsets algorithm.
         String allAlerts = getAlertsFromIDSAndOpenFlowAnalysisToBeProcessedByItemsetsAlgorithm(ids, 
                 alertOpenFlowDAO,
@@ -372,22 +388,14 @@ public class MemorysAttacks extends Thread {
 //            if (shortMemoryAttacks.size() > 0) {
 //                writeRulesInShortMemoryToFile();
 //            }
+        Date dateStop = DateTimeManager.getCurrentDate();
+        long diffSeconds = DateTimeManager.differenceBetweenTwoDatesInMilliseconds(dateStart, dateStop);
+        log.debug("End of SHORT memory! {} - {} -> {} milliseconds", 
+                DateTimeManager.dateToStringJavaDate(dateStart), 
+                DateTimeManager.dateToStringJavaDate(dateStop),
+                diffSeconds);   
     }
     
-    /**
-     * Perform long-term bad memory methods. This memory deals with bad remembrances, 
-     * created by security alert in the past.
-     * 
-     * @param ids - An IntrusionPreventionSystem object to recover IDS alerts.
-     * @param alertOpenFlowDAO - An AlertOpenFlowDAO object to recover OpenFlow alerts.
-     */
-    private void longBadMemory(IntrusionPreventionSystem ids, AlertOpenFlowDAO alertOpenFlowDAO) {
-        // Get alerts from IDS and OpenFlow analysis to be processed by itemsets algorithm.
-        String allAlerts = getAlertsFromIDSAndOpenFlowAnalysisToBeProcessedByItemsetsAlgorithm(ids, 
-                alertOpenFlowDAO,
-                timeToAlertsStayAtLongMemory,
-                "Long memory");
-    }
 
     /**
      * Get both alerts: IDS and OpenFlow.
@@ -410,8 +418,7 @@ public class MemorysAttacks extends Thread {
         
         // Get IDS alerts.
         if (LearningSwitchTutorialSolution.disableOfIDPS_UseIDSAlerts != 1) {
-            List<AlertMessage> listOfSnortAlerts = ids.getAlertsFromSnortIDS(timeToAlertsStayOnMemory, comment);
-            alertsFromIDSSnort = convertAlertMessagesToBeProcessedByItemsetsAlgorithm(listOfSnortAlerts);
+            alertsFromIDSSnort = ids.getItemsetsStringFromAlertsFromSnortIDS(timeToAlertsStayOnMemory, comment);
         } else {
             log.debug("\t!!!!!!!! ATTENTION, Of-IDPS IDS alerts analysis IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variable disableOfIDPS_UseIDSAlerts on LearningSwithTutorialSolution class...");
         }
@@ -419,15 +426,14 @@ public class MemorysAttacks extends Thread {
         // Get OpenFlow alerts.
         if (LearningSwitchTutorialSolution.disableOfIDPS_UseOfAlerts != 1
                 && LearningSwitchTutorialSolution.disableOfIDPS_UseOfgetStatisticsFromNetwork != 1) {
-            List<AlertMessage> listOfMaliciousFlows = new ArrayList<AlertMessage>();
-            listOfMaliciousFlows = alertOpenFlowDAO.getOpenFlowAlertsUpToSecondsAgo(timeToAlertsStayOnMemory);
-            alertsFromOpenFlowDoS = convertAlertMessagesToBeProcessedByItemsetsAlgorithm(listOfMaliciousFlows);
+            alertsFromOpenFlowDoS = alertOpenFlowDAO.getItemsetsStringFromOpenFlowAlertsUpToSecondsAgo(timeToAlertsStayOnMemory, comment);
         } else {
             log.debug("\t!!!!!!!! ATTENTION, Of-IDPS ALERT OPENFLOW STATISTICS IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variables disableOfIDPS_UseOfgetStatisticsFromNetwork and disableOfIDPS_UseOfAlerts on LearningSwithTutorialSolution class...");
         }
         
         // Join alerts
         String allAlerts = alertsFromIDSSnort+alertsFromOpenFlowDoS;
+        //log.debug("Long Memory alerts: \n {}", allAlerts);
         return allAlerts;
     }
 
@@ -570,42 +576,42 @@ public class MemorysAttacks extends Thread {
         }
     }
     
-    /**
-     * Convert OpenFlow alerts to be processed by itemset algorithm, it must be in the format:
-     * Obs: this is similar to getAlertsFromSnortIDS() in IntrusionPreventionSystem
-     * 
-     * time,priorityAlert,alertDescription,networkSource,networkDestination,
-     * networkProtocol,transportSource,transportDestination
-     * 1,3,alerta1,167772162,167772161,6,0,666
-     * 2,2,alerta2,167772162,167772161,6,0,777
-     * 3,1,alerta3,167772162,167772161,6,0,888
-     * 
-     * In this example there are three alerts from host 10.0.0.2 to 10.0.0.1,
-     * sourced from port 0 and destinated to ports 666,777,888 with alerts of
-     * priority low, medium, and high.
-     * 
-     * @return a string with a list of attacks to be processed by SPMF
-     * 
-     */
-    public String convertOpenFlowDoSAlertsToBeProcessedByItemsetsAlgorithm(List<AlertMessageSharePriority> listOfMaliciousFlows) {
-        int numberOfAlerts=0;
-        String sendToBeprocessedByApriori = "";
-        for(AlertMessageSharePriority alert : listOfMaliciousFlows) {
-                String regra = "src" + alert.getNetworkSource() + " dst"
-                        + alert.getNetworkDestination() + " pro"
-                        + alert.getNetworkProtocol() + " spo"
-                        + alert.getTransportSource() + " dpo"
-                        + alert.getTransportDestination() + " pri"
-                        + alert.getPriorityAlert() + " des"
-                        + alert.getAlertDescription() + "\n";
-
-                sendToBeprocessedByApriori = sendToBeprocessedByApriori + regra;
-                numberOfAlerts++;
-        } // while
-        log.debug("Amount of OpenFlow DoS alerts: {}!", numberOfAlerts);
-        //log.debug("to send to apriori: \n {}",sendToBeprocessedByApriori);
-        return sendToBeprocessedByApriori;
-    }
+//    /**
+//     * Convert OpenFlow alerts to be processed by itemset algorithm, it must be in the format:
+//     * Obs: this is similar to getAlertsFromSnortIDS() in IntrusionPreventionSystem
+//     * 
+//     * time,priorityAlert,alertDescription,networkSource,networkDestination,
+//     * networkProtocol,transportSource,transportDestination
+//     * 1,3,alerta1,167772162,167772161,6,0,666
+//     * 2,2,alerta2,167772162,167772161,6,0,777
+//     * 3,1,alerta3,167772162,167772161,6,0,888
+//     * 
+//     * In this example there are three alerts from host 10.0.0.2 to 10.0.0.1,
+//     * sourced from port 0 and destinated to ports 666,777,888 with alerts of
+//     * priority low, medium, and high.
+//     * 
+//     * @return a string with a list of attacks to be processed by SPMF
+//     * 
+//     */
+//    public String convertOpenFlowDoSAlertsToBeProcessedByItemsetsAlgorithm(List<AlertMessageSharePriority> listOfMaliciousFlows) {
+//        int numberOfAlerts=0;
+//        String sendToBeprocessedByApriori = "";
+//        for(AlertMessageSharePriority alert : listOfMaliciousFlows) {
+//                String regra = "src" + alert.getNetworkSource() + " dst"
+//                        + alert.getNetworkDestination() + " pro"
+//                        + alert.getNetworkProtocol() + " spo"
+//                        + alert.getTransportSource() + " dpo"
+//                        + alert.getTransportDestination() + " pri"
+//                        + alert.getPriorityAlert() + " des"
+//                        + alert.getAlertDescription() + "\n";
+//
+//                sendToBeprocessedByApriori = sendToBeprocessedByApriori + regra;
+//                numberOfAlerts++;
+//        } // while
+//        log.debug("Amount of OpenFlow DoS alerts: {}!", numberOfAlerts);
+//        //log.debug("to send to apriori: \n {}",sendToBeprocessedByApriori);
+//        return sendToBeprocessedByApriori;
+//    }
     
     /**
      * Convert Of-IDPS alerts to the required format to be processed by the itemsets algorithm.
@@ -623,27 +629,27 @@ public class MemorysAttacks extends Thread {
      * @return a string with a list of attacks to be processed by SPMF
      * 
      */
-    public String convertAlertMessagesToBeProcessedByItemsetsAlgorithm(List<AlertMessage> listOfSnortAlerts) {
-        String sendToBeprocessedByApriori = "";
-        for (AlertMessage alertMsg : listOfSnortAlerts) {
-            // alertMsg.printMsgAlert();
-            // log.debug("{}->{}",
-            // IPv4.fromIPv4Address(alertMsg.getNetworkSource()),
-            // IPv4.fromIPv4Address(alertMsg.getNetworkDestination()));
-            String rule = "src" + alertMsg.getNetworkSource() + " dst"
-                    + alertMsg.getNetworkDestination() + " pro"
-                    + alertMsg.getNetworkProtocol() + " spo"
-                    + alertMsg.getTransportSource() + " dpo"
-                    + alertMsg.getTransportDestination() + " pri"
-                    + alertMsg.getPriorityAlert() + " des"
-                    + alertMsg.getAlertDescription() + "\n";
-
-            sendToBeprocessedByApriori = sendToBeprocessedByApriori + rule;
-
-        }
-        //log.debug("\n"+sendToBeprocessedByApriori);
-        return sendToBeprocessedByApriori;
-    }
+//    public String convertAlertMessagesToBeProcessedByItemsetsAlgorithm(List<AlertMessage> listOfSnortAlerts) {
+//        String sendToBeprocessedByApriori = "";
+//        for (AlertMessage alertMsg : listOfSnortAlerts) {
+//            // alertMsg.printMsgAlert();
+//            // log.debug("{}->{}",
+//            // IPv4.fromIPv4Address(alertMsg.getNetworkSource()),
+//            // IPv4.fromIPv4Address(alertMsg.getNetworkDestination()));
+//            String rule = "src" + alertMsg.getNetworkSource() + " dst"
+//                    + alertMsg.getNetworkDestination() + " pro"
+//                    + alertMsg.getNetworkProtocol() + " spo"
+//                    + alertMsg.getTransportSource() + " dpo"
+//                    + alertMsg.getTransportDestination() + " pri"
+//                    + alertMsg.getPriorityAlert() + " des"
+//                    + alertMsg.getAlertDescription() + "\n";
+//
+//            sendToBeprocessedByApriori = sendToBeprocessedByApriori + rule;
+//
+//        }
+//        //log.debug("\n"+sendToBeprocessedByApriori);
+//        return sendToBeprocessedByApriori;
+//    }
     
     /**
      * Verify if this rule is new and send a OpenFlow Command to
@@ -873,7 +879,7 @@ public class MemorysAttacks extends Thread {
                 
             }   
         }            
-        log.debug("There are {} rules in short memory - {} new, {} already existed, {} removed", shortMemoryAttacks.size(),addedRules,alreadyExistedRules, removedRules);
+        log.debug(">> There are {} rules in short memory - {} new, {} already existed, {} removed", shortMemoryAttacks.size(),addedRules,alreadyExistedRules, removedRules);
         log.debug("Waiting {} seconds to rerun itemset algorithm and generate new AUTONOMIC rules",TIME_TO_WAIT);
         // aqui
         //printMemoryAttacks(shortMemoryAttacks);
@@ -967,6 +973,9 @@ public class MemorysAttacks extends Thread {
     public void startUp(IBeaconProvider bP) {
         // TODO Auto-generated method stub
         this.beaconProvider = bP;
+        
+        // Run the long-term memory as thread
+        longTermMemory.start();
         
     }
     

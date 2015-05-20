@@ -258,5 +258,26 @@ public class DateTimeManager {
         Calendar currentDate = Calendar.getInstance();
         return verifyDateTimeRangeInSeconds(analysedDate, currentDate, periodInSeconds);
     }
+    
+    /**
+     * Get the difference in seconds between two dates. 
+     * @param dateStart - Previous date;
+     * @param dateStop - Last date;
+     * @return - Difference in seconds;
+     */
+    public static long differenceBetweenTwoDatesInSeconds(Date dateStart, Date dateStop) {
+        long dateDiff = dateStop.getTime() - dateStart.getTime();
+        return dateDiff / 1000 % 60;
+    }
+    
+    /**
+     * Get the difference in milliseconds between two dates. 
+     * @param dateStart - Previous date;
+     * @param dateStop - Last date;
+     * @return - Difference in milliseconds;
+     */
+    public static long differenceBetweenTwoDatesInMilliseconds(Date dateStart, Date dateStop) {
+        return dateStop.getTime() - dateStart.getTime();
+    }
 
 }

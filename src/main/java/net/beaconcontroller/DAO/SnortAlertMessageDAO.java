@@ -35,6 +35,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SnortAlertMessageDAO {
+    
+    private int totalTCPSnortAlerts=0;
+    private int totalUDPSnortAlerts=0; 
+    private int totalICMPSnortAlerts=0;
+    
     protected static Logger log = LoggerFactory.getLogger(LearningSwitchTutorialSolution.class);
     
     /**
@@ -65,29 +70,20 @@ public class SnortAlertMessageDAO {
             stmt = connection.createStatement();
             
             // TCP
-            String sqlTCP = "SELECT ip_src,ip_dst,ip_proto,t.tcp_sport,t.tcp_dport,sig_id,sig_priority,timestamp " +
-                    "FROM event e, iphdr i, signature s, tcphdr t " +
-                    "WHERE timestamp >= \'"+limitDatetime+ "\' and timestamp <= \'"+currentDatetime+ "\'"+
-                    		" and e.cid=i.cid and e.sid=i.sid and e.signature=s.sig_id and t.cid=e.cid and t.sid=e.sid;";
+            String sqlTCP = getSQLQueryOfTCPSnortAlertsUpToSecondsAgo(limitDatetime, currentDatetime);
             resultSqlSelect = stmt.executeQuery(sqlTCP);
             getTCPAlertsListFromSQLQuery(resultSqlSelect,listOfReturnedSnortAlerts);
             int totalTCPSnortAlerts = listOfReturnedSnortAlerts.size();
             
             
             // UDP
-            String sqlUDP = "SELECT ip_src,ip_dst,ip_proto,t.udp_sport,t.udp_dport,sig_id,sig_priority,timestamp " +
-                    "FROM event e, iphdr i, signature s, udphdr t " +
-                    "WHERE timestamp >= \'"+limitDatetime+ "\' and timestamp <= \'"+currentDatetime+ "\'"+
-                    		" and e.cid=i.cid and e.sid=i.sid and e.signature=s.sig_id and t.cid=e.cid and t.sid=e.sid;";
+            String sqlUDP = getSQLQueryOfUDPSnortAlertsUpToSecondsAgo(limitDatetime, currentDatetime);
             resultSqlSelect = stmt.executeQuery(sqlUDP);
             getUDPAlertsListFromSQLQuery(resultSqlSelect,listOfReturnedSnortAlerts);
             int totalUDPSnortAlerts = listOfReturnedSnortAlerts.size() - totalTCPSnortAlerts;
             
             // ICMP
-            String sqlICMP = "SELECT ip_src,ip_dst,ip_proto,t.icmp_type,t.icmp_code,sig_id,sig_priority,timestamp " +
-                    "FROM event e, iphdr i, signature s, icmphdr t " +
-                    "WHERE timestamp >= \'"+limitDatetime+ "\' and timestamp <= \'"+currentDatetime+ "\'"+
-                    		" and e.cid=i.cid and e.sid=i.sid and e.signature=s.sig_id and t.cid=e.cid and t.sid=e.sid;";
+            String sqlICMP = getSQLQueryOfICMPSnortAlertsUpToSecondsAgo(limitDatetime, currentDatetime);
             resultSqlSelect = stmt.executeQuery(sqlICMP);
             getICMPAlertsListFromSQLQuery(resultSqlSelect,listOfReturnedSnortAlerts);
             
@@ -133,6 +129,144 @@ public class SnortAlertMessageDAO {
         
         return listOfReturnedSnortAlerts;
         
+    }
+    
+    /**
+     * Get IDS Snort alerts (TCP/UDP/ICMP) in the database that are equal 
+     * or greater than current time of system less an amount of seconds 
+     * (passed by parameter).
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @return - A list of alerts between the period of time - current time less seconds set by parameter and current time.
+     */
+    public synchronized String getItemsetsStringFromSnortAlertsUpToSecondsAgo(int seconds, String stringWhoCalled) {
+        String allAlerts = "";
+        String limitDatetime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);
+        String currentDatetime = DateTimeManager.getStringDBFromCurrentDate();
+        Connection connection = null;
+        Statement stmt = null;
+        ResultSet resultSqlSelect = null;
+        //List<AlertMessage> listOfReturnedSnortAlerts = new ArrayList<AlertMessage>();
+        try {
+            DataSourceSnortIDS ds;
+            try {
+                ds = DataSourceSnortIDS.getInstance();
+                connection = ds.getConnection();
+            } catch (PropertyVetoException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } 
+            
+            stmt = connection.createStatement();
+            
+            // TCP
+            String sqlTCP = getSQLQueryOfTCPSnortAlertsUpToSecondsAgo(limitDatetime, currentDatetime);
+            resultSqlSelect = stmt.executeQuery(sqlTCP);
+            //getTCPAlertsListFromSQLQuery(resultSqlSelect,listOfReturnedSnortAlerts);
+            //int totalTCPSnortAlerts = listOfReturnedSnortAlerts.size();
+            allAlerts = allAlerts + getItemsetsStringFromTCPAlertsListFromSQLQuery(resultSqlSelect);
+            
+            
+            // UDP
+            String sqlUDP = getSQLQueryOfUDPSnortAlertsUpToSecondsAgo(limitDatetime, currentDatetime);
+            resultSqlSelect = stmt.executeQuery(sqlUDP);
+            //getUDPAlertsListFromSQLQuery(resultSqlSelect,listOfReturnedSnortAlerts);
+            //int totalUDPSnortAlerts = listOfReturnedSnortAlerts.size() - totalTCPSnortAlerts;
+            allAlerts = allAlerts + getItemsetsStringFromUDPAlertsListFromSQLQuery(resultSqlSelect);
+            
+            // ICMP
+            String sqlICMP = getSQLQueryOfICMPSnortAlertsUpToSecondsAgo(limitDatetime, currentDatetime);
+            resultSqlSelect = stmt.executeQuery(sqlICMP);
+            //getICMPAlertsListFromSQLQuery(resultSqlSelect,listOfReturnedSnortAlerts);
+            allAlerts = allAlerts + getItemsetsStringFromICMPAlertsListFromSQLQuery(resultSqlSelect);
+            
+            //int totalICMPSnortAlerts = listOfReturnedSnortAlerts.size() - totalTCPSnortAlerts - totalUDPSnortAlerts;
+            log.debug("{} - TCP, {} - UDP, {} ICMP SNORT alerts - From {}, ", totalTCPSnortAlerts, totalUDPSnortAlerts, totalICMPSnortAlerts, stringWhoCalled);
+            
+            
+        } catch (SQLException e) {
+            log.debug("ATTENTION - Error during SQL select from IDS Snort Alert table!");
+            e.printStackTrace();
+        } finally {
+            if(resultSqlSelect != null) {
+                try {
+                    resultSqlSelect.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+        
+//        log.debug("Alerts from IDS");
+//        for(AlertMessage alert : listOfReturnedSnortAlerts) {
+//            alert.printMsgAlert();
+//        }
+        
+        
+        return allAlerts;
+        
+    }
+
+    /**
+     * Get SQL query string of ICMP alerts up to seconds ago. 
+     * @param limitDatetime - Start date.
+     * @param currentDatetime - Stop date
+     * @return - SQL query string.
+     */
+    private String getSQLQueryOfICMPSnortAlertsUpToSecondsAgo(
+            String limitDatetime, String currentDatetime) {
+        String sqlICMP = "SELECT ip_src,ip_dst,ip_proto,t.icmp_type,t.icmp_code,sig_id,sig_priority,timestamp " +
+                "FROM event e, iphdr i, signature s, icmphdr t " +
+                "WHERE timestamp >= \'"+limitDatetime+ "\' and timestamp <= \'"+currentDatetime+ "\'"+
+                		" and e.cid=i.cid and e.sid=i.sid and e.signature=s.sig_id and t.cid=e.cid and t.sid=e.sid;";
+        return sqlICMP;
+    }
+
+    /**
+     * Get SQL query string of UDP alerts up to seconds ago.
+     * @param limitDatetime - Start date.
+     * @param currentDatetime - Stop date
+     * @return - SQL query string.
+     */
+    private String getSQLQueryOfUDPSnortAlertsUpToSecondsAgo(String limitDatetime,
+            String currentDatetime) {
+        String sqlUDP = "SELECT ip_src,ip_dst,ip_proto,t.udp_sport,t.udp_dport,sig_id,sig_priority,timestamp " +
+                "FROM event e, iphdr i, signature s, udphdr t " +
+                "WHERE timestamp >= \'"+limitDatetime+ "\' and timestamp <= \'"+currentDatetime+ "\'"+
+                		" and e.cid=i.cid and e.sid=i.sid and e.signature=s.sig_id and t.cid=e.cid and t.sid=e.sid;";
+        return sqlUDP;
+    }
+
+    /**
+     * Get SQL query string of TCP alerts up to seconds ago.
+     * @param limitDatetime - Start date.
+     * @param currentDatetime - Stop date
+     * @return - SQL query string.
+     */
+    private String getSQLQueryOfTCPSnortAlertsUpToSecondsAgo(String limitDatetime,
+            String currentDatetime) {
+        String sqlTCP = "SELECT ip_src,ip_dst,ip_proto,t.tcp_sport,t.tcp_dport,sig_id,sig_priority,timestamp " +
+                "FROM event e, iphdr i, signature s, tcphdr t " +
+                "WHERE timestamp >= \'"+limitDatetime+ "\' and timestamp <= \'"+currentDatetime+ "\'"+
+                		" and e.cid=i.cid and e.sid=i.sid and e.signature=s.sig_id and t.cid=e.cid and t.sid=e.sid;";
+        return sqlTCP;
     }
     
     /**
@@ -341,6 +475,135 @@ public class SnortAlertMessageDAO {
             
             listOfReturnedSnortAlerts.add(alert);
         }
+    }
+    
+    /**
+     * Get an itemset algorithm string of TCP alerts returned from the database and put on the security alert list.
+     * 
+     * @param resultSqlSelect - SQL select result.
+     * @param listOfReturnedSnortAlerts - List of security alerts.
+     * @throws SQLException
+     * @return - An itemset string with the alerts. 
+     */
+    private String getItemsetsStringFromTCPAlertsListFromSQLQuery(ResultSet resultSqlSelect) throws SQLException {
+        totalTCPSnortAlerts = 0;
+        String stringAlertsTCP="";
+        while (resultSqlSelect.next()) {
+            AlertMessage alert = new AlertMessage();
+            
+            //alert.setTempo(resultSqlSelect.getTimestamp("timestamp"));
+            alert.setAlertDescription(String.valueOf(resultSqlSelect.getInt("sig_id")));
+            alert.setPriorityAlert(resultSqlSelect.getInt("sig_priority"));
+            
+            /*
+             * The snort IP address use a long number type, 
+             * but Of-IDPS use a int number type! Thus, it is necessary convert this.
+             */
+            long longIpSrc = resultSqlSelect.getLong("ip_src");
+            int intIpSrc = (int) (long) longIpSrc;
+            alert.setNetworkSource(intIpSrc);
+            
+            long longIpDst = resultSqlSelect.getLong("ip_dst");
+            int intIpDst = (int) (long) longIpDst;
+            alert.setNetworkDestination(intIpDst);
+            
+            alert.setNetworkProtocol(resultSqlSelect.getInt("ip_proto"));
+            
+            // Convert integer port number to short port representation number (used on beacon), but yet in integer number!
+            int integerShortSourcePort = TransportPorts.convertIntegerPortToIntegerShortValue(resultSqlSelect.getInt("tcp_sport"));
+            alert.setTransportSource(integerShortSourcePort);
+            // Convert integer port number to short port representation number (used on beacon), but yet in integer number!
+            int integerShortDestinationPort = TransportPorts.convertIntegerPortToIntegerShortValue(resultSqlSelect.getInt("tcp_dport"));
+            alert.setTransportDestination(integerShortDestinationPort);
+            
+            stringAlertsTCP = stringAlertsTCP + alert.getStringAlertToBeProcessedByItemsetAlgorithm();
+            totalTCPSnortAlerts++;
+        }
+        return stringAlertsTCP;
+    }
+    
+    /**
+     * Get an itemset algorithm string of UDP alerts returned from the database and put on the security alert list.
+     * 
+     * @param resultSqlSelect - SQL select result.
+     * @param listOfReturnedSnortAlerts - List of security alerts.
+     * @throws SQLException
+     */
+    private String getItemsetsStringFromUDPAlertsListFromSQLQuery(ResultSet resultSqlSelect) throws SQLException {
+        totalUDPSnortAlerts=0;
+        String stringAlertsUDP = "";
+        while (resultSqlSelect.next()) {
+            AlertMessage alert = new AlertMessage();
+            
+            //alert.setTempo(resultSqlSelect.getTimestamp("timestamp"));
+            alert.setAlertDescription(String.valueOf(resultSqlSelect.getInt("sig_id")));
+            alert.setPriorityAlert(resultSqlSelect.getInt("sig_priority"));
+            
+            /*
+             * The snort IP address use a long number type, 
+             * but Of-IDPS use a int number type! Thus, it is necessary convert this.
+             */
+            long longIpSrc = resultSqlSelect.getLong("ip_src");
+            int intIpSrc = (int) (long) longIpSrc;
+            alert.setNetworkSource(intIpSrc);
+            
+            long longIpDst = resultSqlSelect.getLong("ip_dst");
+            int intIpDst = (int) (long) longIpDst;
+            alert.setNetworkDestination(intIpDst);
+            
+            alert.setNetworkProtocol(resultSqlSelect.getInt("ip_proto"));
+            
+            // Convert integer port number to short port representation number (used on beacon), but yet in integer number!
+            int integerShortSourcePort = TransportPorts.convertIntegerPortToIntegerShortValue(resultSqlSelect.getInt("udp_sport"));
+            alert.setTransportSource(integerShortSourcePort);
+            // Convert integer port number to short port representation number (used on beacon), but yet in integer number!
+            int integerShortDestinationPort = TransportPorts.convertIntegerPortToIntegerShortValue(resultSqlSelect.getInt("udp_dport"));
+            alert.setTransportDestination(integerShortDestinationPort);
+            
+            stringAlertsUDP = stringAlertsUDP + alert.getStringAlertToBeProcessedByItemsetAlgorithm();
+            totalUDPSnortAlerts++;
+        }
+        return stringAlertsUDP;
+    }
+    
+    /**
+     * Get an itemset algorithm string of ICMP alerts returned from the database and put on the security alert list.
+     * 
+     * @param resultSqlSelect - SQL select result.
+     * @param listOfReturnedSnortAlerts - List of security alerts.
+     * @throws SQLException
+     */
+    private String getItemsetsStringFromICMPAlertsListFromSQLQuery(ResultSet resultSqlSelect) throws SQLException {
+        totalICMPSnortAlerts=0;
+        String stringAlertsICMP = "";
+        while (resultSqlSelect.next()) {
+            AlertMessage alert = new AlertMessage();
+            
+            //alert.setTempo(resultSqlSelect.getTimestamp("timestamp"));
+            alert.setAlertDescription(String.valueOf(resultSqlSelect.getInt("sig_id")));
+            alert.setPriorityAlert(resultSqlSelect.getInt("sig_priority"));
+            
+            /*
+             * The snort IP address use a long number type, 
+             * but Of-IDPS use a int number type! Thus, it is necessary convert this.
+             */
+            long longIpSrc = resultSqlSelect.getLong("ip_src");
+            int intIpSrc = (int) (long) longIpSrc;
+            alert.setNetworkSource(intIpSrc);
+            
+            long longIpDst = resultSqlSelect.getLong("ip_dst");
+            int intIpDst = (int) (long) longIpDst;
+            alert.setNetworkDestination(intIpDst);
+            
+            alert.setNetworkProtocol(resultSqlSelect.getInt("ip_proto"));
+            alert.setTransportSource(resultSqlSelect.getInt("icmp_type"));
+            alert.setTransportDestination(resultSqlSelect.getInt("icmp_code"));
+            
+            stringAlertsICMP = stringAlertsICMP + alert.getStringAlertToBeProcessedByItemsetAlgorithm();
+            totalICMPSnortAlerts++;
+        }
+        return stringAlertsICMP;
+        
     }
     
     public int verifyIfFlowHadSnortAlerts(

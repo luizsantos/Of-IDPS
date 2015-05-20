@@ -37,7 +37,27 @@ public class AlertOpenFlowDAO {
      * @param seconds - Amount of seconds that will be used as period of time between the current time.
      * @return - List of OpenFlow alerts.
      */
-    public List<AlertMessage> getOpenFlowAlertsUpToSecondsAgo(int seconds) {
+    public List<AlertMessage> getOpenFlowAlertsUpToSecondsAgo(int seconds, String comment) {
+        String sql = getSQLQueryToGetAlertsUpToSecondsAgo(seconds);
+        return getOpenFlowAlertsUpToSecondsAgo(seconds, sql, comment);
+    }
+    
+    /**
+     * Get all OpenFlow alerts from current time minus an amount of seconds.
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @return - List of OpenFlow alerts.
+     */
+    public String getItemsetsStringFromOpenFlowAlertsUpToSecondsAgo(int seconds, String comment) {
+        String sql = getSQLQueryToGetAlertsUpToSecondsAgo(seconds);
+        return getItemsetsStringFromOpenFlowAlertsUpToSecondsAgo(seconds, sql, comment);
+    }
+
+    /**
+     * @param seconds
+     * @return
+     */
+    private String getSQLQueryToGetAlertsUpToSecondsAgo(int seconds) {
         String stringCurrentDateTime = DateTimeManager.getStringDBFromCurrentDate();
         String stringlimitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);        
         String sql = "SELECT * FROM alertsOpenFlow " +
@@ -45,11 +65,17 @@ public class AlertOpenFlowDAO {
         				" and tempo <= \'" + stringCurrentDateTime + "\' " +
         				";";
         //log.debug("alertOpenFlow sql: {}", sql);
-        return getOpenFlowAlertsUpToSecondsAgo(seconds, sql);
+        return sql;
     }
     
-    
-    public synchronized List<AlertMessage> getOpenFlowAlertsUpToSecondsAgo(int seconds, String sql) {
+    /**
+     * Get a list of OpenFlow alerts using an SQL query.
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @param sql - SQL query.
+     * @param comment - Just a text comment to identify the operation.
+     * @return - An alert list.
+     */
+    public synchronized List<AlertMessage> getOpenFlowAlertsUpToSecondsAgo(int seconds, String sql, String comment) {
         Connection connection = null;
         Statement stmt = null;
         ResultSet resultSqlSelect = null;
@@ -81,6 +107,7 @@ public class AlertOpenFlowDAO {
                 alert.setTransportSource((short)resultSqlSelect.getInt("transportSource"));
                 listOfOpenFlowAlerts.add(alert);
             }
+            log.debug("{} OpenFlow alerts - {}", listOfOpenFlowAlerts.size(), comment);
         } catch (SQLException e) {
             log.debug("ATTENTION - Error during SQL select from flows table!");
             e.printStackTrace();
@@ -111,6 +138,89 @@ public class AlertOpenFlowDAO {
             }
         }
         return listOfOpenFlowAlerts;
+    }
+    
+    /**
+     * Get an itemset algorithm string of OpenFlow alerts using an SQL query.
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @param sql - SQL query.
+     * @param comment - Just a text comment to identify the operation.
+     * @return - An itemset string with the alerts.
+     */
+    public synchronized String getItemsetsStringFromOpenFlowAlertsUpToSecondsAgo(int seconds, String sql, String comment) {
+        String stringAlertsOpenFlow = "";
+        Connection connection = null;
+        Statement stmt = null;
+        ResultSet resultSqlSelect = null;
+        //List<AlertMessage> listOfOpenFlowAlerts = new ArrayList<AlertMessage>();
+        // Get database connection.
+        try {
+            DataSource ds;
+            try {
+                ds = DataSource.getInstance();
+                connection = ds.getConnection();
+            } catch (PropertyVetoException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } 
+            
+            stmt = connection.createStatement();
+            resultSqlSelect = stmt.executeQuery(sql);
+            int alertsTotal=0;
+            while (resultSqlSelect.next()) {
+                AlertMessage alert = new AlertMessage();
+                
+                alert.setPriorityAlert(resultSqlSelect.getInt("priority"));
+                alert.setAlertDescription(resultSqlSelect.getString("alertDescription"));
+                alert.setNetworkSource(resultSqlSelect.getInt("networkSource"));
+                alert.setNetworkDestination(resultSqlSelect.getInt("networkDestination"));
+                alert.setNetworkProtocol(resultSqlSelect.getInt("networkProtocol"));
+                alert.setTransportDestination((short)resultSqlSelect.getInt("transportDestination"));
+                alert.setTransportSource((short)resultSqlSelect.getInt("transportSource"));
+                stringAlertsOpenFlow = stringAlertsOpenFlow + alert.getStringAlertToBeProcessedByItemsetAlgorithm();
+                alertsTotal++;
+                
+//                int pri = resultSqlSelect.getInt("priority");
+//                String des = resultSqlSelect.getString("alertDescription");
+//                int src = resultSqlSelect.getInt("networkSource");
+//                int dst = resultSqlSelect.getInt("networkDestination");
+//                int pro = resultSqlSelect.getInt("networkProtocol");
+//                int dpo = (short)resultSqlSelect.getInt("transportDestination");
+//                int spo = (short)resultSqlSelect.getInt("transportSource");
+//                stringAlertsOpenFlow = stringAlertsOpenFlow + AlertMessage.getStringAlertToBeProcessedByItemsetAlgorithm(src, dst, pro, spo, dpo, pri, des);
+//                alertsTotal++;
+            }
+            log.debug("{} OpenFlow alerts - {}", alertsTotal, comment);
+        } catch (SQLException e) {
+            log.debug("ATTENTION - Error during SQL select from flows table!");
+            e.printStackTrace();
+        } finally {
+            if(resultSqlSelect != null) {
+                try {
+                    resultSqlSelect.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+        return stringAlertsOpenFlow;
     }
     
     /**

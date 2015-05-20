@@ -543,5 +543,94 @@ public class AlertMessage {
         }
     }
     
+    /**
+     * 
+     * Convert the alert to be processed by itemset algorithm, it must be in the format:
+     * 
+     * time,priorityAlert,alertDescription,networkSource,networkDestination,
+     * networkProtocol,transportSource,transportDestination
+     * 1,3,alerta1,167772162,167772161,6,0,666
+     * 2,2,alerta2,167772162,167772161,6,0,777
+     * 3,1,alerta3,167772162,167772161,6,0,888
+     * 
+     * In this example there are three alerts from host 10.0.0.2 to 10.0.0.1,
+     * sourced from port 0 and destinated to ports 666,777,888 with alerts of
+     * priority low, medium, and high.
+     *
+     * @param alertMsg - Alert
+     * @return a string with a list of attacks to be processed by SPMF
+     */
+    public static String getStringAlertToBeProcessedByItemsetAlgorithm(AlertMessage alertMsg) {
+        String rule = "src" + alertMsg.getNetworkSource() + " dst"
+                + alertMsg.getNetworkDestination() + " pro"
+                + alertMsg.getNetworkProtocol() + " spo"
+                + alertMsg.getTransportSource() + " dpo"
+                + alertMsg.getTransportDestination() + " pri"
+                + alertMsg.getPriorityAlert() + " des"
+                + alertMsg.getAlertDescription() + "\n";
+        return rule;
+    }
+    
+    /**
+     * 
+     * Convert the alert to be processed by itemset algorithm, it must be in the format:
+     * 
+     * time,priorityAlert,alertDescription,networkSource,networkDestination,
+     * networkProtocol,transportSource,transportDestination
+     * 1,3,alerta1,167772162,167772161,6,0,666
+     * 2,2,alerta2,167772162,167772161,6,0,777
+     * 3,1,alerta3,167772162,167772161,6,0,888
+     * 
+     * In this example there are three alerts from host 10.0.0.2 to 10.0.0.1,
+     * sourced from port 0 and destinated to ports 666,777,888 with alerts of
+     * priority low, medium, and high.
+     *
+     * @param src - source IP.
+     * @param dst - destination IP.
+     * @param pro - protocol.
+     * @param spo - source port.
+     * @param dpo - destination port.
+     * @param pri - security priority
+     * @param des - security alert description.
+     * @return a string with a list of attacks to be processed by SPMF
+     */
+    public static String getStringAlertToBeProcessedByItemsetAlgorithm(int src, int dst, int pro, int spo, int dpo, int pri, String des) {
+        String rule = "src" + src + " dst"
+                + dst + " pro"
+                + pro + " spo"
+                + spo + " dpo"
+                + dpo + " pri"
+                + pri + " des"
+                + des + "\n";
+        return rule;
+    }
+    
+    /**
+     * 
+     * Convert this alert to be processed by itemset algorithm, it must be in the format:
+     * 
+     * time,priorityAlert,alertDescription,networkSource,networkDestination,
+     * networkProtocol,transportSource,transportDestination
+     * 1,3,alerta1,167772162,167772161,6,0,666
+     * 2,2,alerta2,167772162,167772161,6,0,777
+     * 3,1,alerta3,167772162,167772161,6,0,888
+     * 
+     * In this example there are three alerts from host 10.0.0.2 to 10.0.0.1,
+     * sourced from port 0 and destinated to ports 666,777,888 with alerts of
+     * priority low, medium, and high.
+     *
+     * @return a string with a list of attacks to be processed by SPMF
+     */
+    public String getStringAlertToBeProcessedByItemsetAlgorithm() {
+        String rule = "src" + this.getNetworkSource() + " dst"
+                + this.getNetworkDestination() + " pro"
+                + this.getNetworkProtocol() + " spo"
+                + this.getTransportSource() + " dpo"
+                + this.getTransportDestination() + " pri"
+                + this.getPriorityAlert() + " des"
+                + this.getAlertDescription() + "\n";
+        return rule;
+    }
+    
 
 }
