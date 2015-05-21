@@ -1,14 +1,17 @@
 package net.OfIDPS.memoryAttacks;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import net.beaconcontroller.DAO.AlertOpenFlowDAO;
+import net.beaconcontroller.DAO.StatusFlowDAO;
 import net.beaconcontroller.IPS.AlertMessage;
 import net.beaconcontroller.IPS.IntrusionPreventionSystem;
 import net.beaconcontroller.core.IBeaconProvider;
 import net.beaconcontroller.tools.DateTimeManager;
+import net.beaconcontroller.tools.FileManager;
 import net.beaconcontroller.tutorial.ActuatorOpenFlow;
 import net.beaconcontroller.tutorial.CONFIG;
 import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
@@ -20,7 +23,11 @@ public class LongTermMemory extends Thread {
     
     protected IBeaconProvider beaconProvider;
     
+    // To bad remembrances - long bad memory.
     private Map<String,AlertMessage> longMemoryAttacks;
+    
+    // To good remembrances - long good memory.
+    private Map<String, AlertMessage> longMemoryForGoodRemembrances;
     
     protected static Logger log = LoggerFactory
             .getLogger(LearningSwitchTutorialSolution.class);
@@ -30,9 +37,19 @@ public class LongTermMemory extends Thread {
      */
     public static final int TIME_TO_WAIT= 3;
     
-    public void startUp(IBeaconProvider bP, Map<String,AlertMessage> longMemoryAttacks) {
+    /**
+     * Startup method, you must use this before of run the start thread method (run/start).
+     * @param bP - beacon for use the actuator.
+     * @param longMemoryAttacks - long bad memory.
+     * @param longMemoryForGoodRemembrances - long good memory.
+     */
+    public void startUp(
+            IBeaconProvider bP, 
+            Map<String,AlertMessage> longMemoryAttacks,
+            Map<String, AlertMessage> longMemoryForGoodRemembrances) {
         this.beaconProvider = bP;
         this.longMemoryAttacks = longMemoryAttacks;
+        this.longMemoryForGoodRemembrances=longMemoryForGoodRemembrances;
     }
 
     /**
@@ -44,7 +61,16 @@ public class LongTermMemory extends Thread {
         log.debug("Start Thread that is responsible to construct Long-Term memory.");
         while (true) {
             if (MemorysAttacks.disableLongMemory != 1) {
-                longBadMemory();
+                
+                // To use memoryAttacks methods.
+                MemorysAttacks memoryAttacks = new MemorysAttacks();
+                
+                // Run memory for good remembrances.
+                longGoodMemory(memoryAttacks);
+                
+                // Run memory for bad remembrances.
+                longBadMemory(memoryAttacks);
+                
             } else {
                 log.debug("\t!!!!!!!! ATTENTION, Long memory is DISABLED!!!!!!!!  to change this setup to 0 (zero) the variable disableLongMemory on MemoryAttacks class...");
             }
@@ -56,16 +82,22 @@ public class LongTermMemory extends Thread {
         
     }
 
-    private void longBadMemory() {
-        log.debug("Long-term Memory");
+    /**
+     * Perform long-term memory methods to recovery bad remembrances.
+     * 
+     * @param ids - An IntrusionPreventionSystem object to recover IDS alerts.
+     * @param alertOpenFlowDAO - An AlertOpenFlowDAO object to recover OpenFlow alerts.
+     * @param memoryAttacks - To execute some memory attacks methods.
+     */
+    private void longBadMemory(MemorysAttacks memoryAttacks) {
+        log.debug("Long-term Bad Memory");
         Date dateStart = DateTimeManager.getCurrentDate();
         
         // To recover alerts from IDS.
         IntrusionPreventionSystem ids = new IntrusionPreventionSystem();
         // To recover alerts from OpenFlow statistics.
         AlertOpenFlowDAO alertOpenFlowDAO = new AlertOpenFlowDAO();
-        // To use memoryAttacks methods.
-        MemorysAttacks memoryAttacks = new MemorysAttacks();
+        
         
         // Get alerts from IDS and OpenFlow analysis to be processed by itemsets algorithm.
         String allAlerts = memoryAttacks.getAlertsFromIDSAndOpenFlowAnalysisToBeProcessedByItemsetsAlgorithm(
@@ -95,6 +127,8 @@ public class LongTermMemory extends Thread {
             actuatorFromSensorialMemory.shutDown();
         }
         
+        printRules(ruleListFromIDS, "Bad memory.");
+        
         
         Date dateStop = DateTimeManager.getCurrentDate();
         long diffSeconds = DateTimeManager.differenceBetweenTwoDatesInSeconds(dateStart, dateStop);
@@ -103,6 +137,65 @@ public class LongTermMemory extends Thread {
                 DateTimeManager.dateToStringJavaDate(dateStop),
                 diffSeconds);
         
+    }
+
+    
+    
+    /**
+     * Perform long-term memory methods to recovery bad remembrances.
+     * 
+     * @param ids - An IntrusionPreventionSystem object to recover IDS alerts.
+     * @param alertOpenFlowDAO - An AlertOpenFlowDAO object to recover OpenFlow alerts.
+     * @param memoryAttacks - To execute some memory attacks methods.
+     */
+    private void longGoodMemory(MemorysAttacks memoryAttacks) {
+        log.debug("Long-term Good Memory");
+        Date dateStart = DateTimeManager.getCurrentDate();
+        String allGoodFlows = "";
+
+        // Get good network flows that were not related with security alerts.
+        try {
+            StatusFlowDAO statusFlowDAO = new StatusFlowDAO();
+            allGoodFlows = statusFlowDAO.getItemsetsStringFromNormalFlowsUpToSecondsAgo(MemorysAttacks.timeToAlertsStayAtLongMemory);
+        } catch (ClassNotFoundException e) {
+            log.debug("Error to create StatusFlowDAO on good LongTermMemory class.");
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SQLException e) {
+            log.debug("SQL error to create StatusFlowDAO on good LongTermMemory class.");
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        // Obtain rules from IDS alerts using itemsets algorithm.
+        Map<String,AlertMessage> ruleListFromIDS = new HashMap<String, AlertMessage>();
+        ruleListFromIDS = memoryAttacks.getRulesFromIDSAlertsUsingItensetsAlgorithm(allGoodFlows);
+        
+        longMemoryForGoodRemembrances.clear();
+        longMemoryForGoodRemembrances.putAll(ruleListFromIDS);
+        
+        //printRules(ruleListFromIDS, "Good memory.");
+        FileManager fileManager = new FileManager("~", "goodMemory.txt");
+        fileManager.writeFile(allGoodFlows);
+        
+        Date dateStop = DateTimeManager.getCurrentDate();
+        long diffSeconds = DateTimeManager.differenceBetweenTwoDatesInSeconds(dateStart, dateStop);
+        log.debug("End of GOOD long memory! {} - {} -> {} seconds", 
+                DateTimeManager.dateToStringJavaDate(dateStart), 
+                DateTimeManager.dateToStringJavaDate(dateStop),
+                diffSeconds);
+    }
+    
+    /**
+     * Print the list of rules;
+     * @param ruleListFromIDS - Rule list;
+     */
+    private void printRules(Map<String, AlertMessage> ruleListFromIDS, String comment) {
+        log.debug("{} of rules {} memory", ruleListFromIDS.size(), comment);
+        for(String key : ruleListFromIDS.keySet()) {
+            AlertMessage goodFlow = ruleListFromIDS.get(key);
+            goodFlow.printMsgAlert();
+        }
     }
     
     /**

@@ -138,13 +138,17 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
      */
     Map<String, AlertMessage> longMemoryAttacks = new HashMap<String, AlertMessage>();
     
+    Map<String, AlertMessage> longMemoryForGoodRemembrances = new HashMap<String, AlertMessage>();
+    
     /*
      * Starts the MemorysAttacks object that will populate the attacks memory
      * with security rules, that will be used to this class. This rules are
      * returned indirectly, like pointer.
      */
+    
+    
     protected MemorysAttacks memoryAttacks = new MemorysAttacks(
-            shortMemoryAttacks, longMemoryAttacks, sensorialMemoryAttacks);
+            shortMemoryAttacks, longMemoryAttacks, sensorialMemoryAttacks, longMemoryForGoodRemembrances);
     
     private static int countNormalPackets=0;
     private static int countAlertPriorityLow=0;

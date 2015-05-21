@@ -18,6 +18,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import net.beaconcontroller.IPS.AlertMessage;
+import net.beaconcontroller.IPS.IntrusionPreventionSystem;
 import net.beaconcontroller.tools.DateTimeManager;
 import net.beaconcontroller.tools.ProtocolsNumbers;
 import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
@@ -56,14 +58,34 @@ public class StatusFlowDAO extends Thread {
      * @param seconds - Amount of seconds that will be used as period of time between the current time.
      * @return - List of status flows.
      */
+    public String getItemsetsStringFromNormalFlowsUpToSecondsAgo(int seconds) {
+        String sql = getSQLQueryToNormalFlowsUpToSecondsAgo(seconds);
+        return getItemsetsStringFromFlowsUpToSecondsAgo(sql);
+    }
+    
+    /**
+     * Get all normal flows from current time minus an amount of seconds.
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @return - List of status flows.
+     */
     public List<StatusFlow> getNormalFlowsUpToSecondsAgo(int seconds) {
+        String sql = getSQLQueryToNormalFlowsUpToSecondsAgo(seconds);
+        return getFlowsUpToSecondsAgo(sql);
+    }
+
+    /**
+     * @param seconds
+     * @return
+     */
+    private String getSQLQueryToNormalFlowsUpToSecondsAgo(int seconds) {
         String currentDatetime = DateTimeManager.getStringDBFromCurrentDate();
         String limitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);
         String sql = "SELECT * FROM flows WHERE " +
         		" tempo >= \'"+limitDatatime+ "\' and " +
         		" tempo <= \'"+currentDatetime +"\' and" + 
         		" flowType = "+StatusFlow.FLOW_NORMAL+";";
-        return getFlowsUpToSecondsAgo(seconds, sql);
+        return sql;
     }
     
     /**
@@ -79,7 +101,7 @@ public class StatusFlowDAO extends Thread {
         		" tempo >= \'"+limitDatatime+ "\' and " +
         		" tempo <= \'"+currentDatetime +"\' and" + 
         	    " flowType = "+StatusFlow.FLOW_ABNORMAL+";";
-        return getFlowsUpToSecondsAgo(seconds, sql);
+        return getFlowsUpToSecondsAgo(sql);
     }
     
     /**
@@ -95,7 +117,7 @@ public class StatusFlowDAO extends Thread {
         		" tempo >= \'"+limitDatatime+ "\' and " +
         		" tempo <= \'"+currentDatetime +"\' and" + 
         				";";
-        return getFlowsUpToSecondsAgo(seconds, sql);
+        return getFlowsUpToSecondsAgo(sql);
     }
     
     /**
@@ -119,7 +141,7 @@ public class StatusFlowDAO extends Thread {
         		" packetCount <= "+ dosTCPPacketCount +" and" +
         		" byteCount <= " + dosTCPByteCount +
         		";";
-        return getFlowsUpToSecondsAgo(seconds, sql);
+        return getFlowsUpToSecondsAgo(sql);
     }
     
     /**
@@ -129,7 +151,7 @@ public class StatusFlowDAO extends Thread {
      * @param seconds - Amount of seconds that will be used as period of time between the current time.
      * @return - A list of flows between the period of time - current time less seconds set by parameter and current time.
      */
-    public synchronized List<StatusFlow> getFlowsUpToSecondsAgo(int seconds, String sql) {
+    public synchronized List<StatusFlow> getFlowsUpToSecondsAgo(String sql) {
         Connection connection = null;
         Statement stmt = null;
         ResultSet resultSqlSelect = null;
@@ -216,6 +238,79 @@ public class StatusFlowDAO extends Thread {
             }
         }
         return listOfReturnedFlows;
+    }
+    
+    /**
+     * Get flows in the database that are equal or greater than current time
+     * of system less an amount of seconds (passed by parameter).
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @return - A list of flows between the period of time - current time less seconds set by parameter and current time.
+     */
+    public synchronized String getItemsetsStringFromFlowsUpToSecondsAgo(String sql) {
+        String allGoodFlows = "";
+        int totalFlows=0;
+        Connection connection = null;
+        Statement stmt = null;
+        ResultSet resultSqlSelect = null;
+        
+        // Get database connection.
+        try {
+            DataSource ds;
+            try {
+                ds = DataSource.getInstance();
+                connection = ds.getConnection();
+            } catch (PropertyVetoException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } 
+            
+            stmt = connection.createStatement();
+            resultSqlSelect = stmt.executeQuery(sql);
+            while (resultSqlSelect.next()) {
+                AlertMessage goodFlow = new AlertMessage();
+                goodFlow.setPriorityAlert(AlertMessage.NORMAL_PACKET);
+                goodFlow.setAlertDescription("good");
+                goodFlow.setNetworkSource(resultSqlSelect.getInt("networkSource"));
+                goodFlow.setNetworkDestination(resultSqlSelect.getInt("networkDestination"));
+                goodFlow.setNetworkProtocol((byte) resultSqlSelect.getInt("networkProtocol"));
+                goodFlow.setTransportSource((short) resultSqlSelect.getInt("transportSource"));
+                goodFlow.setTransportDestination((short) resultSqlSelect.getInt("transportDestination"));
+                allGoodFlows = allGoodFlows + goodFlow.getStringAlertToBeProcessedByItemsetAlgorithm();
+                totalFlows++;
+                
+            }
+            log.debug("{} Good flows/remembrances - {}", totalFlows, "Long Good Memory");
+        } catch (SQLException e) {
+            log.debug("ATTENTION - Error during SQL select from good remembrances - Status flow!");
+            e.printStackTrace();
+        } finally {
+            if(resultSqlSelect != null) {
+                try {
+                    resultSqlSelect.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+        return allGoodFlows;
     }
     
     /**

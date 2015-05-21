@@ -79,6 +79,7 @@ public class MemorysAttacks extends Thread {
     private Map<String,AlertMessage> shortMemoryAttacks;
     private Map<String,AlertMessage> longMemoryAttacks;
     private Map<String,AlertMessage> sensorialMemoryAttacks;
+    private Map<String, AlertMessage> longMemoryForGoodRemembrances;
     
     // To run the long-term memory
     LongTermMemory longTermMemory = new LongTermMemory();
@@ -126,10 +127,12 @@ public class MemorysAttacks extends Thread {
      */
     public MemorysAttacks (Map<String,AlertMessage> shortMemoryAttacks,
             Map<String,AlertMessage> longMemoryAttacks,
-            Map<String,AlertMessage> sensorialMemoryAttacks) {
+            Map<String,AlertMessage> sensorialMemoryAttacks,
+            Map<String, AlertMessage> longMemoryForGoodRemembrances) {
         this.shortMemoryAttacks=shortMemoryAttacks;
         this.longMemoryAttacks=longMemoryAttacks;
         this.sensorialMemoryAttacks=sensorialMemoryAttacks;
+        this.longMemoryForGoodRemembrances=longMemoryForGoodRemembrances;
     }
     
     /**
@@ -188,10 +191,11 @@ public class MemorysAttacks extends Thread {
              * 
              */
             
-          log.debug("* Rules in memories : {} sensorial, {} short, and {} long!", 
+          log.debug("* Rules : {} sensorial, {} short, {} long bad, and {} long good !", 
           sensorialMemoryAttacks.size(),
           shortMemoryAttacks.size(),
-          longMemoryAttacks.size());
+          longMemoryAttacks.size(),
+          longMemoryForGoodRemembrances.size());
             
             if (CONFIG.DISABLE_JSON_OUTPUT==false) {
                 writeRulesInShortMemoryToJsonFile();
@@ -986,7 +990,7 @@ public class MemorysAttacks extends Thread {
         this.beaconProvider = bP;
         
         // Run the long-term memory as thread
-        longTermMemory.startUp(beaconProvider ,longMemoryAttacks);
+        longTermMemory.startUp(beaconProvider ,longMemoryAttacks, longMemoryForGoodRemembrances);
         longTermMemory.start();
         
     }
