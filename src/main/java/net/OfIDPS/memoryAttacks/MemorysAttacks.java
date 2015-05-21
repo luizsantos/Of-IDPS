@@ -71,10 +71,7 @@ import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
 public class MemorysAttacks extends Thread {
     
     protected IBeaconProvider beaconProvider;
-    
-    // To run the long-term memory
-    LongTermMemory longTermMemory = new LongTermMemory();
-    
+       
     protected static Logger log = LoggerFactory
             .getLogger(LearningSwitchTutorialSolution.class);
     
@@ -82,6 +79,9 @@ public class MemorysAttacks extends Thread {
     private Map<String,AlertMessage> shortMemoryAttacks;
     private Map<String,AlertMessage> longMemoryAttacks;
     private Map<String,AlertMessage> sensorialMemoryAttacks;
+    
+    // To run the long-term memory
+    LongTermMemory longTermMemory = new LongTermMemory();
     
     /*
      * Period of time, in seconds, that an alert will be processed. This period
@@ -97,8 +97,8 @@ public class MemorysAttacks extends Thread {
      * 
      * 1 to disable and any other value to enable!
      */
-    protected static int disableSensorialMemory=0;
-    protected static int disableShortMemory=0;
+    protected static int disableSensorialMemory=1;
+    protected static int disableShortMemory=1;
     public static int disableLongMemory=0;
     
     /*
@@ -130,6 +130,13 @@ public class MemorysAttacks extends Thread {
         this.shortMemoryAttacks=shortMemoryAttacks;
         this.longMemoryAttacks=longMemoryAttacks;
         this.sensorialMemoryAttacks=sensorialMemoryAttacks;
+    }
+    
+    /**
+     * Constructor method - used by long memory. 
+     */
+    public MemorysAttacks ( ) {
+        
     }
     
     /**
@@ -180,7 +187,11 @@ public class MemorysAttacks extends Thread {
              * consuming many time and disturbing both, sensorial and short memory.
              * 
              */
-
+            
+          log.debug("* Rules in memories : {} sensorial, {} short, and {} long!", 
+          sensorialMemoryAttacks.size(),
+          shortMemoryAttacks.size(),
+          longMemoryAttacks.size());
             
             if (CONFIG.DISABLE_JSON_OUTPUT==false) {
                 writeRulesInShortMemoryToJsonFile();
@@ -406,7 +417,7 @@ public class MemorysAttacks extends Thread {
      * @param comment - Just a commentary text to identify for example the type of memory that is in use.
      * @return - A string ready to be processed by the itemsets algorithm.
      */
-    private String getAlertsFromIDSAndOpenFlowAnalysisToBeProcessedByItemsetsAlgorithm(
+    public String getAlertsFromIDSAndOpenFlowAnalysisToBeProcessedByItemsetsAlgorithm(
             IntrusionPreventionSystem ids, 
             AlertOpenFlowDAO alertOpenFlowDAO,
             int timeToAlertsStayOnMemory,
@@ -680,7 +691,7 @@ public class MemorysAttacks extends Thread {
      * @param ruleListFromIDS - Map  
      * @return
      */
-    private Map<String, AlertMessage> getRulesFromIDSAlertsUsingItensetsAlgorithm(String alertsFromIDSSnort) {
+    public Map<String, AlertMessage> getRulesFromIDSAlertsUsingItensetsAlgorithm(String alertsFromIDSSnort) {
         Map<String,AlertMessage> ruleListFromIDS = new HashMap<String, AlertMessage>();
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMDD_HHmmss");
         Date date = new Date();
@@ -975,6 +986,7 @@ public class MemorysAttacks extends Thread {
         this.beaconProvider = bP;
         
         // Run the long-term memory as thread
+        longTermMemory.startUp(beaconProvider ,longMemoryAttacks);
         longTermMemory.start();
         
     }

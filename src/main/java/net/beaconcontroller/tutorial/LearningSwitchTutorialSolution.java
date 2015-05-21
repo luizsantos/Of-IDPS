@@ -360,7 +360,7 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
                 
                 // memoryAttacks.printMemoryAttacks(sensorialMemoryAttacks);
                 // memoryAttacks.printMemoryAttacks(shortMemoryAttacks);
-                memoryAttacks.printMemoryAttacks(longMemoryAttacks);
+                // memoryAttacks.printMemoryAttacks(longMemoryAttacks);
                 
                 MemoryAttackRuleMatch memoryAttackRuleMatch =  new MemoryAttackRuleMatch();
                 
@@ -467,6 +467,13 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
             // Destination port unknown, flood packet to all ports
             forwardAsHub(sw, pi);
             countSentLikeHub++;
+            
+            // print test
+//            log.debug("{} sensorial, {} short, {} long number of rules on memories!", 
+//                    sensorialMemoryAttacks.size(),
+//                    shortMemoryAttacks.size(),
+//                    longMemoryAttacks.size());
+            
         }
         
 //        JSONObject ofIDPSPacketsStatus = new JSONObject();
