@@ -65,14 +65,22 @@ public class LongTermMemory extends Thread {
                 // To use memoryAttacks methods.
                 MemorysAttacks memoryAttacks = new MemorysAttacks();
                 
-                // Run memory for good remembrances.
-                longGoodMemory(memoryAttacks);
+                if (MemorysAttacks.disableLongGoodMemory != 1) {
+                    // Run memory for good remembrances.
+                    longGoodMemory(memoryAttacks);
+                } else {
+                    log.debug("\t!!!!!!!! ATTENTION, Long GOOD memory is DISABLED!!!!!!!!  to change this setup to 0 (zero) the variable disableLongGoodMemory on MemoryAttacks class...");
+                }
                 
-                // Run memory for bad remembrances.
-                longBadMemory(memoryAttacks);
+                if (MemorysAttacks.disableLongBadMemory != 1) {
+                    // Run memory for bad remembrances.
+                    longBadMemory(memoryAttacks);
+                } else {
+                    log.debug("\t!!!!!!!! ATTENTION, Long BAD memory is DISABLED!!!!!!!!  to change this setup to 0 (zero) the variable disableLongBadMemory on MemoryAttacks class...");
+                }
                 
             } else {
-                log.debug("\t!!!!!!!! ATTENTION, Long memory is DISABLED!!!!!!!!  to change this setup to 0 (zero) the variable disableLongMemory on MemoryAttacks class...");
+                log.debug("\t!!!!!!!! ATTENTION, LONG memory is DISABLED (bad and good)!!!!!!!!  to change this setup to 0 (zero) the variable disableLongMemory on MemoryAttacks class...");
             }
             // Time to waiting
             log.debug("Waiting {} seconds to rerun Long-term memory", TIME_TO_WAIT);
@@ -110,7 +118,7 @@ public class LongTermMemory extends Thread {
         
         // Obtain rules from IDS alerts using itemsets algorithm.
         Map<String,AlertMessage> ruleListFromIDS = new HashMap<String, AlertMessage>();
-        ruleListFromIDS = memoryAttacks.getRulesFromIDSAlertsUsingItensetsAlgorithm(allAlerts);
+        ruleListFromIDS = memoryAttacks.getSecurityRulesUsingItensetsAlgorithm(allAlerts);
         
         longMemoryAttacks.clear();
         longMemoryAttacks.putAll(ruleListFromIDS);
@@ -169,7 +177,7 @@ public class LongTermMemory extends Thread {
         
         // Obtain rules from IDS alerts using itemsets algorithm.
         Map<String,AlertMessage> ruleListFromIDS = new HashMap<String, AlertMessage>();
-        ruleListFromIDS = memoryAttacks.getRulesFromIDSAlertsUsingItensetsAlgorithm(allGoodFlows);
+        ruleListFromIDS = memoryAttacks.getSecurityRulesUsingItensetsAlgorithm(allGoodFlows);
         
         longMemoryForGoodRemembrances.clear();
         longMemoryForGoodRemembrances.putAll(ruleListFromIDS);

@@ -98,9 +98,14 @@ public class MemorysAttacks extends Thread {
      * 
      * 1 to disable and any other value to enable!
      */
-    protected static int disableSensorialMemory=1;
-    protected static int disableShortMemory=1;
-    public static int disableLongMemory=0;
+    protected static int disableSensorialMemory=0;
+    protected static int disableShortMemory=0;
+    // To disable bad and good long memory.
+    public static int disableLongMemory=1;
+    // To disable only bad long memory.
+    public static int disableLongBadMemory=1;
+    // To disable only good long memory.
+    public static int disableLongGoodMemory=1;
     
     /*
      * Time to wait until execute again the main method contained in the Thread (method run).
@@ -110,10 +115,27 @@ public class MemorysAttacks extends Thread {
     /*
      * USED TO IDENTIFY THE MEMORY TYPE.
      */
-    public static final int SENSORIAL_MEMORY=1;
-    public static final int SHORT_MEMORY=2;
-    public static final int LONG_MEMORY=3;
+    public static final int MEMORY_SENSORIAL=1;
+    public static final int MEMORY_SHORT=2;
+    public static final int MEMORY_LONG_BAD=3;
+    public static final int MEMORY_LONG_GOOD=4;
     
+    /*
+     * Order to be read/analyzed the memories rules:
+     *      1       |     2     |     3     |   4
+     * -------------|-----------|-----------|----------
+     * longGood     | sensorial |sensorial  | sensorial
+     * sensorial    | longGood  |short      | short
+     * short        | short     |longGood   | longBad
+     * longBad      | longBad   |longBad    |
+     */
+    public static final int MEMORY_ORDER_1_LONGGOOD_SENSORIAL_SHORT_LOGBAD=1;
+    public static final int MEMORY_ORDER_2_SENSORIAL_LONGGOOD_SHORT_LONGBAD=2;
+    public static final int MEMORY_ORDER_3_SENSORIAL_SHORT_LONGGOOD_LONGBAD=3;
+    public static final int MEMORY_ORDER_4_SENSORIAL_SHORT_LONGBAD=4;
+    
+    // Attribute that deals with the order of the rules to be analyzed and applied in the Of-IDPS.
+    public static final int MEMORY_ORDER_TO_BE_APPLIED_IN_THE_OFIDPS = MEMORY_ORDER_4_SENSORIAL_SHORT_LONGBAD;
     
     // Set when class start at first time!
     private static Date dateTimeStartObject = new Date();
@@ -341,7 +363,7 @@ public class MemorysAttacks extends Thread {
         
         // Obtain rules from IDS alerts using itemsets algorithm.
         Map<String,AlertMessage> ruleListFromIDS = new HashMap<String, AlertMessage>();
-        ruleListFromIDS = getRulesFromIDSAlertsUsingItensetsAlgorithm(allAlerts);
+        ruleListFromIDS = getSecurityRulesUsingItensetsAlgorithm(allAlerts);
         
         /*
          * Update rules on short memory and send this for all switches on the network.
@@ -689,13 +711,13 @@ public class MemorysAttacks extends Thread {
     }
     
     /**
-     * Obtain security rules from IDS alerts, using itemsets algorithm.
+     * Obtain security rules using itemsets algorithm.
      * 
-     * @param alertsFromIDSSnort - alerts obtained from Snort IDS
-     * @param ruleListFromIDS - Map  
-     * @return
+     * @param - alertsFromIDSSnort - alerts obtained from Snort IDS.
+     * @param - ruleListFromIDS - Map.  
+     * @return - List of rules.
      */
-    public Map<String, AlertMessage> getRulesFromIDSAlertsUsingItensetsAlgorithm(String alertsFromIDSSnort) {
+    public Map<String, AlertMessage> getSecurityRulesUsingItensetsAlgorithm(String alertsFromIDSSnort) {
         Map<String,AlertMessage> ruleListFromIDS = new HashMap<String, AlertMessage>();
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMDD_HHmmss");
         Date date = new Date();
