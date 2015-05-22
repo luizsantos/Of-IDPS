@@ -98,8 +98,8 @@ public class MemorysAttacks extends Thread {
      * 
      * 1 to disable and any other value to enable!
      */
-    protected static int disableSensorialMemory=0;
-    protected static int disableShortMemory=0;
+    protected static int disableSensorialMemory=1;
+    protected static int disableShortMemory=1;
     // To disable bad and good long memory.
     public static int disableLongMemory=1;
     // To disable only bad long memory.
@@ -135,7 +135,7 @@ public class MemorysAttacks extends Thread {
     public static final int MEMORY_ORDER_4_SENSORIAL_SHORT_LONGBAD=4;
     
     // Attribute that deals with the order of the rules to be analyzed and applied in the Of-IDPS.
-    public static final int MEMORY_ORDER_TO_BE_APPLIED_IN_THE_OFIDPS = MEMORY_ORDER_4_SENSORIAL_SHORT_LONGBAD;
+    public static final int MEMORY_ORDER_TO_BE_APPLIED_IN_THE_OFIDPS = MEMORY_ORDER_3_SENSORIAL_SHORT_LONGGOOD_LONGBAD;
     
     // Set when class start at first time!
     private static Date dateTimeStartObject = new Date();
