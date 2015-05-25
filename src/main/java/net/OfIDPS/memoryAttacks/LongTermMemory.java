@@ -29,6 +29,34 @@ public class LongTermMemory extends Thread {
     // To good remembrances - long good memory.
     private Map<String, AlertMessage> longMemoryForGoodRemembrances;
     
+    // Method to recover remembrances to long memory.
+    // Get all remembrances - this can consume a lot of the machine process.
+    public static final int recoverRemembrancesUsing_1_getAll=1;
+    // Get remembrances using a limit to recovery the database register, example get the last 10.000 registers.
+    public static final int recoverRemembrancesUsing_2_getLastUsingLimit=2;
+    // Get remembrances using a limit but get the registers randomly.
+    public static final int recoverRemembrancesUsing_2_1_getRandomlyUsingLimit=3;
+    /*
+     * Get remembrances using a limit but get the registers randomly and using a 
+     * statistic threshold based on the amount of existent registers in database 
+     * to generate reliable samples.
+     */
+    public static final int recoverRemembrancesUsing_2_2_getStatisticUsingLimit=4;
+    // Get remembrances up to seconds ago. 
+    public static final int recoverRemembrancesUsing_3_getFromSecondsAgo=5;
+    // Get remembrances up to seconds ago but get the registers randomly.
+    public static final int recoverRemembrancesUsing_3_1_getRandomlyFromSecondsAgo=6;
+    /*
+     * Get remembrances up to seconds ago but get the registers randomly and using a 
+     * statistic threshold based on the amount of existent registers in database 
+     * to generate reliable samples.
+     */
+    public static final int recoverRemembrancesUsing_3_2_getStatisticFromSecondsAgo=7;
+    private static int methodToRecoverRemembrancesToLongMemory = recoverRemembrancesUsing_3_getFromSecondsAgo; 
+    
+    // Max number of registers to be recovered from database;
+    private static int limit_to_recover_databaseFlows=10000;
+    
     protected static Logger log = LoggerFactory
             .getLogger(LearningSwitchTutorialSolution.class);
     
@@ -164,7 +192,41 @@ public class LongTermMemory extends Thread {
         // Get good network flows that were not related with security alerts.
         try {
             StatusFlowDAO statusFlowDAO = new StatusFlowDAO();
-            allGoodFlows = statusFlowDAO.getItemsetsStringFromNormalFlowsUpToSecondsAgo(MemorysAttacks.timeToAlertsStayAtLongMemory);
+            switch(methodToRecoverRemembrancesToLongMemory){
+                case LongTermMemory.recoverRemembrancesUsing_1_getAll:
+                    log.debug("Get all good remembrances!");
+                    statusFlowDAO.getItemsetsString_ofNormalFlows_1_allFlows();
+                    break;
+                case LongTermMemory.recoverRemembrancesUsing_2_getLastUsingLimit:
+                    log.debug("Get last good remembrances using a limit!");
+                    statusFlowDAO.getItemsetsString_ofNormalFlows_2_lastUsingLimit(limit_to_recover_databaseFlows);
+                    break;
+                case LongTermMemory.recoverRemembrancesUsing_2_1_getRandomlyUsingLimit:
+                    log.debug("Get randomly good remembrances using a limit!");
+                    statusFlowDAO.getItemsetsString_ofNormalFlows_2_1_randomlyUsingLimit(limit_to_recover_databaseFlows);
+                    break;
+                case LongTermMemory.recoverRemembrancesUsing_2_2_getStatisticUsingLimit:
+                    log.debug("Get randomly using statistical parameters the last good remembrances using a limit!");
+                    statusFlowDAO.getItemsetsString_ofNormalFlows_2_2_getStatisticUsingLimit();
+                    break;
+                case LongTermMemory.recoverRemembrancesUsing_3_getFromSecondsAgo:
+                    log.debug("Get last good remembrances up to seconds ago!");
+                    statusFlowDAO.getItemsetsString_ofNormalFlows_3_upToSecondsAgo(MemorysAttacks.timeToAlertsStayAtLongMemory);
+                    break;
+                case LongTermMemory.recoverRemembrancesUsing_3_1_getRandomlyFromSecondsAgo:
+                    log.debug("Get randomly last good remembrances up to seconds ago!");
+                    statusFlowDAO.getItemsetsString_ofNormalFlows_3_1_randomlyFromSecondsAgo(
+                            MemorysAttacks.timeToAlertsStayAtLongMemory, limit_to_recover_databaseFlows);
+                    break;
+                case LongTermMemory.recoverRemembrancesUsing_3_2_getStatisticFromSecondsAgo:
+                    log.debug("Get randomly using statistical parameters the last good remembrances up to seconds ago!");
+                    statusFlowDAO.getItemsetsString_ofNormalFlows_3_2_getStatisticFromSecondsAgo(MemorysAttacks.timeToAlertsStayAtLongMemory);
+                    break;
+                default:
+                    log.debug("Default - Get last good remembrances using a limit!");
+                    statusFlowDAO.getItemsetsString_ofNormalFlows_2_lastUsingLimit(limit_to_recover_databaseFlows);
+            }
+            
         } catch (ClassNotFoundException e) {
             log.debug("Error to create StatusFlowDAO on good LongTermMemory class.");
             // TODO Auto-generated catch block

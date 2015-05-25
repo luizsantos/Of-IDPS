@@ -119,7 +119,7 @@ public class AnalysisFlow extends Thread {
             StatusFlowDAO statusFlowDAO = new StatusFlowDAO();
             // Get the already suspicious flows.
             // TODO - What time period is better to use?
-            databaseFlowsToByAnalysed =  statusFlowDAO.getSuspiciousDoSTCPFlowsUpToSecondsAgo(this.timePeriodToRecoverFlowFromDB, dosTCPPacketCount, dosTCPByteCount);
+            databaseFlowsToByAnalysed =  statusFlowDAO.getList_suspiciousDoSTCPFlows_upToSecondsAgo(this.timePeriodToRecoverFlowFromDB, dosTCPPacketCount, dosTCPByteCount);
             
             log.debug("Number of alert valid alerts from database: {} - From AnalysisFlow.", databaseFlowsToByAnalysed.size());
         } catch (ClassNotFoundException e) {
@@ -248,7 +248,7 @@ public class AnalysisFlow extends Thread {
         try {
             StatusFlowDAO statusFlowDAO = new StatusFlowDAO();
             // TODO - What time period is better to use?
-            allFlowsToByAnalysed =  statusFlowDAO.getAllFlowsUpToSecondsAgo(this.timePeriodToRecoverFlowFromDB);
+            allFlowsToByAnalysed =  statusFlowDAO.getList_GoodBadFlows_upToSecondsAgo(this.timePeriodToRecoverFlowFromDB);
             log.debug("Number of alert valid alerts from database: {}", allFlowsToByAnalysed.size());
         } catch (ClassNotFoundException e) {
             log.debug("ATTENTION - Sorry wasn't possible to read data in database - SQL error!");
@@ -356,7 +356,7 @@ public class AnalysisFlow extends Thread {
         try {
             StatusFlowDAO statusFlowDAO = new StatusFlowDAO();
             // TODO - What time period is better to use?
-            allFlowsToByAnalysed =  statusFlowDAO.getAllFlowsUpToSecondsAgo(this.timePeriodToRecoverFlowFromDB);
+            allFlowsToByAnalysed =  statusFlowDAO.getList_GoodBadFlows_upToSecondsAgo(this.timePeriodToRecoverFlowFromDB);
             log.debug("Number of alert valid alerts from database: {}", allFlowsToByAnalysed.size());
         } catch (ClassNotFoundException e) {
             log.debug("ATTENTION - Sorry wasn't possible to read data in database - SQL error!");

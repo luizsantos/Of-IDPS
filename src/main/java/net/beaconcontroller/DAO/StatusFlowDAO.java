@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class StatusFlowDAO extends Thread {
+    
     private StatusFlow statusFlow = null;
     protected static Logger log = LoggerFactory.getLogger(LearningSwitchTutorialSolution.class);
     private static int nthread=0;
@@ -52,15 +53,119 @@ public class StatusFlowDAO extends Thread {
 
     }
     
+    // 1
+    
+    /**
+     * Get itemset string from all normal flows.
+     * 
+     * @return - Itemsets string of status flows.
+     */
+    public String getItemsetsString_ofNormalFlows_1_allFlows() {
+        String sql = getSQLQueryTo_ofNormalFlows_1_allFlows();
+        return getItemsetsString_FlowsFromDatabase(sql);
+    }
+    
+    /**
+     * Get SQL query to get all normal flows.
+     * @return Itemsets string of status flows.
+     */
+    private String getSQLQueryTo_ofNormalFlows_1_allFlows( ) {
+        String sql = "SELECT * FROM flows WHERE " +
+                " flowType = "+StatusFlow.FLOW_NORMAL+";";
+        return sql;
+    }
+    
+    // 2
+    /**
+     * Get last normal flows using a limit number of register to be retrieved.
+     * 
+     * @param limit - Amount of register to be returned.
+     * @return - Itemsets string of status flows.
+     */
+    public String getItemsetsString_ofNormalFlows_2_lastUsingLimit(int limit) {
+        String sql = getSQLQuery_ofNormalFlows_2_latUsingLimit(limit);
+        return getItemsetsString_FlowsFromDatabase(sql);
+    }
+    
+    /**
+     * Get SQL query to get get normal flows using a limit number of register to be retrieved. 
+     * and get randomly the registers.
+     * 
+     * @param limit - Amount of register to be returned.
+     * @return - SQL query.
+     */
+    private String getSQLQuery_ofNormalFlows_2_latUsingLimit(int limit) {
+        String sql = "SELECT * FROM flows WHERE " +
+                " flowType = "+StatusFlow.FLOW_NORMAL+
+                " ORDER BY flowid DESC "+
+                " LIMIT "+ limit +
+                        ";";
+        return sql;
+    }
+    
+    /**
+     * Get randomly normal flows using a limit number of register to be retrieved.
+     * 
+     * @param limit - Amount of register to be returned.
+     * @return - Itemsets string of status flows.
+     */
+    public String getItemsetsString_ofNormalFlows_2_1_randomlyUsingLimit(int limit) {
+        String sql = getSQLQuery_ofNormalFlows_2_1_randomlyUsingLimit(limit);
+        return getItemsetsString_FlowsFromDatabase(sql);
+    }
+    
+    /**
+     * Get SQL query to get get normal flows using a limit number of register to be retrieved. 
+     * and get randomly the registers.
+     * 
+     * @param limit - Amount of register to be returned.
+     * @return - SQL query.
+     */
+    private String getSQLQuery_ofNormalFlows_2_1_randomlyUsingLimit(int limit) {
+        String sql = "SELECT * FROM flows WHERE " +
+                " flowType = "+StatusFlow.FLOW_NORMAL+
+                " ORDER BY RANDOM()" +
+                " LIMIT "+ limit +
+                        ";";
+        return sql;
+    }
+    
+    /**
+     * Get randomly using statistical parameters the last good remembrances!
+     * 
+     * @return - Itemsets string of status flows.
+     */
+    public String getItemsetsString_ofNormalFlows_2_2_getStatisticUsingLimit() {
+        String selectCount = getSQLQueryTo_ofNormalFlows_1_countAllFlows();
+        int totalRegisters = getCountFlowsFromDatabase(selectCount);
+        int requiredPercentage = 10;
+        int limit = (totalRegisters*requiredPercentage)/100;
+        String sql = getSQLQuery_ofNormalFlows_2_1_randomlyUsingLimit(limit);
+        return getItemsetsString_FlowsFromDatabase(sql);
+    }
+    
+    /**
+     * Get SQL query to get all normal flows.
+     * @return Itemsets string of status flows.
+     */
+    private String  getSQLQueryTo_ofNormalFlows_1_countAllFlows( ) {
+        String sql = "SELECT count(*) FROM flows WHERE " +
+                " flowType = "+StatusFlow.FLOW_NORMAL+";";
+        return sql;
+    }
+    
+    // 3
+    
+    
     /**
      * Get all normal flows from current time minus an amount of seconds.
      * 
      * @param seconds - Amount of seconds that will be used as period of time between the current time.
-     * @return - List of status flows.
+     * @return - Itemsets string of status flows.
      */
-    public String getItemsetsStringFromNormalFlowsUpToSecondsAgo(int seconds) {
-        String sql = getSQLQueryToNormalFlowsUpToSecondsAgo(seconds);
-        return getItemsetsStringFromFlowsUpToSecondsAgo(sql);
+    public String getItemsetsString_ofNormalFlows_3_upToSecondsAgo(int seconds) {
+        String sql = getSQLQuery_ofNormalFlows_3_upToSecondsAgo(seconds);
+        return getItemsetsString_FlowsFromDatabase(sql);
     }
     
     /**
@@ -69,24 +174,94 @@ public class StatusFlowDAO extends Thread {
      * @param seconds - Amount of seconds that will be used as period of time between the current time.
      * @return - List of status flows.
      */
-    public List<StatusFlow> getNormalFlowsUpToSecondsAgo(int seconds) {
-        String sql = getSQLQueryToNormalFlowsUpToSecondsAgo(seconds);
-        return getFlowsUpToSecondsAgo(sql);
+    public List<StatusFlow> getList_NormalFlows_3_upToSecondsAgo(int seconds) {
+        String sql = getSQLQuery_ofNormalFlows_3_upToSecondsAgo(seconds);
+        return getList_FlowsFromDatabase(sql);
     }
-
+    
     /**
-     * @param seconds
-     * @return
+     * Get SQL query to get all normal flows up to seconds ago.
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @return - SQL query.
      */
-    private String getSQLQueryToNormalFlowsUpToSecondsAgo(int seconds) {
+    private String getSQLQuery_ofNormalFlows_3_upToSecondsAgo(int seconds) {
         String currentDatetime = DateTimeManager.getStringDBFromCurrentDate();
         String limitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);
         String sql = "SELECT * FROM flows WHERE " +
-        		" tempo >= \'"+limitDatatime+ "\' and " +
-        		" tempo <= \'"+currentDatetime +"\' and" + 
-        		" flowType = "+StatusFlow.FLOW_NORMAL+";";
+                " tempo >= \'"+limitDatatime+ "\' and " +
+                " tempo <= \'"+currentDatetime +"\' and" + 
+                " flowType = "+StatusFlow.FLOW_NORMAL+";";
         return sql;
     }
+    
+    /**
+     * Get normal flows up to seconds ago, but restrict this search to a amount of register 
+     * and get randomly the registers.
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @param seconds - Amount of register to be returned.
+     * @return - Itemsets string of status flows.
+     */
+    public String getItemsetsString_ofNormalFlows_3_1_randomlyFromSecondsAgo(int seconds, int limit) {
+        String sql = getSQLQuery_ofNormalFlows_3_1_randomlyFromSecondsAgo(seconds, limit);
+        return getItemsetsString_FlowsFromDatabase(sql);
+    }
+    
+    /**
+     * Get SQL query to get normal flows up to seconds ago, but restrict this search to a amount of register 
+     * and get randomly the registers.
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @param seconds - Amount of register to be returned.
+     * @return - SQL query.
+     */
+    private String getSQLQuery_ofNormalFlows_3_1_randomlyFromSecondsAgo(int seconds, int limit) {
+        String currentDatetime = DateTimeManager.getStringDBFromCurrentDate();
+        String limitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);
+        String sql = "SELECT * FROM flows WHERE " +
+                " tempo >= \'"+limitDatatime+ "\' and " +
+                " tempo <= \'"+currentDatetime +"\' and" + 
+                " flowType = "+StatusFlow.FLOW_NORMAL+
+                " ORDER BY RANDOM()" +
+                " LIMIT "+ limit +
+                		";";
+        return sql;
+    }
+    
+    /**
+     * Get randomly using statistical parameters the last good remembrances up to seconds ago
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @return - Itemsets string of status flows.
+     */
+    public String getItemsetsString_ofNormalFlows_3_2_getStatisticFromSecondsAgo(int seconds) {
+        String selectCount = getSQLQueryTo_ofNormalFlows_1_countAllFlows();
+        int totalRegisters = getCountFlowsFromDatabase(selectCount);
+        int requiredPercentage = 10;
+        int limit = (totalRegisters*requiredPercentage)/100;
+        String sql = getSQLQuery_ofNormalFlows_3_1_randomlyFromSecondsAgo(seconds, limit);
+        return getItemsetsString_FlowsFromDatabase(sql);
+    }
+    
+    
+    // Others
+    
+    /**
+     * Get all flows (bad and good) from current time minus an amount of seconds.
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @return - List of status flows.
+     */
+    public List<StatusFlow> getList_GoodBadFlows_upToSecondsAgo(int seconds) {
+        String currentDatetime = DateTimeManager.getStringDBFromCurrentDate();
+        String limitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);
+        String sql = "SELECT * FROM flows WHERE " +
+                " tempo >= \'"+limitDatatime+ "\' and " +
+                " tempo <= \'"+currentDatetime +"\' and" + 
+                        ";";
+        return getList_FlowsFromDatabase(sql);
+    }
+    
     
     /**
      * Get all abnormal flows from current time minus an amount of seconds.
@@ -94,30 +269,14 @@ public class StatusFlowDAO extends Thread {
      * @param seconds - Amount of seconds that will be used as period of time between the current time.
      * @return - List of status flows.
      */
-    public List<StatusFlow> getAbnormalFlowsUpToSecondsAgo(int seconds) {
+    private List<StatusFlow> getList_BadFlows_UpToSecondsAgo(int seconds) {
         String currentDatetime = DateTimeManager.getStringDBFromCurrentDate();
         String limitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);
         String sql = "SELECT * FROM flows WHERE " +
         		" tempo >= \'"+limitDatatime+ "\' and " +
         		" tempo <= \'"+currentDatetime +"\' and" + 
         	    " flowType = "+StatusFlow.FLOW_ABNORMAL+";";
-        return getFlowsUpToSecondsAgo(sql);
-    }
-    
-    /**
-     * Get all flows from current time minus an amount of seconds.
-     * 
-     * @param seconds - Amount of seconds that will be used as period of time between the current time.
-     * @return - List of status flows.
-     */
-    public List<StatusFlow> getAllFlowsUpToSecondsAgo(int seconds) {
-        String currentDatetime = DateTimeManager.getStringDBFromCurrentDate();
-        String limitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);
-        String sql = "SELECT * FROM flows WHERE " +
-        		" tempo >= \'"+limitDatatime+ "\' and " +
-        		" tempo <= \'"+currentDatetime +"\' and" + 
-        				";";
-        return getFlowsUpToSecondsAgo(sql);
+        return getList_FlowsFromDatabase(sql);
     }
     
     /**
@@ -130,7 +289,7 @@ public class StatusFlowDAO extends Thread {
      * @param dosTCPByteCount - Number of TCP bytes in a flow.
      * @return - List of status flows.
      */
-    public List<StatusFlow> getSuspiciousDoSTCPFlowsUpToSecondsAgo(int seconds, int dosTCPPacketCount, int dosTCPByteCount) {
+    public List<StatusFlow> getList_suspiciousDoSTCPFlows_upToSecondsAgo(int seconds, int dosTCPPacketCount, int dosTCPByteCount) {
         String currentDatetime = DateTimeManager.getStringDBFromCurrentDate();
         String limitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);
         String sql = "SELECT * FROM flows " +
@@ -141,7 +300,7 @@ public class StatusFlowDAO extends Thread {
         		" packetCount <= "+ dosTCPPacketCount +" and" +
         		" byteCount <= " + dosTCPByteCount +
         		";";
-        return getFlowsUpToSecondsAgo(sql);
+        return getList_FlowsFromDatabase(sql);
     }
     
     /**
@@ -151,7 +310,7 @@ public class StatusFlowDAO extends Thread {
      * @param seconds - Amount of seconds that will be used as period of time between the current time.
      * @return - A list of flows between the period of time - current time less seconds set by parameter and current time.
      */
-    public synchronized List<StatusFlow> getFlowsUpToSecondsAgo(String sql) {
+    private synchronized List<StatusFlow> getList_FlowsFromDatabase(String sql) {
         Connection connection = null;
         Statement stmt = null;
         ResultSet resultSqlSelect = null;
@@ -247,7 +406,7 @@ public class StatusFlowDAO extends Thread {
      * @param seconds - Amount of seconds that will be used as period of time between the current time.
      * @return - A list of flows between the period of time - current time less seconds set by parameter and current time.
      */
-    public synchronized String getItemsetsStringFromFlowsUpToSecondsAgo(String sql) {
+    private synchronized String getItemsetsString_FlowsFromDatabase(String sql) {
         String allGoodFlows = "";
         int totalFlows=0;
         Connection connection = null;
@@ -311,6 +470,68 @@ public class StatusFlowDAO extends Thread {
             }
         }
         return allGoodFlows;
+    }
+    
+    /**
+     * Get flows in the database that are equal or greater than current time
+     * of system less an amount of seconds (passed by parameter).
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @return - A list of flows between the period of time - current time less seconds set by parameter and current time.
+     */
+    private synchronized int getCountFlowsFromDatabase(String sql) {
+        int count=0; // store the number of register returned from DB;
+        Connection connection = null;
+        Statement stmt = null;
+        ResultSet resultSqlSelect = null;
+        
+        // Get database connection.
+        try {
+            DataSource ds;
+            try {
+                ds = DataSource.getInstance();
+                connection = ds.getConnection();
+            } catch (PropertyVetoException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } 
+            
+            stmt = connection.createStatement();
+            resultSqlSelect = stmt.executeQuery(sql);
+            while(resultSqlSelect.next()) {
+                count=resultSqlSelect.getInt(1);
+            }
+            
+        } catch (SQLException e) {
+            log.debug("ATTENTION - Error during SQL select to counting the amount of good remembrances - Status flow!");
+            e.printStackTrace();
+        } finally {
+            if(resultSqlSelect != null) {
+                try {
+                    resultSqlSelect.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+        return count;
     }
     
     /**
@@ -698,4 +919,6 @@ public class StatusFlowDAO extends Thread {
     private synchronized static void setNthread() {
         nthread++;
     }
+
+
 }
