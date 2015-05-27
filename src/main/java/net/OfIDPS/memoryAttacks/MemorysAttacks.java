@@ -99,10 +99,10 @@ public class MemorysAttacks extends Thread {
      * 
      * 1 to disable and any other value to enable!
      */
-    protected static int disableSensorialMemory=1;
+    protected static int disableSensorialMemory=0;
     protected static int disableShortMemory=1;
     // To disable bad and good long memory.
-    public static int disableLongMemory=0;
+    public static int disableLongMemory=1;
     // To disable only bad long memory.
     public static int disableLongBadMemory=1;
     // To disable only good long memory.

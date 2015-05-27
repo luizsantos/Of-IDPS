@@ -140,7 +140,7 @@ public class IntrusionPreventionSystem extends Thread implements
     public List<AlertMessage> getAlertsFromSnortIDS(int timeInSeconds, String stringWhoCalled) {
         SnortAlertMessageDAO snortAlertMessageDAO = new SnortAlertMessageDAO();
         //List<AlertMessage> listOfSnortAlerts = snortAlertMessageDAO.getSnortAlerts();
-        List<AlertMessage> listOfSnortAlerts = snortAlertMessageDAO.getSnortAlertsUpToSecondsAgo(timeInSeconds, stringWhoCalled);
+        List<AlertMessage> listOfSnortAlerts = snortAlertMessageDAO.getList_SnortAlerts_UpToSecondsAgo(timeInSeconds, stringWhoCalled);
         return listOfSnortAlerts;  
     }
     
