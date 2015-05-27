@@ -60,6 +60,7 @@ import net.beaconcontroller.DAO.StatusFlowDAO;
 import net.beaconcontroller.IPS.AlertMessageSharePriority;
 import net.beaconcontroller.IPS.IntrusionPreventionSystem;
 import net.beaconcontroller.IPS.AlertMessage;
+import net.beaconcontroller.IPS.SecurityAlerts;
 import net.beaconcontroller.core.IBeaconProvider;
 import net.beaconcontroller.tools.DateTimeManager;
 import net.beaconcontroller.tools.FileManager;
@@ -103,9 +104,9 @@ public class MemorysAttacks extends Thread {
     // To disable bad and good long memory.
     public static int disableLongMemory=0;
     // To disable only bad long memory.
-    public static int disableLongBadMemory=1;
+    public static int disableLongBadMemory=0;
     // To disable only good long memory.
-    public static int disableLongGoodMemory=0;
+    public static int disableLongGoodMemory=1;
     
     /*
      * Time to wait until execute again the main method contained in the Thread (method run).
@@ -177,17 +178,14 @@ public class MemorysAttacks extends Thread {
              */
             Calendar currentDate = Calendar.getInstance();
             
-            // To recover alerts from IDS
-            IntrusionPreventionSystem ids = new IntrusionPreventionSystem();
-            // To recover alerts from OpenFlow statistics
-            AlertOpenFlowDAO alertOpenFlowDAO = new AlertOpenFlowDAO();
+           
             
             
             /*******************************
              * Sensorial memory.
              *******************************/
             if(disableSensorialMemory!=1) {
-                sensorialMemory(ids, alertOpenFlowDAO);
+                sensorialMemory();
             } else {
                 log.debug("\t!!!!!!!! ATTENTION, Sensorial memory is DISABLED!!!!!!!!  to change this setup to 0 (zero) the variable disableSensorialMemory on MemoryAttacks class...");
             }
@@ -196,7 +194,7 @@ public class MemorysAttacks extends Thread {
              * Feed short memory.
              ***************************/
             if(disableShortMemory!=1) {
-                shortMemory(ids, alertOpenFlowDAO);
+                shortMemory();
             } else {
                 log.debug("\t!!!!!!!! ATTENTION, Short memory is DISABLED!!!!!!!!  to change this setup to 0 (zero) the variable disableShortMemory on MemoryAttacks class...");
             }
@@ -235,30 +233,17 @@ public class MemorysAttacks extends Thread {
      * @param ids - An IntrusionPreventionSystem object to recover IDS alerts.
      * @param alertOpenFlowDAO - An AlertOpenFlowDAO object to recover OpenFlow alerts. 
      */
-    private void sensorialMemory(IntrusionPreventionSystem ids,
-            AlertOpenFlowDAO alertOpenFlowDAO) {
+    private void sensorialMemory() {
         Date dateStart = DateTimeManager.getCurrentDate();
-        // To store all alerts found in the sensorial memory.
+        
+        // To store all alerts on security memory.
         List<AlertMessage> listOfAllAlertsInSensorialMemory =  new ArrayList<AlertMessage>();
         
-        // Verify if IDS is enabled.
-        if (LearningSwitchTutorialSolution.disableOfIDPS_UseIDSAlerts != 1) {
-            // Get alerts from IDS using the time of sensorial memory.
-            //listOfAllAlertsInSensorialMemory = ids.getAlertsFromSnortIDS(timeToAlertsStayAtSensorialMemory, "Sensorial Memory");
-            listOfAllAlertsInSensorialMemory.addAll(ids.getAlertsFromSnortIDS(timeToAlertsStayAtSensorialMemory, "Sensorial Memory"));
-        } else {
-            log.debug("\t!!!!!!!! ATTENTION, Of-IDPS IDS alerts analysis IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variable disableOfIDPS_UseIDSAlerts on LearningSwithTutorialSolution class...");
-        }
-        
-        //Verify if the OpenFlow security analysis is enabled.
-        if (LearningSwitchTutorialSolution.disableOfIDPS_UseOfAlerts != 1
-                && LearningSwitchTutorialSolution.disableOfIDPS_UseOfgetStatisticsFromNetwork != 1) {
-            // Get OpenFlow security alerts
-            //listOfMaliciousFlows = alertOpenFlowDAO.getOpenFlowAlertsUpToSecondsAgo(timeToAlertsStayAtSensorialMemory);
-            listOfAllAlertsInSensorialMemory.addAll(alertOpenFlowDAO.getOpenFlowAlertsUpToSecondsAgo(timeToAlertsStayAtSensorialMemory, "Sensorial Memory"));
-        } else {
-            log.debug("\t!!!!!!!! ATTENTION, Of-IDPS ALERT OPENFLOW STATISTICS IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variables disableOfIDPS_UseOfgetStatisticsFromNetwork and disableOfIDPS_UseOfAlerts on LearningSwithTutorialSolution class...");
-        }
+        // Get all alerts to sensorial memory.
+        SecurityAlerts securityAlerts = new SecurityAlerts();
+        listOfAllAlertsInSensorialMemory = securityAlerts.getList_alerts_upToSecondsAgo(
+                timeToAlertsStayAtSensorialMemory, 
+                "Sensorial Memory");
         
         // Remove old rules from sensorial memory to rerun the sensorial memory algorithm. 
         sensorialMemoryAttacks.clear();
@@ -350,14 +335,12 @@ public class MemorysAttacks extends Thread {
 
     /**
      * Perform short-term memory methods.
-     * @param ids - An IntrusionPreventionSystem object to recover IDS alerts.
-     * @param alertOpenFlowDAO - An AlertOpenFlowDAO object to recover OpenFlow alerts. 
      */
-    private void shortMemory(IntrusionPreventionSystem ids, AlertOpenFlowDAO alertOpenFlowDAO) {
+    private void shortMemory() {
         Date dateStart = DateTimeManager.getCurrentDate();
         // Get alerts from IDS and OpenFlow analysis to be processed by itemsets algorithm.
-        String allAlerts = getAlertsFromIDSAndOpenFlowAnalysisToBeProcessedByItemsetsAlgorithm(ids, 
-                alertOpenFlowDAO,
+        SecurityAlerts securityAlerts = new SecurityAlerts();
+        String allAlerts = securityAlerts.getItemsetsString_Alerts_upToSecondsAgo(
                 timeToAlertsStayAtShortMemory,
                 "Short memory");
         
@@ -434,45 +417,7 @@ public class MemorysAttacks extends Thread {
     }
     
 
-    /**
-     * Get both alerts: IDS and OpenFlow.
-     * 
-     * @param ids - An IntrusionPreventionSystem object to recover IDS alerts.
-     * @param alertOpenFlowDAO - An AlertOpenFlowDAO object to recover OpenFlow alerts.
-     * @param timeToAlertsStayOnMemory - It is the time of the memory that will be processed. e.g. time of short or long memory.
-     * @param comment - Just a commentary text to identify for example the type of memory that is in use.
-     * @return - A string ready to be processed by the itemsets algorithm.
-     */
-    public String getAlertsFromIDSAndOpenFlowAnalysisToBeProcessedByItemsetsAlgorithm(
-            IntrusionPreventionSystem ids, 
-            AlertOpenFlowDAO alertOpenFlowDAO,
-            int timeToAlertsStayOnMemory,
-            String comment) {
-        
-        // Strings to store both results: IDS and Analysis flow.
-        String alertsFromIDSSnort = "";
-        String alertsFromOpenFlowDoS = "";
-        
-        // Get IDS alerts.
-        if (LearningSwitchTutorialSolution.disableOfIDPS_UseIDSAlerts != 1) {
-            alertsFromIDSSnort = ids.getItemsetsStringFromAlertsFromSnortIDS(timeToAlertsStayOnMemory, comment);
-        } else {
-            log.debug("\t!!!!!!!! ATTENTION, Of-IDPS IDS alerts analysis IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variable disableOfIDPS_UseIDSAlerts on LearningSwithTutorialSolution class...");
-        }
-        
-        // Get OpenFlow alerts.
-        if (LearningSwitchTutorialSolution.disableOfIDPS_UseOfAlerts != 1
-                && LearningSwitchTutorialSolution.disableOfIDPS_UseOfgetStatisticsFromNetwork != 1) {
-            alertsFromOpenFlowDoS = alertOpenFlowDAO.getItemsetsStringFromOpenFlowAlertsUpToSecondsAgo(timeToAlertsStayOnMemory, comment);
-        } else {
-            log.debug("\t!!!!!!!! ATTENTION, Of-IDPS ALERT OPENFLOW STATISTICS IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variables disableOfIDPS_UseOfgetStatisticsFromNetwork and disableOfIDPS_UseOfAlerts on LearningSwithTutorialSolution class...");
-        }
-        
-        // Join alerts
-        String allAlerts = alertsFromIDSSnort+alertsFromOpenFlowDoS;
-        //log.debug("Long Memory alerts: \n {}", allAlerts);
-        return allAlerts;
-    }
+
 
 
     /**

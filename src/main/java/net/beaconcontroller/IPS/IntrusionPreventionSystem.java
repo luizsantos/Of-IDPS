@@ -145,18 +145,40 @@ public class IntrusionPreventionSystem extends Thread implements
     }
     
     /**
-     * Get an itemset algorithm string of Snort alerts from dabatase.
-     * (from current datetime minus an amount of seconds).
+     * Get an itemset algorithm string of Snort alerts up to seconds ago from dabatase.
      * 
      * @param timeInSeconds - amount of time in seconds to be decreased from the current datetime system.
-     * @return list of alerts from Snort in the format of Of-IDPS AlertMessages.
+     * @return - Itemset string of Snort alerts.
      * 
      */
-    public String getItemsetsStringFromAlertsFromSnortIDS(int timeInSeconds, String stringWhoCalled) {
+    public String getItemsetsString_SnortAlerts_upToSecondsAgo(int timeInSeconds, String stringWhoCalled) {
         SnortAlertMessageDAO snortAlertMessageDAO = new SnortAlertMessageDAO();
         //return snortAlertMessageDAO.getSnortAlertsUpToSecondsAgo(timeInSeconds, stringWhoCalled);
-        return snortAlertMessageDAO.getItemsetsStringFromSnortAlertsUpToSecondsAgo(timeInSeconds, stringWhoCalled);
+        return snortAlertMessageDAO.getItemsetsString_SnortAlerts_3_UpToSecondsAgo(
+                timeInSeconds, 
+                stringWhoCalled);
     }
+    
+    // 1
+    /**
+     * Get an itemset algorithm string of all Snort alerts from dabatase.
+     * (from current datetime minus an amount of seconds).
+     * 
+     * @return - Itemset string of Snort alerts.
+     * 
+     */
+    public String getItemsetsString_ofAllAlerts(String stringWhoCalled) {
+        SnortAlertMessageDAO snortAlertMessageDAO = new SnortAlertMessageDAO();
+        return snortAlertMessageDAO.getItemsetsString_SnortAlerts_1_All(stringWhoCalled);
+    }
+    
+    // 2
+    
+    
+    // 3
+    
+    
+    
 
     /**
      * Gets alerts from Snort (fast log) IDS, it must be in the format:

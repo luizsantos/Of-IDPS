@@ -483,11 +483,10 @@ public class StatusFlowDAO extends Thread {
     }
     
     /**
-     * Get flows in the database that are equal or greater than current time
-     * of system less an amount of seconds (passed by parameter).
+     * Get the amount of normal flows from database.
      * 
-     * @param seconds - Amount of seconds that will be used as period of time between the current time.
-     * @return - A list of flows between the period of time - current time less seconds set by parameter and current time.
+     * @param sql - SQL query.
+     * @return - Total number of Snort alerts.
      */
     private synchronized int getCountFlowsFromDatabase(String sql) {
         int count=0; // store the number of register returned from DB;

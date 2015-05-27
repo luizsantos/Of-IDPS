@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import net.beaconcontroller.IPS.AlertMessage;
+import net.beaconcontroller.tools.Calculation;
 import net.beaconcontroller.tools.DateTimeManager;
 import net.beaconcontroller.tools.IpAddress;
 import net.beaconcontroller.tools.ProtocolsNumbers;
@@ -42,12 +43,536 @@ public class SnortAlertMessageDAO {
     
     protected static Logger log = LoggerFactory.getLogger(LearningSwitchTutorialSolution.class);
     
+    // 1
+    
+    /**
+     * Get all IDS Snort alerts (TCP/UDP/ICMP) in the database.
+     * @param stringWhoCalled - Just a commentary to identification .
+     * @return - Itemsets string of Snort Alerts.
+     */
+    public synchronized String getItemsetsString_SnortAlerts_1_All(String stringWhoCalled) {
+        // Get SQL queries.
+        String sql = getSQLQuery_1_All();
+        log.debug("1 sql: {}", sql);
+        return getItemsetsString_AletsFromDatabase(sql, stringWhoCalled);
+    }
+    
+    /**
+     * Get SQL query string of all TCP alerts .
+     * @return - SQL query string.
+     */
+    private String getSQLQuery_1_All() {
+        String sqlTCP = "SELECT e.sid, e.cid," +
+        		" ip.ip_src, ip.ip_dst, ip.ip_proto," +
+        		" tcp.tcp_sport, tcp.tcp_dport," +
+        		" udp.udp_sport, udp.udp_dport," +
+        		" icmp.icmp_type, icmp_code," +
+        		" s.sig_id, s.sig_priority, e.timestamp" +
+        		" FROM event e RIGHT" +
+        		" OUTER JOIN iphdr ip USING(sid,cid) LEFT" +
+        		" OUTER JOIN tcphdr tcp USING(sid,cid) LEFT" +
+        		" OUTER JOIN udphdr udp USING(sid,cid) LEFT" +
+        		" OUTER JOIN icmphdr icmp USING(sid,cid) LEFT" +
+        		" OUTER JOIN signature s ON e.signature=s.sig_id";
+        return sqlTCP;
+    }
+        
+    // 2
+    
+    /**
+     * Get last Snort alerts using a limit number of register to be retrieved.
+     * 
+     * @param limit - Amount of register to be returned.
+     * @param stringWhoCalled - Just a commentary to identification .
+     * @return - Itemsets string of Snort Alerts.
+     */
+    public synchronized String getItemsetsString_SnortAlerts_2_lastUsingLimit(int limit, String stringWhoCalled) {
+        // Get SQL queries.
+        String sql = getSQLQuery_Alerts_2_lastUsingLimit(limit);
+        log.debug("2 sql: {}", sql);
+        return getItemsetsString_AletsFromDatabase(sql, stringWhoCalled);
+    }
+    
+    /**
+     * Get SQL query to get last Snort alerts using a limit number of register to be retrieved.
+     * @param limit - Amount of register to be returned.
+     * @return - SQL query string.
+     */ 
+    private String getSQLQuery_Alerts_2_lastUsingLimit(int limit) {
+        String sqlTCP = "SELECT e.sid, e.cid," +
+                " ip.ip_src, ip.ip_dst, ip.ip_proto," +
+                " tcp.tcp_sport, tcp.tcp_dport," +
+                " udp.udp_sport, udp.udp_dport," +
+                " icmp.icmp_type, icmp_code," +
+                " s.sig_id, s.sig_priority, e.timestamp" +
+                " FROM event e RIGHT" +
+                " OUTER JOIN iphdr ip USING(sid,cid) LEFT" +
+                " OUTER JOIN tcphdr tcp USING(sid,cid) LEFT" +
+                " OUTER JOIN udphdr udp USING(sid,cid) LEFT" +
+                " OUTER JOIN icmphdr icmp USING(sid,cid) LEFT" +
+                " OUTER JOIN signature s ON e.signature=s.sig_id" +
+                " ORDER BY e.sid, e.cid DESC " +
+                " LIMIT " + limit +
+                ";";
+        return sqlTCP;
+    }
+    
+    /**
+     * Get randomly Snort alerts using a limit number of register to be retrieved.
+     * 
+     * @param limit - Amount of register to be returned.
+     * @param stringWhoCalled - Just a commentary to identification .
+     * @return - Itemsets string of Snort Alerts.
+     */
+    public synchronized String getItemsetsString_SnortAlerts_2_1_randomlyUsingLimit(
+            int limit, String stringWhoCalled) {
+        // Get SQL queries.
+        String sql = getSQLQuery_Alerts_2_1_randomlyUsingLimit(limit);
+        log.debug("2.1 sql: {}", sql);
+        return getItemsetsString_AletsFromDatabase(sql, stringWhoCalled);
+    }
+    
+    /**
+     * Get SQL query to get randomly Snort alerts using a limit number of register to be retrieved.
+     * @param limit - Amount of register to be returned.
+     * @return - SQL query string.
+     */ 
+    private String getSQLQuery_Alerts_2_1_randomlyUsingLimit(int limit) {
+        String sqlTCP = "SELECT e.sid, e.cid," +
+                " ip.ip_src, ip.ip_dst, ip.ip_proto," +
+                " tcp.tcp_sport, tcp.tcp_dport," +
+                " udp.udp_sport, udp.udp_dport," +
+                " icmp.icmp_type, icmp_code," +
+                " s.sig_id, s.sig_priority, e.timestamp" +
+                " FROM event e RIGHT" +
+                " OUTER JOIN iphdr ip USING(sid,cid) LEFT" +
+                " OUTER JOIN tcphdr tcp USING(sid,cid) LEFT" +
+                " OUTER JOIN udphdr udp USING(sid,cid) LEFT" +
+                " OUTER JOIN icmphdr icmp USING(sid,cid) LEFT" +
+                " OUTER JOIN signature s ON e.signature=s.sig_id" +
+                " ORDER BY RANDOM()" +
+                " LIMIT " + limit +
+                ";";
+        return sqlTCP;
+    }
+    
+    /**
+     * Get randomly using statistical parameters the Snort Alerts!
+     * @param stringWhoCalled - Just a commentary to identification.
+     * @return - Itemsets string of Snort Alerts.
+     */
+    public synchronized String getItemsetsString_SnortAlerts_2_2_getStatisticUsingLimit(String stringWhoCalled) {
+        String selectCount = getSQLQuery_Alerts_countAll();
+        int totalRegisters = getCountSnortAlertsFromDatabase(selectCount);
+        int limit = (int) Calculation.sampleSize_cofidence95_error5(totalRegisters);
+        String sql = getSQLQuery_Alerts_2_1_randomlyUsingLimit(limit);
+        log.debug("2.2 sql: {}", sql);
+        return getItemsetsString_AletsFromDatabase(sql, stringWhoCalled);
+    }
+    
+    // 3
+    /**
+     * Get all Snort alerts from current time minus an amount of seconds.
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @param stringWhoCalled - Just a commentary to identification.
+     * @return - Itemsets string of status flows.
+     */
+    public synchronized String getItemsetsString_SnortAlerts_3_UpToSecondsAgo(
+            int seconds, String stringWhoCalled) {
+        String sql = getSQLQuery_Alerts_3_upToSecondsAgo(seconds);
+        log.debug("3 sql: {}", sql);
+        return getItemsetsString_AletsFromDatabase(sql, stringWhoCalled);        
+    }
+    
+    /**
+     * Get SQL query to get randomly Snort alerts using a limit number of register to be retrieved.
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @return - SQL query string.
+     */ 
+    private String getSQLQuery_Alerts_3_upToSecondsAgo(int seconds) {
+        String currentDatetime = DateTimeManager.getStringDBFromCurrentDate();
+        String limitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);
+        String sqlTCP = "SELECT e.sid, e.cid," +
+                " ip.ip_src, ip.ip_dst, ip.ip_proto," +
+                " tcp.tcp_sport, tcp.tcp_dport," +
+                " udp.udp_sport, udp.udp_dport," +
+                " icmp.icmp_type, icmp_code," +
+                " s.sig_id, s.sig_priority, e.timestamp" +
+                " FROM event e RIGHT" +
+                " OUTER JOIN iphdr ip USING(sid,cid) LEFT" +
+                " OUTER JOIN tcphdr tcp USING(sid,cid) LEFT" +
+                " OUTER JOIN udphdr udp USING(sid,cid) LEFT" +
+                " OUTER JOIN icmphdr icmp USING(sid,cid) LEFT" +
+                " OUTER JOIN signature s ON e.signature=s.sig_id" +
+                " WHERE " +
+                " timestamp >= \'"+limitDatatime+ "\' and " +
+                " timestamp <= \'"+currentDatetime +"\' and" +
+                ";";
+        return sqlTCP;
+    }
+    
+    /**
+     * Get Snort alerts up to seconds ago, but restrict this search to a amount of register 
+     * and get randomly the registers.
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @param limit - Amount of register to be returned.
+     * @param stringWhoCalled - Just a commentary to identification.
+     * @return - Itemsets string of status flows.
+     */
+    public synchronized String getItemsetsString_SnortAlerts_3_1_randomlyFromSecondsAgo(
+            int seconds, int limit, String stringWhoCalled) {
+        String sql = getSQLQuery_Alerts_3_1_randomlyFromSecondsAgo(seconds, limit);
+        log.debug("3.1 sql: {}", sql);
+        return getItemsetsString_AletsFromDatabase(sql, stringWhoCalled);        
+    }
+    
+    /**
+     * Get SQL query to get Snort alerts up to seconds ago, but restrict this search to a amount of register 
+     * and get randomly the registers.
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @param limit - Amount of register to be returned.
+     * @return - SQL query.
+     */ 
+    private String getSQLQuery_Alerts_3_1_randomlyFromSecondsAgo(int seconds, int limit) {
+        String currentDatetime = DateTimeManager.getStringDBFromCurrentDate();
+        String limitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);
+        String sqlTCP = "SELECT e.sid, e.cid," +
+                " ip.ip_src, ip.ip_dst, ip.ip_proto," +
+                " tcp.tcp_sport, tcp.tcp_dport," +
+                " udp.udp_sport, udp.udp_dport," +
+                " icmp.icmp_type, icmp_code," +
+                " s.sig_id, s.sig_priority, e.timestamp" +
+                " FROM event e RIGHT" +
+                " OUTER JOIN iphdr ip USING(sid,cid) LEFT" +
+                " OUTER JOIN tcphdr tcp USING(sid,cid) LEFT" +
+                " OUTER JOIN udphdr udp USING(sid,cid) LEFT" +
+                " OUTER JOIN icmphdr icmp USING(sid,cid) LEFT" +
+                " OUTER JOIN signature s ON e.signature=s.sig_id" +
+                " WHERE " +
+                " timestamp >= \'"+limitDatatime+ "\' and " +
+                " timestamp <= \'"+currentDatetime +"\' and" +
+                " ORDER BY RANDOM()" +
+                " LIMIT "+ limit +
+                ";";
+        return sqlTCP;
+    }
+    
+    /**
+     * Get Snort alerts up to seconds ago, but restrict this search to a amount of register 
+     * and get randomly the registers.
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @param stringWhoCalled - Just a commentary to identification.
+     * @return - Itemsets string of status flows.
+     */
+    public synchronized String getItemsetsString_SnortAlerts_3_2_getStatisticFromSecondsAgo(
+            int seconds, String stringWhoCalled) {
+        String selectCount = getSQLQuery_Alerts_countAll();
+        int totalRegisters = getCountSnortAlertsFromDatabase(selectCount);
+        int limit = (int) Calculation.sampleSize_cofidence95_error5(totalRegisters);
+        String sql = getSQLQuery_Alerts_3_1_randomlyFromSecondsAgo(seconds, limit);
+        log.debug("3.2 sql: {}", sql);
+        return getItemsetsString_AletsFromDatabase(sql, stringWhoCalled);        
+    }
+    
+    // get all
+    
+    /**
+     * Get SQL query string to count all alerts .
+     * @return - SQL query string.
+     */
+    private String getSQLQuery_Alerts_countAll() {
+        String sqlTCP = "SELECT count(*)" +
+        		"FROM event e RIGHT" +
+        		"OUTER JOIN iphdr ip USING(sid,cid);" ;                
+        return sqlTCP;
+    }
+    
+    /**
+     * Get the amount of Snort alerts from database.
+     * 
+     * @param sql - SQL query.
+     * @return - Total number of Snort alerts.
+     */
+    public synchronized int getCountSnortAlertsFromDatabase(String sql) {
+        int count=0;
+        Connection connection = null;
+        Statement stmt = null;
+        ResultSet resultSqlSelect = null;
+        try {
+            DataSourceSnortIDS ds;
+            try {
+                ds = DataSourceSnortIDS.getInstance();
+                connection = ds.getConnection();
+            } catch (PropertyVetoException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } 
+            
+            stmt = connection.createStatement();
+            
+            resultSqlSelect = stmt.executeQuery(sql);
+            
+            while(resultSqlSelect.next()) {
+                count=resultSqlSelect.getInt(1);
+            }
+            
+            
+        } catch (SQLException e) {
+            log.debug("ATTENTION - Error during counting alerts Snort from alert table!");
+            e.printStackTrace();
+        } finally {
+            if(resultSqlSelect != null) {
+                try {
+                    resultSqlSelect.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+                
+        return count;
+        
+    }
+    
     /**
      * Get IDS Snort alerts (TCP/UDP/ICMP) in the database that are equal 
      * or greater than current time of system less an amount of seconds 
      * (passed by parameter).
      * 
      * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @param stringWhoCalled - Just a commentary to identification .
+     * @return - A list of alerts between the period of time - current time less seconds set by parameter and current time.
+     */
+    public synchronized String getItemsetsString_AletsFromDatabase(String sql, String stringWhoCalled) {
+        int totalAlertsRetrieve=0;
+        String allAlerts = "";
+        Connection connection = null;
+        Statement stmt = null;
+        ResultSet resultSqlSelect = null;
+        try {
+            DataSourceSnortIDS ds;
+            try {
+                ds = DataSourceSnortIDS.getInstance();
+                connection = ds.getConnection();
+            } catch (PropertyVetoException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } 
+            
+            stmt = connection.createStatement();
+            
+            resultSqlSelect = stmt.executeQuery(sql);
+            
+            while (resultSqlSelect.next()) {
+                //log.debug("get: {}",totalAlertsRetrieve+1);
+                AlertMessage alert = new AlertMessage();
+                
+                alert.setAlertDescription(String.valueOf(resultSqlSelect.getInt("sig_id")));
+                alert.setPriorityAlert(resultSqlSelect.getInt("sig_priority"));
+                
+                /*
+                 * The snort IP address use a long number type, 
+                 * but Of-IDPS use a int number type! Thus, it is necessary convert this.
+                 */
+                long longIpSrc = resultSqlSelect.getLong("ip_src");
+                int intIpSrc = (int) (long) longIpSrc;
+                alert.setNetworkSource(intIpSrc);
+                
+                long longIpDst = resultSqlSelect.getLong("ip_dst");
+                int intIpDst = (int) (long) longIpDst;
+                alert.setNetworkDestination(intIpDst);
+                
+                alert.setNetworkProtocol(resultSqlSelect.getInt("ip_proto"));
+                int integerShortSourcePort=0;
+                int integerShortDestinationPort=0;
+                switch(alert.getNetworkProtocol()) {
+                    case ProtocolsNumbers.TCP:
+                        // Convert integer port number to short port representation number (used on beacon), but yet in integer number!
+                        integerShortSourcePort = TransportPorts.convertIntegerPortToIntegerShortValue(resultSqlSelect.getInt("tcp_sport"));
+                        alert.setTransportSource(integerShortSourcePort);
+                        // Convert integer port number to short port representation number (used on beacon), but yet in integer number!
+                        integerShortDestinationPort = TransportPorts.convertIntegerPortToIntegerShortValue(resultSqlSelect.getInt("tcp_dport"));
+                        alert.setTransportDestination(integerShortDestinationPort);
+                        break;
+                    case ProtocolsNumbers.UDP:
+                        // Convert integer port number to short port representation number (used on beacon), but yet in integer number!
+                        integerShortSourcePort = TransportPorts.convertIntegerPortToIntegerShortValue(resultSqlSelect.getInt("udp_sport"));
+                        alert.setTransportSource(integerShortSourcePort);
+                        // Convert integer port number to short port representation number (used on beacon), but yet in integer number!
+                        integerShortDestinationPort = TransportPorts.convertIntegerPortToIntegerShortValue(resultSqlSelect.getInt("udp_dport"));
+                        alert.setTransportDestination(integerShortDestinationPort);
+                        break;
+                    case ProtocolsNumbers.ICMP:
+                        alert.setTransportSource(resultSqlSelect.getInt("icmp_type"));
+                        alert.setTransportDestination(resultSqlSelect.getInt("icmp_code"));
+                        break;
+                    default:
+                        log.debug("ATTENTION! Network Protocol in a Snort Alert Unknown... (not TCP,UDP,ICMP)");
+                }
+                
+                
+                allAlerts = allAlerts + alert.getStringAlertToBeProcessedByItemsetAlgorithm();
+                totalAlertsRetrieve++;
+                
+                
+            }
+            log.debug("{} SNORT alerts - From {}, ", totalAlertsRetrieve, stringWhoCalled);
+            
+            
+        } catch (SQLException e) {
+            log.debug("ATTENTION - Error during SQL select from IDS Snort Alert table!");
+            e.printStackTrace();
+        } finally {
+            if(resultSqlSelect != null) {
+                try {
+                    resultSqlSelect.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+        
+//        log.debug("Alerts from IDS");
+//        for(AlertMessage alert : listOfReturnedSnortAlerts) {
+//            alert.printMsgAlert();
+//        }
+        
+        
+        return allAlerts;
+        
+    }
+       
+    /**
+     * TODO - REMOVE this method!
+     * Get IDS Snort alerts (TCP/UDP/ICMP) in the database that are equal 
+     * or greater than current time of system less an amount of seconds 
+     * (passed by parameter).
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @return - A list of alerts between the period of time - current time less seconds set by parameter and current time.
+     */
+    public synchronized String getItemsetsString_Alets_TCP_UDP_ICMP(
+            String sqlTCP, 
+            String sqlUDP,
+            String sqlICMP,
+            String stringWhoCalled) {
+        String allAlerts = "";
+        Connection connection = null;
+        Statement stmt = null;
+        ResultSet resultSqlSelect = null;
+        //List<AlertMessage> listOfReturnedSnortAlerts = new ArrayList<AlertMessage>();
+        try {
+            DataSourceSnortIDS ds;
+            try {
+                ds = DataSourceSnortIDS.getInstance();
+                connection = ds.getConnection();
+            } catch (PropertyVetoException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } 
+            
+            stmt = connection.createStatement();
+            
+            // TCP
+            resultSqlSelect = stmt.executeQuery(sqlTCP);
+            allAlerts = allAlerts + getItemsetsStringFromTCPAlertsListFromSQLQuery(resultSqlSelect);
+            
+            // UDP
+            resultSqlSelect = stmt.executeQuery(sqlUDP);
+            allAlerts = allAlerts + getItemsetsStringFromUDPAlertsListFromSQLQuery(resultSqlSelect);
+            
+            // ICMP
+            resultSqlSelect = stmt.executeQuery(sqlICMP);
+            allAlerts = allAlerts + getItemsetsStringFromICMPAlertsListFromSQLQuery(resultSqlSelect);
+            
+            log.debug("{} - TCP, {} - UDP, {} ICMP SNORT alerts - From {}, ", totalTCPSnortAlerts, totalUDPSnortAlerts, totalICMPSnortAlerts, stringWhoCalled);
+            
+            
+        } catch (SQLException e) {
+            log.debug("ATTENTION - Error during SQL select from IDS Snort Alert table!");
+            e.printStackTrace();
+        } finally {
+            if(resultSqlSelect != null) {
+                try {
+                    resultSqlSelect.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+        
+//        log.debug("Alerts from IDS");
+//        for(AlertMessage alert : listOfReturnedSnortAlerts) {
+//            alert.printMsgAlert();
+//        }
+        
+        
+        return allAlerts;
+        
+    }
+    // get all
+    
+    /**
+     * Get IDS Snort alerts (TCP/UDP/ICMP) in the database that are equal 
+     * or greater than current time of system less an amount of seconds 
+     * (passed by parameter).
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @param stringWhoCalled - Just a commentary to identification .
      * @return - A list of alerts between the period of time - current time less seconds set by parameter and current time.
      */
     public synchronized List<AlertMessage> getSnortAlertsUpToSecondsAgo(int seconds, String stringWhoCalled) {
@@ -131,98 +656,6 @@ public class SnortAlertMessageDAO {
         
     }
     
-    /**
-     * Get IDS Snort alerts (TCP/UDP/ICMP) in the database that are equal 
-     * or greater than current time of system less an amount of seconds 
-     * (passed by parameter).
-     * 
-     * @param seconds - Amount of seconds that will be used as period of time between the current time.
-     * @return - A list of alerts between the period of time - current time less seconds set by parameter and current time.
-     */
-    public synchronized String getItemsetsStringFromSnortAlertsUpToSecondsAgo(int seconds, String stringWhoCalled) {
-        String allAlerts = "";
-        String limitDatetime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);
-        String currentDatetime = DateTimeManager.getStringDBFromCurrentDate();
-        Connection connection = null;
-        Statement stmt = null;
-        ResultSet resultSqlSelect = null;
-        //List<AlertMessage> listOfReturnedSnortAlerts = new ArrayList<AlertMessage>();
-        try {
-            DataSourceSnortIDS ds;
-            try {
-                ds = DataSourceSnortIDS.getInstance();
-                connection = ds.getConnection();
-            } catch (PropertyVetoException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } 
-            
-            stmt = connection.createStatement();
-            
-            // TCP
-            String sqlTCP = getSQLQueryOfTCPSnortAlertsUpToSecondsAgo(limitDatetime, currentDatetime);
-            resultSqlSelect = stmt.executeQuery(sqlTCP);
-            //getTCPAlertsListFromSQLQuery(resultSqlSelect,listOfReturnedSnortAlerts);
-            //int totalTCPSnortAlerts = listOfReturnedSnortAlerts.size();
-            allAlerts = allAlerts + getItemsetsStringFromTCPAlertsListFromSQLQuery(resultSqlSelect);
-            
-            
-            // UDP
-            String sqlUDP = getSQLQueryOfUDPSnortAlertsUpToSecondsAgo(limitDatetime, currentDatetime);
-            resultSqlSelect = stmt.executeQuery(sqlUDP);
-            //getUDPAlertsListFromSQLQuery(resultSqlSelect,listOfReturnedSnortAlerts);
-            //int totalUDPSnortAlerts = listOfReturnedSnortAlerts.size() - totalTCPSnortAlerts;
-            allAlerts = allAlerts + getItemsetsStringFromUDPAlertsListFromSQLQuery(resultSqlSelect);
-            
-            // ICMP
-            String sqlICMP = getSQLQueryOfICMPSnortAlertsUpToSecondsAgo(limitDatetime, currentDatetime);
-            resultSqlSelect = stmt.executeQuery(sqlICMP);
-            //getICMPAlertsListFromSQLQuery(resultSqlSelect,listOfReturnedSnortAlerts);
-            allAlerts = allAlerts + getItemsetsStringFromICMPAlertsListFromSQLQuery(resultSqlSelect);
-            
-            //int totalICMPSnortAlerts = listOfReturnedSnortAlerts.size() - totalTCPSnortAlerts - totalUDPSnortAlerts;
-            log.debug("{} - TCP, {} - UDP, {} ICMP SNORT alerts - From {}, ", totalTCPSnortAlerts, totalUDPSnortAlerts, totalICMPSnortAlerts, stringWhoCalled);
-            
-            
-        } catch (SQLException e) {
-            log.debug("ATTENTION - Error during SQL select from IDS Snort Alert table!");
-            e.printStackTrace();
-        } finally {
-            if(resultSqlSelect != null) {
-                try {
-                    resultSqlSelect.close();
-                } catch (SQLException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        }
-        
-//        log.debug("Alerts from IDS");
-//        for(AlertMessage alert : listOfReturnedSnortAlerts) {
-//            alert.printMsgAlert();
-//        }
-        
-        
-        return allAlerts;
-        
-    }
 
     /**
      * Get SQL query string of ICMP alerts up to seconds ago. 
@@ -789,6 +1222,28 @@ public class SnortAlertMessageDAO {
         return count;
         
     }
+    
+    /**
+     * TODO delete
+     * Get IDS Snort alerts (TCP/UDP/ICMP) in the database that are equal 
+     * or greater than current time of system less an amount of seconds 
+     * (passed by parameter).
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @param stringWhoCalled - Just a commentary to identification .
+     * @return - A list of alerts between the period of time - current time less seconds set by parameter and current time.
+     */
+    public synchronized String getItemsetsString_SnortAlerts_3_UpToSecondsAgo_Old(
+            int seconds, String stringWhoCalled) {
+        String limitDatetime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);
+        String currentDatetime = DateTimeManager.getStringDBFromCurrentDate();
+        // Get SQL queries.
+        String sqlTCP = getSQLQueryOfTCPSnortAlertsUpToSecondsAgo(limitDatetime, currentDatetime);
+        String sqlUDP = getSQLQueryOfUDPSnortAlertsUpToSecondsAgo(limitDatetime, currentDatetime);
+        String sqlICMP = getSQLQueryOfICMPSnortAlertsUpToSecondsAgo(limitDatetime, currentDatetime);
+        return getItemsetsString_Alets_TCP_UDP_ICMP(sqlTCP, sqlUDP, sqlICMP, stringWhoCalled);
+    }
+    
     
 
 }

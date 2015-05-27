@@ -90,7 +90,7 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
      * 
      * This is used, here and in the MemoryAttacks class.
      */
-    public static int disableOfIDPS_UseOfAlerts=0;
+    public static int disableOfIDPS_UseOfAlerts=1;
     /*
      *  Enable or disable the use of IDS message on the Of-IDPS
      *  
