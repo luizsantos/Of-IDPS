@@ -63,7 +63,7 @@ public class StatusFlowDAO extends Thread {
      */
     public String getItemsetsString_ofNormalFlows_1_allFlows() {
         String sql = getSQLQueryTo_ofNormalFlows_1_allFlows();
-        log.debug("sql 2: {}", sql);
+        log.debug("sql 1: {}", sql);
         return getItemsetsString_FlowsFromDatabase(sql);
     }
     
@@ -159,6 +159,7 @@ public class StatusFlowDAO extends Thread {
         return sql;
     }
     
+    
     // 3
     
     
@@ -205,7 +206,7 @@ public class StatusFlowDAO extends Thread {
      * and get randomly the registers.
      * 
      * @param seconds - Amount of seconds that will be used as period of time between the current time.
-     * @param seconds - Amount of register to be returned.
+     * @param limit - Amount of register to be returned.
      * @return - Itemsets string of status flows.
      */
     public String getItemsetsString_ofNormalFlows_3_1_randomlyFromSecondsAgo(int seconds, int limit) {
@@ -219,7 +220,7 @@ public class StatusFlowDAO extends Thread {
      * and get randomly the registers.
      * 
      * @param seconds - Amount of seconds that will be used as period of time between the current time.
-     * @param seconds - Amount of register to be returned.
+     * @param limit - Amount of register to be returned.
      * @return - SQL query.
      */
     private String getSQLQuery_ofNormalFlows_3_1_randomlyFromSecondsAgo(int seconds, int limit) {
@@ -242,7 +243,7 @@ public class StatusFlowDAO extends Thread {
      * @return - Itemsets string of status flows.
      */
     public String getItemsetsString_ofNormalFlows_3_2_getStatisticFromSecondsAgo(int seconds) {
-        String selectCount = getSQLQueryTo_ofNormalFlows_1_countAllFlows();
+        String selectCount = getSQLQueryTo_ofNormalFlows_1_countUpToSencondsAgo(seconds);
         int totalRegisters = getCountFlowsFromDatabase(selectCount);
         // use a percentage from total of register
 //        int requiredPercentage = 10;
@@ -252,6 +253,21 @@ public class StatusFlowDAO extends Thread {
         log.debug("sql 3.2: {}", sql);
         return getItemsetsString_FlowsFromDatabase(sql);
     }
+    
+    /**
+     * Get SQL query to get normal flows from now up to seconds ago 
+     * @return Itemsets string of status flows.
+     */
+    private String  getSQLQueryTo_ofNormalFlows_1_countUpToSencondsAgo(int seconds) {
+        String currentDatetime = DateTimeManager.getStringDBFromCurrentDate();
+        String limitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);
+        String sql = "SELECT count(*) FROM flows WHERE " +
+                " tempo >= \'"+limitDatatime+ "\' and " +
+                " tempo <= \'"+currentDatetime +"\' and" + 
+                " flowType = "+StatusFlow.FLOW_NORMAL+";";
+        return sql;
+    }
+
     
     
     // Others

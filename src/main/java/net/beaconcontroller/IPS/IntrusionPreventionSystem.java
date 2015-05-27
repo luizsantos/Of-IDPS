@@ -161,23 +161,92 @@ public class IntrusionPreventionSystem extends Thread implements
     
     // 1
     /**
-     * Get an itemset algorithm string of all Snort alerts from dabatase.
-     * (from current datetime minus an amount of seconds).
-     * 
+     * Get itemset string from all normal flows.
+     * @param - stringWhoCalled - Just a commentary to identification. 
      * @return - Itemset string of Snort alerts.
-     * 
      */
-    public String getItemsetsString_ofAllAlerts(String stringWhoCalled) {
+    public String getItemsetsString_SnortAlerts_1_allFlows(String stringWhoCalled) {
         SnortAlertMessageDAO snortAlertMessageDAO = new SnortAlertMessageDAO();
         return snortAlertMessageDAO.getItemsetsString_SnortAlerts_1_All(stringWhoCalled);
     }
     
     // 2
+    /**
+     * Get last Snort alerts using a limit number of register to be retrieved.
+     * 
+     * @param limit - Amount of register to be returned.
+     * @param stringWhoCalled - Just a commentary to identification .
+     * @return - Itemsets string of Snort Alerts.
+     */
+    public String getItemsetsString_SnortAlerts_2_lastUsingLimit(int limit, String stringWhoCalled) {
+        SnortAlertMessageDAO snortAlertMessageDAO = new SnortAlertMessageDAO();
+        return snortAlertMessageDAO.getItemsetsString_SnortAlerts_2_lastUsingLimit(limit, stringWhoCalled);
+    }
     
+    /**
+     * Get randomly Snort alerts using a limit number of register to be retrieved.
+     * 
+     * @param limit - Amount of register to be returned.
+     * @param stringWhoCalled - Just a commentary to identification .
+     * @return - Itemsets string of Snort Alerts.
+     */
+    public String getItemsetsString_SnortAlerts_2_1_randomlyUsingLimit(int limit, String stringWhoCalled) {
+        SnortAlertMessageDAO snortAlertMessageDAO = new SnortAlertMessageDAO();
+        return snortAlertMessageDAO.getItemsetsString_SnortAlerts_2_1_randomlyUsingLimit(limit, stringWhoCalled);
+    }
+    
+    /**
+     * Get randomly using statistical parameters the Snort Alerts!
+     * @param stringWhoCalled - Just a commentary to identification.
+     * @return - Itemsets string of Snort Alerts.
+     */
+    public String getItemsetsString_SnortAlerts_2_2_getStatisticUsingLimit(
+            String stringWhoCalled) {
+        SnortAlertMessageDAO snortAlertMessageDAO = new SnortAlertMessageDAO();
+        return snortAlertMessageDAO.getItemsetsString_SnortAlerts_2_2_getStatisticUsingLimit(stringWhoCalled);
+    }
     
     // 3
+    /**
+     * Get all Snort alerts from current time minus an amount of seconds.
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @param stringWhoCalled - Just a commentary to identification.
+     * @return - Itemsets string of status flows.
+     */
+    public String getItemsetsString_SnortAlerts_3_UpToSecondsAgo(
+            int seconds, String stringWhoCalled) {
+        SnortAlertMessageDAO snortAlertMessageDAO = new SnortAlertMessageDAO();
+        return snortAlertMessageDAO.getItemsetsString_SnortAlerts_3_UpToSecondsAgo(seconds, stringWhoCalled);
+    }
     
+    /**
+     * Get Snort alerts up to seconds ago, but restrict this search to a amount of register 
+     * and get randomly the registers.
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @param limit - Amount of register to be returned.
+     * @param stringWhoCalled - Just a commentary to identification.
+     * @return - Itemsets string of status flows.
+     */
+    public synchronized String getItemsetsString_SnortAlerts_3_1_randomlyFromSecondsAgo(
+            int seconds, int limit, String stringWhoCalled) {
+        SnortAlertMessageDAO snortAlertMessageDAO = new SnortAlertMessageDAO();
+        return snortAlertMessageDAO.getItemsetsString_SnortAlerts_3_1_randomlyFromSecondsAgo(seconds, limit, stringWhoCalled);
+    }
     
+    /**
+     * Get randomly using statistical parameters the last Snort alers up to seconds ago
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @param stringWhoCalled - Just a commentary to identification.
+     * @return - Itemsets string of status flows.
+     */
+    public synchronized String getItemsetsString_SnortAlerts_3_2_getStatisticFromSecondsAgo(
+            int seconds, String stringWhoCalled) {
+        SnortAlertMessageDAO snortAlertMessageDAO = new SnortAlertMessageDAO();
+        return snortAlertMessageDAO.getItemsetsString_SnortAlerts_3_2_getStatisticFromSecondsAgo(seconds, stringWhoCalled);
+    }
     
 
     /**

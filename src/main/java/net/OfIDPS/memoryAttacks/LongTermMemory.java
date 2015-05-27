@@ -55,10 +55,10 @@ public class LongTermMemory extends Thread {
     public static final int recoverRemembrancesUsing_3_2_getStatisticFromSecondsAgo=7;
     
     
-    private static int methodToRecoverRemembrancesToLongMemory = recoverRemembrancesUsing_1_getAll; 
+    private static int methodToRecoverRemembrancesToLongMemory = recoverRemembrancesUsing_3_2_getStatisticFromSecondsAgo ; 
     
     // Max number of registers to be recovered from database;
-    private static int limit_to_recover_databaseFlows=10000;
+    private static int limit_to_recover_databaseFlows=1000;
     
     protected static Logger log = LoggerFactory
             .getLogger(LearningSwitchTutorialSolution.class);
@@ -133,47 +133,11 @@ public class LongTermMemory extends Thread {
         Date dateStart = DateTimeManager.getCurrentDate();
         
         SecurityAlerts securityAlerts = new SecurityAlerts();
-        
-        AlertOpenFlowDAO alertOpenFlowDAO = new AlertOpenFlowDAO();
-        String allAlerts = "";
-        switch(methodToRecoverRemembrancesToLongMemory){
-            case LongTermMemory.recoverRemembrancesUsing_1_getAll:
-                log.debug("Get all bad remembrances!");
-                allAlerts = securityAlerts.getItemsetsString_ofAllAlerts("Long bad memory");
-                break;
-            case LongTermMemory.recoverRemembrancesUsing_2_getLastUsingLimit:
-                log.debug("Get last bad remembrances using a limit!");
-                
-                break;
-            case LongTermMemory.recoverRemembrancesUsing_2_1_getRandomlyUsingLimit:
-                log.debug("Get randomly bad remembrances using a limit!");
-                
-                break;
-            case LongTermMemory.recoverRemembrancesUsing_2_2_getStatisticUsingLimit:
-                log.debug("Get randomly using statistical parameters the last bad remembrances using a limit!");
-                
-                break;
-            case LongTermMemory.recoverRemembrancesUsing_3_getFromSecondsAgo:
-                log.debug("Get last bad remembrances up to seconds ago!");
-                
-                break;
-            case LongTermMemory.recoverRemembrancesUsing_3_1_getRandomlyFromSecondsAgo:
-                log.debug("Get randomly last bad remembrances up to seconds ago!");
-                
-                break;
-            case LongTermMemory.recoverRemembrancesUsing_3_2_getStatisticFromSecondsAgo:
-                log.debug("Get randomly using statistical parameters the last bad remembrances up to seconds ago!");
-                
-                break;
-            default:
-                log.debug("Default - Get bad good remembrances using a limit!");
-                
-        }
-        
-        // Get alerts from IDS and OpenFlow analysis to be processed by itemsets algorithm.
-//        allAlerts = securityAlerts.getItemsetsString_Alerts_upToSecondsAgo(
-//                MemorysAttacks.timeToAlertsStayAtLongMemory,
-//                "Long memory");
+        String allAlerts = securityAlerts.getItemsetsString_FromAlerts(
+                methodToRecoverRemembrancesToLongMemory,
+                limit_to_recover_databaseFlows,
+                MemorysAttacks.timeToAlertsStayAtLongMemory,
+                "Long bad memory");
         
         //log.debug("all alerts in long memory: \n{}", allAlerts);
         

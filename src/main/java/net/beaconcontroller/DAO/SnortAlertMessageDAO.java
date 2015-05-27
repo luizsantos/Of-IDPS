@@ -99,7 +99,7 @@ public class SnortAlertMessageDAO {
      * @return - SQL query string.
      */ 
     private String getSQLQuery_Alerts_2_lastUsingLimit(int limit) {
-        String sqlTCP = "SELECT e.sid, e.cid," +
+        String sql = "SELECT e.sid, e.cid," +
                 " ip.ip_src, ip.ip_dst, ip.ip_proto," +
                 " tcp.tcp_sport, tcp.tcp_dport," +
                 " udp.udp_sport, udp.udp_dport," +
@@ -114,7 +114,7 @@ public class SnortAlertMessageDAO {
                 " ORDER BY e.sid, e.cid DESC " +
                 " LIMIT " + limit +
                 ";";
-        return sqlTCP;
+        return sql;
     }
     
     /**
@@ -138,7 +138,7 @@ public class SnortAlertMessageDAO {
      * @return - SQL query string.
      */ 
     private String getSQLQuery_Alerts_2_1_randomlyUsingLimit(int limit) {
-        String sqlTCP = "SELECT e.sid, e.cid," +
+        String sql = "SELECT e.sid, e.cid," +
                 " ip.ip_src, ip.ip_dst, ip.ip_proto," +
                 " tcp.tcp_sport, tcp.tcp_dport," +
                 " udp.udp_sport, udp.udp_dport," +
@@ -153,7 +153,7 @@ public class SnortAlertMessageDAO {
                 " ORDER BY RANDOM()" +
                 " LIMIT " + limit +
                 ";";
-        return sqlTCP;
+        return sql;
     }
     
     /**
@@ -193,7 +193,7 @@ public class SnortAlertMessageDAO {
     private String getSQLQuery_Alerts_3_upToSecondsAgo(int seconds) {
         String currentDatetime = DateTimeManager.getStringDBFromCurrentDate();
         String limitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);
-        String sqlTCP = "SELECT e.sid, e.cid," +
+        String sql = "SELECT e.sid, e.cid," +
                 " ip.ip_src, ip.ip_dst, ip.ip_proto," +
                 " tcp.tcp_sport, tcp.tcp_dport," +
                 " udp.udp_sport, udp.udp_dport," +
@@ -207,9 +207,9 @@ public class SnortAlertMessageDAO {
                 " OUTER JOIN signature s ON e.signature=s.sig_id" +
                 " WHERE " +
                 " timestamp >= \'"+limitDatatime+ "\' and " +
-                " timestamp <= \'"+currentDatetime +"\' and" +
+                " timestamp <= \'"+currentDatetime +"\'" +
                 ";";
-        return sqlTCP;
+        return sql;
     }
     
     /**
@@ -238,7 +238,7 @@ public class SnortAlertMessageDAO {
     private String getSQLQuery_Alerts_3_1_randomlyFromSecondsAgo(int seconds, int limit) {
         String currentDatetime = DateTimeManager.getStringDBFromCurrentDate();
         String limitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);
-        String sqlTCP = "SELECT e.sid, e.cid," +
+        String sql = "SELECT e.sid, e.cid," +
                 " ip.ip_src, ip.ip_dst, ip.ip_proto," +
                 " tcp.tcp_sport, tcp.tcp_dport," +
                 " udp.udp_sport, udp.udp_dport," +
@@ -252,16 +252,15 @@ public class SnortAlertMessageDAO {
                 " OUTER JOIN signature s ON e.signature=s.sig_id" +
                 " WHERE " +
                 " timestamp >= \'"+limitDatatime+ "\' and " +
-                " timestamp <= \'"+currentDatetime +"\' and" +
+                " timestamp <= \'"+currentDatetime +"\'" +
                 " ORDER BY RANDOM()" +
                 " LIMIT "+ limit +
                 ";";
-        return sqlTCP;
+        return sql;
     }
     
     /**
-     * Get Snort alerts up to seconds ago, but restrict this search to a amount of register 
-     * and get randomly the registers.
+     * Get randomly using statistical parameters the last Snort alers up to seconds ago
      * 
      * @param seconds - Amount of seconds that will be used as period of time between the current time.
      * @param stringWhoCalled - Just a commentary to identification.
@@ -269,8 +268,9 @@ public class SnortAlertMessageDAO {
      */
     public synchronized String getItemsetsString_SnortAlerts_3_2_getStatisticFromSecondsAgo(
             int seconds, String stringWhoCalled) {
-        String selectCount = getSQLQuery_Alerts_countAll();
+        String selectCount = getSQLQuery_Alerts_countUpToSecondsAgo(seconds);
         int totalRegisters = getCountSnortAlertsFromDatabase(selectCount);
+        log.debug("population: {} - sql count: {}", totalRegisters, selectCount);
         int limit = (int) Calculation.sampleSize_cofidence95_error5(totalRegisters);
         String sql = getSQLQuery_Alerts_3_1_randomlyFromSecondsAgo(seconds, limit);
         log.debug("3.2 sql: {}", sql);
@@ -284,10 +284,27 @@ public class SnortAlertMessageDAO {
      * @return - SQL query string.
      */
     private String getSQLQuery_Alerts_countAll() {
-        String sqlTCP = "SELECT count(*)" +
-        		"FROM event e RIGHT" +
-        		"OUTER JOIN iphdr ip USING(sid,cid);" ;                
-        return sqlTCP;
+        String sql = "SELECT count(*)" +
+        		" FROM event e RIGHT" +
+        		" OUTER JOIN iphdr ip USING(sid,cid);" ;                
+        return sql;
+    }
+    
+    /**
+     * Get SQL query string to count alerts from now up to seconds ago.
+     * @return - SQL query string.
+     */
+    private String getSQLQuery_Alerts_countUpToSecondsAgo(int seconds) {
+        String currentDatetime = DateTimeManager.getStringDBFromCurrentDate();
+        String limitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);
+        String sql = "SELECT count(*)" +
+                " FROM event e RIGHT" +
+                " OUTER JOIN iphdr ip USING(sid,cid)" +
+                " WHERE " +
+                " timestamp >= \'"+limitDatatime+ "\' and " +
+                " timestamp <= \'"+currentDatetime +"\'" +
+                ";" ;     
+        return sql;
     }
     
     /**
