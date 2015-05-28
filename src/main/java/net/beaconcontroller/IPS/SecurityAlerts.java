@@ -69,7 +69,7 @@ public class SecurityAlerts {
     public String getItemsetsString_FromAlerts(int methodToRecoverRemembrancesToLongMemory, int limit, int seconds, String stringWhoCalled) {
         // Strings to store both results: IDS and Analysis flow.
         String alertsFromIDSSnort = "";
-        String alertsFromOpenFlowDoS = "";
+        String alertsFromOpenFlow = "";
         // Get IDS alerts.
         if (LearningSwitchTutorialSolution.disableOfIDPS_UseIDSAlerts != 1) {
             switch(methodToRecoverRemembrancesToLongMemory){
@@ -114,31 +114,31 @@ public class SecurityAlerts {
             switch(methodToRecoverRemembrancesToLongMemory){
                 case LongTermMemory.recoverRemembrancesUsing_1_getAll:
                     log.debug("Get all bad remembrances!");
-                    
+                    alertsFromOpenFlow = alertOpenFlowDAO.getItemsetsString_OpenFlowAlerts_1_All(stringWhoCalled);
                     break;
                 case LongTermMemory.recoverRemembrancesUsing_2_getLastUsingLimit:
                     log.debug("Get last bad remembrances using a limit!");
-                    
+                    alertsFromOpenFlow = alertOpenFlowDAO.getItemsetsString_OpenFlowAlerts_2_lastUsingLimit(limit, stringWhoCalled);
                     break;
                 case LongTermMemory.recoverRemembrancesUsing_2_1_getRandomlyUsingLimit:
                     log.debug("Get randomly bad remembrances using a limit!");
-                    
+                    alertsFromOpenFlow = alertOpenFlowDAO.getItemsetsString_OpenFlowAlerts_2_1_randomlyUsingLimit(limit, stringWhoCalled);
                     break;
                 case LongTermMemory.recoverRemembrancesUsing_2_2_getStatisticUsingLimit:
                     log.debug("Get randomly using statistical parameters the last bad remembrances using a limit!");
-                    
+                    alertsFromOpenFlow = alertOpenFlowDAO.getItemsetsString_OpenFlowAlerts_2_2_getStatisticUsingLimit(stringWhoCalled);
                     break;
                 case LongTermMemory.recoverRemembrancesUsing_3_getFromSecondsAgo:
                     log.debug("Get last bad remembrances up to seconds ago!");
-                    
+                    alertsFromOpenFlow = alertOpenFlowDAO.getItemsetsString_OpenFlowAlerts_3_UpToSecondsAgo(seconds, stringWhoCalled);
                     break;
                 case LongTermMemory.recoverRemembrancesUsing_3_1_getRandomlyFromSecondsAgo:
                     log.debug("Get randomly last bad remembrances up to seconds ago!");
-                    
+                    alertsFromOpenFlow = alertOpenFlowDAO.getItemsetsString_OpenFlowAlerts_3_1_randomlyFromSecondsAgo(seconds, limit, stringWhoCalled);
                     break;
                 case LongTermMemory.recoverRemembrancesUsing_3_2_getStatisticFromSecondsAgo:
                     log.debug("Get randomly using statistical parameters the last bad remembrances up to seconds ago!");
-                    
+                    alertsFromOpenFlow = alertOpenFlowDAO.getItemsetsString_OpenFlowAlerts_3_2_getStatisticFromSecondsAgo(seconds, stringWhoCalled);
                     break;
                 default:
                     log.debug("Default - Get bad good remembrances using a limit!");
@@ -149,7 +149,7 @@ public class SecurityAlerts {
         } else {
             log.debug("\t!!!!!!!! ATTENTION, Of-IDPS ALERT OPENFLOW STATISTICS IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variables disableOfIDPS_UseOfgetStatisticsFromNetwork and disableOfIDPS_UseOfAlerts on LearningSwithTutorialSolution class...");
         }
-        return alertsFromIDSSnort+alertsFromOpenFlowDoS;
+        return alertsFromIDSSnort+alertsFromOpenFlow;
         
     }
     
@@ -184,7 +184,7 @@ public class SecurityAlerts {
         // Get OpenFlow alerts.
         if (LearningSwitchTutorialSolution.disableOfIDPS_UseOfAlerts != 1
                 && LearningSwitchTutorialSolution.disableOfIDPS_UseOfgetStatisticsFromNetwork != 1) {
-            alertsFromOpenFlowDoS = alertOpenFlowDAO.getItemsetsStringFromOpenFlowAlertsUpToSecondsAgo(timeToAlertsStayOnMemory, comment);
+            alertsFromOpenFlowDoS = alertOpenFlowDAO.getItemsetsString_OpenFlowAlerts_3_UpToSecondsAgo(timeToAlertsStayOnMemory, comment);
         } else {
             log.debug("\t!!!!!!!! ATTENTION, Of-IDPS ALERT OPENFLOW STATISTICS IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variables disableOfIDPS_UseOfgetStatisticsFromNetwork and disableOfIDPS_UseOfAlerts on LearningSwithTutorialSolution class...");
         }
@@ -215,7 +215,7 @@ public class SecurityAlerts {
         //Verify if the OpenFlow security analysis is enabled.
         if (LearningSwitchTutorialSolution.disableOfIDPS_UseOfAlerts != 1
                 && LearningSwitchTutorialSolution.disableOfIDPS_UseOfgetStatisticsFromNetwork != 1) {
-            listOfAllAlerts.addAll(alertOpenFlowDAO.getOpenFlowAlertsUpToSecondsAgo(timeToAlertsStayAtMemory, comment));
+            listOfAllAlerts.addAll(alertOpenFlowDAO.getList_OpenFlowAlerts_3_UpToSecondsAgo(timeToAlertsStayAtMemory, comment));
         } else {
             log.debug("\t!!!!!!!! ATTENTION, Of-IDPS ALERT OPENFLOW STATISTICS IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variables disableOfIDPS_UseOfgetStatisticsFromNetwork and disableOfIDPS_UseOfAlerts on LearningSwithTutorialSolution class...");
         }

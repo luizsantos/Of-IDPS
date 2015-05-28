@@ -22,63 +22,285 @@ import org.slf4j.LoggerFactory;
 
 import net.beaconcontroller.IPS.AlertMessage;
 import net.beaconcontroller.IPS.AlertMessageSharePriority;
+import net.beaconcontroller.tools.Calculation;
 import net.beaconcontroller.tools.DateTimeManager;
 import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
-
-
 
 public class AlertOpenFlowDAO {
     protected static Logger log = LoggerFactory.getLogger(LearningSwitchTutorialSolution.class);
     
-    implementar os métodos para recuperar alertas para a memória longa de alertas!
-    parece que tem que remover uma passagens de parametros que não são usadas, tal como segundos em 
-    getOpenFlowAlertsUpToSecondsAgo
+    
+    // 1
+    /**
+     * Get all OpenFlow alerts in the database.
+     * @param stringWhoCalled - Just a commentary to identification .
+     * @return - Itemsets string of Snort Alerts.
+     */
+    public synchronized String getItemsetsString_OpenFlowAlerts_1_All(String stringWhoCalled) {
+        String sql = getSQLQuery_1_All();
+        return getItemsetsString_OpenFlowAlerts(sql, stringWhoCalled);
+    }
+    
+    /**
+     * Get SQL query string of all TCP alerts .
+     * @return - SQL query string.
+     */
+    private String getSQLQuery_1_All() {
+        String sql = "SELECT * FROM alertsOpenFlow;";
+        return sql;
+    }
+    
+    // 2
+    
+    /**
+     * Get last Snort alerts using a limit number of register to be retrieved.
+     * 
+     * @param limit - Amount of register to be returned.
+     * @param stringWhoCalled - Just a commentary to identification .
+     * @return - Itemsets string of Snort Alerts.
+     */
+    public synchronized String getItemsetsString_OpenFlowAlerts_2_lastUsingLimit(int limit, String stringWhoCalled) {
+        String sql = getSQLQuery_2_lastUsingLimit(limit);
+        return getItemsetsString_OpenFlowAlerts(sql, stringWhoCalled);
+    }
+    
+    /**
+     * Get SQL query to get last OpenFlow alerts using a limit number of register to be retrieved.
+     * @param limit - Amount of register to be returned.
+     * @return - SQL query string.
+     */ 
+    private String getSQLQuery_2_lastUsingLimit(int limit) {
+        String sql = "SELECT * FROM alertsOpenFlow" +
+                " ORDER BY tempo DESC "+
+                " LIMIT "+ limit +
+                ";";
+        return sql;
+    }
+    
+    /**
+     * Get randomly OpenFlow alerts using a limit number of register to be retrieved.
+     * 
+     * @param limit - Amount of register to be returned.
+     * @param stringWhoCalled - Just a commentary to identification .
+     * @return - Itemsets string of Snort Alerts.
+     */
+    public synchronized String getItemsetsString_OpenFlowAlerts_2_1_randomlyUsingLimit(
+            int limit, String stringWhoCalled) {
+        String sql = getSQLQuery_2_1_randomlyUsingLimit(limit);
+        return getItemsetsString_OpenFlowAlerts(sql, stringWhoCalled);
+    }
+    
+    /**
+     * Get SQL query to get randomly OpenFlow alerts using a limit number of register to be retrieved.
+     * @param limit - Amount of register to be returned.
+     * @return - SQL query string.
+     */ 
+    private String getSQLQuery_2_1_randomlyUsingLimit(int limit) {
+        String sql = "SELECT * FROM alertsOpenFlow" +
+                " ORDER BY RANDOM()" +
+                " LIMIT "+ limit +
+                ";";
+        return sql;
+    }
+    
+    /**
+     * Get randomly using statistical parameters the OpenFlow Alerts!
+     * @param stringWhoCalled - Just a commentary to identification.
+     * @return - Itemsets string of Snort Alerts.
+     */
+    public synchronized String getItemsetsString_OpenFlowAlerts_2_2_getStatisticUsingLimit(String stringWhoCalled) {
+        String selectCount = getSQLQuery_Alerts_countAll();
+        int totalRegisters = getCountOpenFlowAlertsFromDatabase(selectCount);
+        int limit = (int) Calculation.sampleSize_cofidence95_error5(totalRegisters);
+        String sql = getSQLQuery_2_1_randomlyUsingLimit(limit);
+        return getItemsetsString_OpenFlowAlerts(sql, stringWhoCalled);
+    }
+    
+    /**
+     * Get SQL query string to count all alerts .
+     * @return - SQL query string.
+     */
+    private String getSQLQuery_Alerts_countAll() {
+        String sql = "SELECT count(*) FROM alertsOpenFlow;";
+        return sql;
+    }
+    
+    // 3
     
     /**
      * Get all OpenFlow alerts from current time minus an amount of seconds.
      * 
      * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @param stringWhoCalled - Just a commentary to identification.
      * @return - List of OpenFlow alerts.
      */
-    public List<AlertMessage> getOpenFlowAlertsUpToSecondsAgo(int seconds, String comment) {
-        String sql = getSQLQueryToGetAlertsUpToSecondsAgo(seconds);
-        return getOpenFlowAlertsUpToSecondsAgo(seconds, sql, comment);
+    public String getItemsetsString_OpenFlowAlerts_3_UpToSecondsAgo(int seconds, String stringWhoCalled) {
+        String sql = getSQLQuery_3_UpToSecondsAgo(seconds);
+        return getItemsetsString_OpenFlowAlerts(sql, stringWhoCalled);
     }
     
     /**
      * Get all OpenFlow alerts from current time minus an amount of seconds.
      * 
      * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @param stringWhoCalled - Just a commentary to identification.
      * @return - List of OpenFlow alerts.
      */
-    public String getItemsetsStringFromOpenFlowAlertsUpToSecondsAgo(int seconds, String comment) {
-        String sql = getSQLQueryToGetAlertsUpToSecondsAgo(seconds);
-        return getItemsetsStringFromOpenFlowAlertsUpToSecondsAgo(seconds, sql, comment);
+    public List<AlertMessage> getList_OpenFlowAlerts_3_UpToSecondsAgo(int seconds, String stringWhoCalled) {
+        String sql = getSQLQuery_3_UpToSecondsAgo(seconds);
+        return getList_OpenFlowAlerts(sql, stringWhoCalled);
     }
-
+    
     /**
-     * @param seconds
-     * @return
+     * Get all OpenFlow alerts from current time minus an amount of seconds.
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @return - List of status flows.
      */
-    private String getSQLQueryToGetAlertsUpToSecondsAgo(int seconds) {
+    private String getSQLQuery_3_UpToSecondsAgo(int seconds) {
         String stringCurrentDateTime = DateTimeManager.getStringDBFromCurrentDate();
         String stringlimitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);        
         String sql = "SELECT * FROM alertsOpenFlow " +
-        		"WHERE tempo >= \'"+ stringlimitDatatime+ "\' " +
-        				" and tempo <= \'" + stringCurrentDateTime + "\' " +
-        				";";
-        //log.debug("alertOpenFlow sql: {}", sql);
+                "WHERE tempo >= \'"+ stringlimitDatatime+ "\' " +
+                        " and tempo <= \'" + stringCurrentDateTime + "\' " +
+                        ";";
         return sql;
+    }
+    
+    /**
+     * Get OpenFlow alerts up to seconds ago, but restrict this search to a amount of register 
+     * and get randomly the registers.
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @param limit - Amount of register to be returned.
+     * @param stringWhoCalled - Just a commentary to identification.
+     * @return - Itemsets string of status flows.
+     */
+    public synchronized String getItemsetsString_OpenFlowAlerts_3_1_randomlyFromSecondsAgo(
+            int seconds, int limit, String stringWhoCalled) {
+        String sql = getSQLQuery_Alerts_3_1_randomlyFromSecondsAgo(seconds, limit);
+        return getItemsetsString_OpenFlowAlerts(sql, stringWhoCalled);
+    }
+    
+    /**
+     * Get SQL query to get OpenFlow alerts up to seconds ago, but restrict this search to a amount of register 
+     * and get randomly the registers.
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @param limit - Amount of register to be returned.
+     * @return - SQL query.
+     */ 
+    private String getSQLQuery_Alerts_3_1_randomlyFromSecondsAgo(int seconds, int limit) {
+        String stringCurrentDateTime = DateTimeManager.getStringDBFromCurrentDate();
+        String stringlimitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);        
+        String sql = "SELECT * FROM alertsOpenFlow " +
+                        " WHERE tempo >= \'"+ stringlimitDatatime+ "\' " +
+                        " and tempo <= \'" + stringCurrentDateTime + "\' " +
+                        " ORDER BY RANDOM()" +
+                        " LIMIT "+ limit +
+                        ";";
+        return sql;
+    }
+    
+    /**
+     * Get randomly using statistical parameters the last OpenFlow alerts up to seconds ago
+     * 
+     * @param seconds - Amount of seconds that will be used as period of time between the current time.
+     * @param stringWhoCalled - Just a commentary to identification.
+     * @return - Itemsets string of status flows.
+     */
+    public synchronized String getItemsetsString_OpenFlowAlerts_3_2_getStatisticFromSecondsAgo(
+            int seconds, String stringWhoCalled) {
+        String selectCount = getSQLQuery_Alerts_countUpToSecondsAgo(seconds);
+        int totalRegisters = getCountOpenFlowAlertsFromDatabase(selectCount);
+        int limit = (int) Calculation.sampleSize_cofidence95_error5(totalRegisters);
+        String sql = getSQLQuery_Alerts_3_1_randomlyFromSecondsAgo(seconds, limit);
+        return getItemsetsString_OpenFlowAlerts(sql, stringWhoCalled);        
+    }
+    
+    /**
+     * Get SQL query string to count alerts from now up to seconds ago.
+     * @return - SQL query string.
+     */
+    private String getSQLQuery_Alerts_countUpToSecondsAgo(int seconds) {
+        String stringCurrentDateTime = DateTimeManager.getStringDBFromCurrentDate();
+        String stringlimitDatatime = DateTimeManager.getStringDBFromCurrentDateLessAmountOfSeconds(seconds);        
+        String sql = "SELECT count(*) FROM alertsOpenFlow " +
+                        " WHERE tempo >= \'"+ stringlimitDatatime+ "\' " +
+                        " and tempo <= \'" + stringCurrentDateTime + "\' " +
+                        ";";
+        return sql;
+    }
+
+    // Others
+    
+    /**
+     * Get the amount of OpenFlow alerts from database.
+     * 
+     * @param sql - SQL query.
+     * @return - Total number of Snort alerts.
+     */
+    private synchronized int getCountOpenFlowAlertsFromDatabase(String sql) {
+        int count=0;
+        Connection connection = null;
+        Statement stmt = null;
+        ResultSet resultSqlSelect = null;
+        // Get database connection.
+        try {
+            DataSource ds;
+            try {
+                ds = DataSource.getInstance();
+                connection = ds.getConnection();
+            } catch (PropertyVetoException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } 
+            
+            stmt = connection.createStatement();
+            resultSqlSelect = stmt.executeQuery(sql);
+            while(resultSqlSelect.next()) {
+                count=resultSqlSelect.getInt(1);
+            }
+            
+        } catch (SQLException e) {
+            log.debug("ATTENTION - Error during SQL select from flows table!");
+            e.printStackTrace();
+        } finally {
+            if(resultSqlSelect != null) {
+                try {
+                    resultSqlSelect.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+        return count;
     }
     
     /**
      * Get a list of OpenFlow alerts using an SQL query.
      * @param seconds - Amount of seconds that will be used as period of time between the current time.
      * @param sql - SQL query.
-     * @param comment - Just a text comment to identify the operation.
+     * @param stringWhoCalled - Just a text comment to identify the operation.
      * @return - An alert list.
      */
-    public synchronized List<AlertMessage> getOpenFlowAlertsUpToSecondsAgo(int seconds, String sql, String comment) {
+    private synchronized List<AlertMessage> getList_OpenFlowAlerts(String sql, String stringWhoCalled) {
         Connection connection = null;
         Statement stmt = null;
         ResultSet resultSqlSelect = null;
@@ -110,7 +332,7 @@ public class AlertOpenFlowDAO {
                 alert.setTransportSource((short)resultSqlSelect.getInt("transportSource"));
                 listOfOpenFlowAlerts.add(alert);
             }
-            log.debug("{} OpenFlow alerts - {}", listOfOpenFlowAlerts.size(), comment);
+            log.debug("{} OpenFlow alerts - {}", listOfOpenFlowAlerts.size(), stringWhoCalled);
         } catch (SQLException e) {
             log.debug("ATTENTION - Error during SQL select from flows table!");
             e.printStackTrace();
@@ -145,12 +367,11 @@ public class AlertOpenFlowDAO {
     
     /**
      * Get an itemset algorithm string of OpenFlow alerts using an SQL query.
-     * @param seconds - Amount of seconds that will be used as period of time between the current time.
      * @param sql - SQL query.
-     * @param comment - Just a text comment to identify the operation.
+     * @param stringWhoCalled - Just a text comment to identify the operation.
      * @return - An itemset string with the alerts.
      */
-    public synchronized String getItemsetsStringFromOpenFlowAlertsUpToSecondsAgo(int seconds, String sql, String comment) {
+    private synchronized String getItemsetsString_OpenFlowAlerts(String sql, String stringWhoCalled) {
         String stringAlertsOpenFlow = "";
         Connection connection = null;
         Statement stmt = null;
@@ -193,7 +414,7 @@ public class AlertOpenFlowDAO {
 //                stringAlertsOpenFlow = stringAlertsOpenFlow + AlertMessage.getStringAlertToBeProcessedByItemsetAlgorithm(src, dst, pro, spo, dpo, pri, des);
 //                alertsTotal++;
             }
-            log.debug("{} OpenFlow alerts - {}", alertsTotal, comment);
+            log.debug("{} OpenFlow alerts - {}", alertsTotal, stringWhoCalled);
         } catch (SQLException e) {
             log.debug("ATTENTION - Error during SQL select from flows table!");
             e.printStackTrace();
