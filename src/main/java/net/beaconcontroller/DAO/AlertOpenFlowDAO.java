@@ -30,6 +30,9 @@ import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
 public class AlertOpenFlowDAO {
     protected static Logger log = LoggerFactory.getLogger(LearningSwitchTutorialSolution.class);
     
+    implementar os métodos para recuperar alertas para a memória longa de alertas!
+    parece que tem que remover uma passagens de parametros que não são usadas, tal como segundos em 
+    getOpenFlowAlertsUpToSecondsAgo
     
     /**
      * Get all OpenFlow alerts from current time minus an amount of seconds.

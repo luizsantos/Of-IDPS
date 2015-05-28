@@ -144,7 +144,6 @@ public class SecurityAlerts {
                     log.debug("Default - Get bad good remembrances using a limit!");
                     
             }
-
             //alertsFromOpenFlowDoS = alertOpenFlowDAO.getItemsetsStringFromOpenFlowAlertsUpToSecondsAgo(timeToAlertsStayOnMemory, comment);
             // TODO - make it!
         } else {
