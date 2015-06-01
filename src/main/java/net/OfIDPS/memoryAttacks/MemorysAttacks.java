@@ -99,14 +99,14 @@ public class MemorysAttacks extends Thread {
      * 
      * 1 to disable and any other value to enable!
      */
-    protected static int disableSensorialMemory=1;
-    protected static int disableShortMemory=1;
+    protected static int disableSensorialMemory=0;
+    protected static int disableShortMemory=0;
     // To disable bad and good long memory.
     public static int disableLongMemory=0;
     // To disable only bad long memory.
     public static int disableLongBadMemory=0;
     // To disable only good long memory.
-    public static int disableLongGoodMemory=1;
+    public static int disableLongGoodMemory=0;
     
     /*
      * Time to wait until execute again the main method contained in the Thread (method run).
@@ -340,7 +340,12 @@ public class MemorysAttacks extends Thread {
         Date dateStart = DateTimeManager.getCurrentDate();
         // Get alerts from IDS and OpenFlow analysis to be processed by itemsets algorithm.
         SecurityAlerts securityAlerts = new SecurityAlerts();
-        String allAlerts = securityAlerts.getItemsetsString_Alerts_upToSecondsAgo(
+//        String allAlerts = securityAlerts.getItemsetsString_Alerts_upToSecondsAgo(
+//                timeToAlertsStayAtShortMemory,
+//                "Short memory");
+        String allAlerts = securityAlerts.getItemsetsString_FromAlerts(
+                LongTermMemory.recoverRemembrancesUsing_3_getFromSecondsAgo,
+                LongTermMemory.limit_to_recover_databaseFlows,
                 timeToAlertsStayAtShortMemory,
                 "Short memory");
         

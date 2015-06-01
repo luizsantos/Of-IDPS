@@ -58,7 +58,7 @@ public class LongTermMemory extends Thread {
     private static int methodToRecoverRemembrancesToLongMemory = recoverRemembrancesUsing_3_2_getStatisticFromSecondsAgo ; 
     
     // Max number of registers to be recovered from database;
-    private static int limit_to_recover_databaseFlows=1000;
+    public static int limit_to_recover_databaseFlows=10000;
     
     protected static Logger log = LoggerFactory
             .getLogger(LearningSwitchTutorialSolution.class);
