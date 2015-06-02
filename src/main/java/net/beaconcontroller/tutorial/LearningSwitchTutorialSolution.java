@@ -187,8 +187,6 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
         }
         log.debug("BE CAREFUL... These allow IP addresses, will not be submitted to the Of-IDPS security rules!  \n\n");
     }
-
-    
     
     // Used to send/receive OpenFlow messages.
     protected IBeaconProvider beaconProvider;
