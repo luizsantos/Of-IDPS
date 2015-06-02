@@ -856,19 +856,24 @@ public class MemorysAttacks extends Thread {
                     alreadyExistedRules++;
                 } else {
                     // If rule priority is low them we remove this!
-                    entry.getValue().printMsgAlert();
+                    //entry.getValue().printMsgAlert();
                     rule.remove();
                     //log.debug("Alert was removed, because your lives was expired!");
                     removedRules++;
-                    log.debug("priority changed from low to normal - rule removed");
+                    //log.debug("priority changed from low to normal - rule removed");
                     //entry.getValue().printMsgAlert();
                 }
                 
             }   
         }            
-        log.debug(">> There are {} rules in short memory - {} new, {} already existed, {} removed", shortMemoryAttacks.size(),addedRules,alreadyExistedRules, removedRules);
+        log.debug(">> Rules in short memory: total {} ({} new/{} existing/{} removed) - " +
+        		" {} new rules that match with existing old rules.", 
+                shortMemoryAttacks.size(),
+                addedRules,
+                shortMemoryAttacks.size()-addedRules,
+                removedRules,
+                alreadyExistedRules);
         log.debug("Waiting {} seconds to rerun itemset algorithm and generate new AUTONOMIC rules",TIME_TO_WAIT);
-        // aqui
         //printMemoryAttacks(shortMemoryAttacks);
         
         actuator.shutDown();

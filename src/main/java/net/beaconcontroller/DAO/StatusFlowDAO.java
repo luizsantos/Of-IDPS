@@ -63,7 +63,6 @@ public class StatusFlowDAO extends Thread {
      */
     public String getItemsetsString_ofNormalFlows_1_allFlows() {
         String sql = getSQLQueryTo_ofNormalFlows_1_allFlows();
-        log.debug("sql 1: {}", sql);
         return getItemsetsString_FlowsFromDatabase(sql);
     }
     
@@ -86,7 +85,6 @@ public class StatusFlowDAO extends Thread {
      */
     public String getItemsetsString_ofNormalFlows_2_lastUsingLimit(int limit) {
         String sql = getSQLQuery_ofNormalFlows_2_latUsingLimit(limit);
-        log.debug("sql 2: {}", sql);
         return getItemsetsString_FlowsFromDatabase(sql);
     }
     
@@ -114,7 +112,6 @@ public class StatusFlowDAO extends Thread {
      */
     public String getItemsetsString_ofNormalFlows_2_1_randomlyUsingLimit(int limit) {
         String sql = getSQLQuery_ofNormalFlows_2_1_randomlyUsingLimit(limit);
-        log.debug("sql 2.1: {}", sql);
         return getItemsetsString_FlowsFromDatabase(sql);
     }
     
@@ -182,7 +179,6 @@ public class StatusFlowDAO extends Thread {
      */
     public List<StatusFlow> getList_NormalFlows_3_upToSecondsAgo(int seconds) {
         String sql = getSQLQuery_ofNormalFlows_3_upToSecondsAgo(seconds);
-        log.debug("sql 3: {}", sql);
         return getList_FlowsFromDatabase(sql);
     }
     
@@ -211,7 +207,6 @@ public class StatusFlowDAO extends Thread {
      */
     public String getItemsetsString_ofNormalFlows_3_1_randomlyFromSecondsAgo(int seconds, int limit) {
         String sql = getSQLQuery_ofNormalFlows_3_1_randomlyFromSecondsAgo(seconds, limit);
-        log.debug("sql 3.1: {}", sql);
         return getItemsetsString_FlowsFromDatabase(sql);
     }
     
@@ -250,7 +245,6 @@ public class StatusFlowDAO extends Thread {
 //        int limit = (totalRegisters*requiredPercentage)/100;
         int limit = (int) Calculation.sampleSize_cofidence95_error5(totalRegisters);
         String sql = getSQLQuery_ofNormalFlows_3_1_randomlyFromSecondsAgo(seconds, limit);
-        log.debug("sql 3.2: {}", sql);
         return getItemsetsString_FlowsFromDatabase(sql);
     }
     

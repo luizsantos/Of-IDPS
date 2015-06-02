@@ -1,0 +1,21 @@
+# This config file has a list of IPs address (not names) 
+# that will not be submitted to the Of-IDPS security rules.
+# 
+# Here, you can put IP addresses, for instance, of the 
+# OpenFlow controller and some hosts that can't be blocked 
+# by the Of-IDPS. 
+#
+# You must put one IP by line, and the IP must be the first
+# thing on the line, after you must give a blank space, and
+# then you can put anything, like a comment (everything 
+# after the space will be ignored).
+# e.g.
+#127.0.0.1 this is a loopback address
+#
+# Attention don't put a blank space on the line start or 
+# any other thing, the first thing is the IP address.
+
+192.168.2.111 OpenFlow controller
+192.168.2.112 Xen Controller - on eth1
+172.16.2.130 Xen Controller - on eth0
+192.168.2.133 IDS

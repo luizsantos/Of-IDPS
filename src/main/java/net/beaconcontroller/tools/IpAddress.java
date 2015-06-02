@@ -49,6 +49,17 @@ public class IpAddress {
         return bigIP;
     }
     
+    /**
+     * Get a regular expression to get IPv4 address in strings.
+     * @return IPv4 regular expression.
+     */
+    public static String getIPv4RegularExpression() {
+        return "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
+    }
+    
     
 
 }

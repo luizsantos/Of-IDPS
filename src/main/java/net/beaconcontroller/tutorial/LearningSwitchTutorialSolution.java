@@ -41,6 +41,8 @@ import net.beaconcontroller.core.IOFSwitch;
 import net.beaconcontroller.core.IOFSwitchListener;
 import net.beaconcontroller.packet.Ethernet;
 import net.beaconcontroller.packet.IPv4;
+import net.beaconcontroller.tools.FileManager;
+import net.beaconcontroller.tools.IpAddress;
 
 import org.openflow.protocol.OFFlowMod;
 import org.openflow.protocol.OFMatch;
@@ -163,19 +165,30 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
     private static int countPacketsToOfController=0;
     private static int countSentLikeHub=0;
     
-    // IP of OpenFlow controller
-    //private static int controllerOfIP = IPv4.toIPv4Address("192.168.2.111");
-    private static Set<Integer> allowIPs = new HashSet<Integer>();
-    static {
-        allowIPs.add(IPv4.toIPv4Address("192.168.2.111")); 	// OpenFlow controller;
-    	allowIPs.add(IPv4.toIPv4Address("192.168.2.112")); 	// Xen Controller - on eth1;
-    	allowIPs.add(IPv4.toIPv4Address("172.16.2.130")); 	// Xen Controller - on eth0;
-    	allowIPs.add(IPv4.toIPv4Address("192.168.2.133")); 	// IDS;
-    }
-
     // used to print messages!
     protected static Logger log = LoggerFactory
             .getLogger(LearningSwitchTutorialSolution.class);
+    
+    /*
+     * IP address that will not submitted to the Of-IDPS rules.
+     * Here you can put IPs, like OpenFlow controller, etc... 
+     */
+    private static Set<Integer> allowIPs = new HashSet<Integer>();
+    static {
+        FileManager hostsAllowFile =  new FileManager("/etc/ofidps", "hostsAllow");
+        String fileContent = hostsAllowFile.readFile();
+        String[] lines = fileContent.split("\n");
+        for(String host : lines) {
+            String[] ip = host.split(" ");
+            if (ip[0].matches(IpAddress.getIPv4RegularExpression())) {
+                allowIPs.add(IPv4.toIPv4Address(ip[0]));
+                log.debug("Allowed IP: {}", ip[0]);
+            }
+        }
+        log.debug("BE CAREFUL... These allow IP addresses, will not be submitted to the Of-IDPS security rules!  \n\n");
+    }
+
+    
     
     // Used to send/receive OpenFlow messages.
     protected IBeaconProvider beaconProvider;

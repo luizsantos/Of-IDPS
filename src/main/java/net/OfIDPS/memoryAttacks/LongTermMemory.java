@@ -129,7 +129,7 @@ public class LongTermMemory extends Thread {
      * @param memoryAttacks - To execute some memory attacks methods.
      */
     private void longBadMemory(MemorysAttacks memoryAttacks) {
-        log.debug("Long-term Bad Memory");
+        //log.debug("Long-term Bad Memory");
         Date dateStart = DateTimeManager.getCurrentDate();
         
         SecurityAlerts securityAlerts = new SecurityAlerts();
@@ -160,7 +160,7 @@ public class LongTermMemory extends Thread {
             actuatorFromSensorialMemory.shutDown();
         }
         
-        printRules(ruleListFromIDS, "Bad memory.");
+        //printRules(ruleListFromIDS, "Bad memory");
         
         
         Date dateStop = DateTimeManager.getCurrentDate();
@@ -182,7 +182,7 @@ public class LongTermMemory extends Thread {
      * @param memoryAttacks - To execute some memory attacks methods.
      */
     private void longGoodMemory(MemorysAttacks memoryAttacks) {
-        log.debug("Long-term Good Memory");
+        //log.debug("Long-term Good Memory");
         Date dateStart = DateTimeManager.getCurrentDate();
         String allGoodFlows = "";
 
@@ -191,36 +191,36 @@ public class LongTermMemory extends Thread {
             StatusFlowDAO statusFlowDAO = new StatusFlowDAO();
             switch(methodToRecoverRemembrancesToLongMemory){
                 case LongTermMemory.recoverRemembrancesUsing_1_getAll:
-                    log.debug("Get all good remembrances!");
+                    //log.debug("Long Good memory - Get all good remembrances!");
                     allGoodFlows = statusFlowDAO.getItemsetsString_ofNormalFlows_1_allFlows();
                     break;
                 case LongTermMemory.recoverRemembrancesUsing_2_getLastUsingLimit:
-                    log.debug("Get last good remembrances using a limit!");
+                    //log.debug("Long Good memory - Get last good remembrances using a limit!");
                     allGoodFlows = statusFlowDAO.getItemsetsString_ofNormalFlows_2_lastUsingLimit(limit_to_recover_databaseFlows);
                     break;
                 case LongTermMemory.recoverRemembrancesUsing_2_1_getRandomlyUsingLimit:
-                    log.debug("Get randomly good remembrances using a limit!");
+                    //log.debug("Long Good memory - Get randomly good remembrances using a limit!");
                     allGoodFlows = statusFlowDAO.getItemsetsString_ofNormalFlows_2_1_randomlyUsingLimit(limit_to_recover_databaseFlows);
                     break;
                 case LongTermMemory.recoverRemembrancesUsing_2_2_getStatisticUsingLimit:
-                    log.debug("Get randomly using statistical parameters the last good remembrances using a limit!");
+                    //log.debug("Long Good memory - Get randomly using statistical parameters the last good remembrances using a limit!");
                     allGoodFlows = statusFlowDAO.getItemsetsString_ofNormalFlows_2_2_getStatisticUsingLimit();
                     break;
                 case LongTermMemory.recoverRemembrancesUsing_3_getFromSecondsAgo:
-                    log.debug("Get last good remembrances up to seconds ago!");
+                    //log.debug("Long Good memory - Get last good remembrances up to seconds ago!");
                     allGoodFlows = statusFlowDAO.getItemsetsString_ofNormalFlows_3_upToSecondsAgo(MemorysAttacks.timeToAlertsStayAtLongMemory);
                     break;
                 case LongTermMemory.recoverRemembrancesUsing_3_1_getRandomlyFromSecondsAgo:
-                    log.debug("Get randomly last good remembrances up to seconds ago!");
+                    //log.debug("Long Good memory - Get randomly last good remembrances up to seconds ago!");
                     allGoodFlows = statusFlowDAO.getItemsetsString_ofNormalFlows_3_1_randomlyFromSecondsAgo(
                             MemorysAttacks.timeToAlertsStayAtLongMemory, limit_to_recover_databaseFlows);
                     break;
                 case LongTermMemory.recoverRemembrancesUsing_3_2_getStatisticFromSecondsAgo:
-                    log.debug("Get randomly using statistical parameters the last good remembrances up to seconds ago!");
+                    //log.debug("Long Good memory - Get randomly using statistical parameters the last good remembrances up to seconds ago!");
                     allGoodFlows = statusFlowDAO.getItemsetsString_ofNormalFlows_3_2_getStatisticFromSecondsAgo(MemorysAttacks.timeToAlertsStayAtLongMemory);
                     break;
                 default:
-                    log.debug("Default - Get last good remembrances using a limit!");
+                    //log.debug("Long Good memory - Default - Get last good remembrances using a limit!");
                     allGoodFlows = statusFlowDAO.getItemsetsString_ofNormalFlows_2_lastUsingLimit(limit_to_recover_databaseFlows);
             }
             
@@ -241,12 +241,14 @@ public class LongTermMemory extends Thread {
         longMemoryForGoodRemembrances.clear();
         longMemoryForGoodRemembrances.putAll(ruleListFromIDS);
         
-        printRules(ruleListFromIDS, "Good memory.");
-        FileManager fileManager = new FileManager("~", "goodMemory.txt");
-        fileManager.writeFile("\n DateTime "+
-                DateTimeManager.dateToStringJavaDate((DateTimeManager.getCurrentDate()))
-                +" \n ");
-        fileManager.writeFile(allGoodFlows);
+        //printRules(ruleListFromIDS, "Good memory");
+        
+        // write alerts in a file...
+//        FileManager fileManager = new FileManager("~", "goodMemory.txt");
+//        fileManager.writeFile("\n DateTime "+
+//                DateTimeManager.dateToStringJavaDate((DateTimeManager.getCurrentDate()))
+//                +" \n ");
+//        fileManager.writeFile(allGoodFlows);
         
         Date dateStop = DateTimeManager.getCurrentDate();
         long diffSeconds = DateTimeManager.differenceBetweenTwoDatesInSeconds(dateStart, dateStop);
@@ -261,7 +263,7 @@ public class LongTermMemory extends Thread {
      * @param ruleListFromIDS - Rule list;
      */
     private void printRules(Map<String, AlertMessage> ruleListFromIDS, String comment) {
-        log.debug("{} of rules {} memory", ruleListFromIDS.size(), comment);
+        log.debug("{} of rules {}.", ruleListFromIDS.size(), comment);
         for(String key : ruleListFromIDS.keySet()) {
             AlertMessage goodFlow = ruleListFromIDS.get(key);
             goodFlow.printMsgAlert();

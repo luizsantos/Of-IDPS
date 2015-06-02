@@ -44,7 +44,7 @@ public class FileManager {
         super();
         this.fileName = fileName;
         this.directoryName = directoryName;
-        this.fullPathFileName=directoryName+fileName;
+        this.fullPathFileName= directoryName+"/"+fileName;
     }
 
     /**
@@ -142,7 +142,7 @@ public class FileManager {
             }
 
         } catch (FileNotFoundException e) {
-            log.debug("ATTENTION! Error during writing process on file: {}",
+            log.debug("\n\nERROR... File not found: {}\n\n",
                     this.fullPathFileName);
         }
         return text;
