@@ -60,7 +60,7 @@ import org.slf4j.LoggerFactory;
 
 public class SensorOpenFlow extends Thread implements IOFMessageListener {
     // Interval of time that the OpenFlow statistics message will be sent to the switches.
-    protected static final int timeBetweenRequests = CONFIG.TIME_BETWEEN_RUN_SENSOR_OPENFLOW;
+    //private static int timeBetweenRequests = CONFIG.TIME_BETWEEN_RUN_SENSOR_OPENFLOW;
     public static final int TIME_TO_VERIFY_BAD_FLOW_ON_ALERT_DB = 120;
 
     public static final String directoryName = "/mnt/armazem/openflow/tmp/dadosSwitchesOF/";
@@ -147,7 +147,7 @@ public class SensorOpenFlow extends Thread implements IOFMessageListener {
             
             log.debug("Number of flows actives in switches: {} - From SensorOpenFlow.",  currentFlows.size());
             
-            waitTime(timeBetweenRequests);
+            waitTime(CONFIG.TIME_BETWEEN_RUN_SENSOR_OPENFLOW);
             if (beaconProvider.getListeningIPAddress().isAnyLocalAddress()) {
                 // print switches presents on the network.
                 // log.debug("switches={}", beaconProvider.getSwitches());
@@ -195,7 +195,7 @@ public class SensorOpenFlow extends Thread implements IOFMessageListener {
             //TODO - verify where put this!
             //writeFlowsIntoJSONFile();
             
-            log.debug("Waiting {} seconds to rerun SensorOpenFlow.",timeBetweenRequests);
+            log.debug("Waiting {} seconds to rerun SensorOpenFlow.",CONFIG.TIME_BETWEEN_RUN_SENSOR_OPENFLOW);
         }
 
     }

@@ -63,43 +63,12 @@ import org.slf4j.LoggerFactory;
 public class LearningSwitchTutorialSolution implements IOFMessageListener,
         IOFSwitchListener {
     
-    /*
-     * To variables disable* below, use 1 to disable or any other value to enable, like 0 (zero).
-     */
-    /*
-     * Use to enable or disable ALL Of-IDPS architecture.
-     */
-    protected static int disableOfIDPS=0;
-    /*
-     * This can disable the ability of Of-IDPF collect Openflows statistics 
-     * messages from network elements, like switches.
-     * If this is is equal to 1 (enable), this will too affect disable the
-     * disableOfIDPS_UseOfAlerts because we won't have OpenFlow data to do
-     * the analysis. 
-     */
     
-    public static int disableOfIDPS_UseOfgetStatisticsFromNetwork=0;
-    /*
-     * Enable or disable the analysis of security threats based on OpenFlow
-     * statistics, this depend that the
-     * disableOfIDPS_UseOfgetStatisticsFromNetwork variable is enabled
-     * (different of 1).
-     * 
-     * If just this variable is disabled and the
-     * disableOfIDPS_UseOfgetStatisticsFromNetwork variable is enable, then, the
-     * Of-IDPS will just collect Openflow statistics messages but won't use this
-     * for reactions.
-     * 
-     * This is used, here and in the MemoryAttacks class.
-     */
-    public static int disableOfIDPS_UseOfAlerts=0;
-    /*
-     *  Enable or disable the use of IDS message on the Of-IDPS
-     *  
-     *  This is used in the MemoryAttacks class.
-     *  
-     */
-    public static int disableOfIDPS_UseIDSAlerts=0;
+    
+    
+    
+    
+    
     
     /*
      * Used to send and receive OpenFlow statistics messages, like flows
@@ -374,7 +343,7 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
 //            log.debug("Packet being analyzed:");
 //            printPacketMatch(match);
                         
-            if (disableOfIDPS != 1) {
+            if (CONFIG.DISABLE_OFIDPS != 1) {
                 // To print rules in the memories. 
                 // memoryAttacks.printMemoryAttacks(sensorialMemoryAttacks);
                 // memoryAttacks.printMemoryAttacks(shortMemoryAttacks);
@@ -1050,33 +1019,41 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
         beaconProvider.addOFMessageListener(OFType.PACKET_IN, this);
         beaconProvider.addOFMessageListener(OFType.STATS_REPLY, this);
         beaconProvider.addOFSwitchListener(this);
+        
+        // Start configure class to read Of-IDPS attributes.
+        CONFIG.startUp();
 
         // Thread responsible for construct the attacks memory
         // memoryAttacks.startUp();
-        if(disableOfIDPS!=1) {
+        if(CONFIG.DISABLE_OFIDPS!=1) {
             
-            if (disableOfIDPS_UseOfgetStatisticsFromNetwork != 1) {
+            if (CONFIG.DISABLE_OFIDPS_GET_OPENFLOW_STATISTICS_FROM_NETWORK != 1) {
                 log.debug("\tStarting OpenFlow monitor statistics...");
                 sensorOF.startUp(beaconProvider);
                 sensorOF.start();
             } else {
-                log.debug("\t!!!!!!!! ATTENTION, Of-IDPS won't get OpenFlow statistics, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variable disableOfIDPS_UseOfgetStatisticsFromNetwork on LearningSwithTutorialSolution class..."); 
+                log.debug("\t!!!!!!!! ATTENTION, Of-IDPS won't get OpenFlow statistics, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  " +
+                		"to change this setup to 0 (zero) the variable DISABLE_OFIDPS_GET_OPENFLOW_STATISTICS_FROM_NETWORK on CONFIG class..."); 
             }
             
             log.debug("\tStarting AUTONOMIC rules...");
             memoryAttacks.startUp(beaconProvider);
             memoryAttacks.start();
             
-            if (disableOfIDPS_UseOfAlerts != 1 && disableOfIDPS_UseOfgetStatisticsFromNetwork !=1) {
+            if (CONFIG.DISABLE_OFIDPS_ANALYSE_SECURITY_USING_OPENFLOW_STATISTICS != 1 && CONFIG.DISABLE_OFIDPS_GET_OPENFLOW_STATISTICS_FROM_NETWORK !=1) {
                 log.debug("\tStarting OpenFlow ANALYSIS...");
                 analysisFlow.start();
             } else {
-                log.debug("\t!!!!!!!! ATTENTION, Of-IDPS ALERT OPENFLOW STATISTICS IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variableS disableOfIDPS_UseOfgetStatisticsFromNetwork and disableOfIDPS_UseOfAlerts on LearningSwithTutorialSolution class...");
+                log.debug("\t!!!!!!!! ATTENTION, Of-IDPS ALERT OPENFLOW STATISTICS IS DISABLED," +
+                		" then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!" +
+                		"  to change this setup to 0 (zero) the variables DISABLE_OFIDPS_GET_OPENFLOW_STATISTICS_FROM_NETWORK" +
+                		" and DISABLE_OFIDPS_ANALYSE_SECURITY_USING_OPENFLOW_STATISTICS on CONFIG class...");
             }
             
             
         } else {
-            log.debug("\t!!!!!!!! ATTENTION, Of-IDPS DISABLE and AUTONOMIC RULES TOO!!!!!!!  to change this setup to 0 (zero) the variable disableOfIDPS on LearningSwithTutorialSolution class...");
+            log.debug("\t!!!!!!!! ATTENTION, Of-IDPS DISABLE and AUTONOMIC RULES TOO!!!!!!!" +
+            		"  to change this setup to 0 (zero) the variable DISABLE_OFIDPS on CONFIG class...");
         }
 
     }

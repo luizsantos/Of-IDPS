@@ -80,7 +80,7 @@ public class MemorysAttacks extends Thread {
     private Map<String,AlertMessage> shortMemoryAttacks;
     private Map<String,AlertMessage> longMemoryAttacks;
     private Map<String,AlertMessage> sensorialMemoryAttacks;
-    private Map<String, AlertMessage> longMemoryForGoodRemembrances;
+    private Map<String,AlertMessage> longMemoryForGoodRemembrances;
     
     // To run the long-term memory
     LongTermMemory longTermMemory = new LongTermMemory();
@@ -90,9 +90,9 @@ public class MemorysAttacks extends Thread {
      * of time will be since the first time that it appear until the value in
      * this variables in seconds.
      */
-    public static int timeToAlertsStayAtShortMemory= CONFIG.TIME_TO_ALERTS_STAY_AT_SHORT_MEMORY;
-    public static int timeToAlertsStayAtSensorialMemory= CONFIG.TIME_TO_ALERTS_STAY_AT_SENSORIAL_MEMORY;
-    public static int timeToAlertsStayAtLongMemory= CONFIG.TIME_TO_ALERTS_STAY_AT_LONG_MEMOY;
+    //public static int timeToAlertsStayAtShortMemory= CONFIG.TIME_TO_ALERTS_STAY_AT_SHORT_MEMORY;
+    //public static int timeToAlertsStayAtSensorialMemory= CONFIG.TIME_TO_ALERTS_STAY_AT_SENSORIAL_MEMORY;
+    //public static int timeToAlertsStayAtLongMemory= CONFIG.TIME_TO_ALERTS_STAY_AT_LONG_MEMORY;
     
     /*
      * Attributes used to disable or enable sensorial, short, and long memory.
@@ -111,7 +111,7 @@ public class MemorysAttacks extends Thread {
     /*
      * Time to wait until execute again the main method contained in the Thread (method run).
      */
-    public static final int TIME_TO_WAIT= CONFIG.TIME_BETWEEN_RUN_MEMORY_ATTACKS;
+    //public static int TIME_TO_WAIT = CONFIG.TIME_BETWEEN_RUN_MEMORY_ATTACKS;
     
     /*
      * USED TO IDENTIFY THE MEMORY TYPE.
@@ -222,8 +222,9 @@ public class MemorysAttacks extends Thread {
             }
             
             // Time to waiting
-            log.debug("Waiting {} seconds to rerun Sensorial and Short-Term memory attacks\n", TIME_TO_WAIT);
-            waitTimeInSeconds(TIME_TO_WAIT);
+            log.debug("Waiting {} seconds to rerun Sensorial and Short-Term memory attacks\n", 
+                    CONFIG.TIME_BETWEEN_RUN_MEMORY_ATTACKS);
+            waitTimeInSeconds(CONFIG.TIME_BETWEEN_RUN_MEMORY_ATTACKS);
             
         }        
     }
@@ -242,7 +243,7 @@ public class MemorysAttacks extends Thread {
         // Get all alerts to sensorial memory.
         SecurityAlerts securityAlerts = new SecurityAlerts();
         listOfAllAlertsInSensorialMemory = securityAlerts.getList_alerts_upToSecondsAgo(
-                timeToAlertsStayAtSensorialMemory, 
+                CONFIG.TIME_TO_ALERTS_STAY_AT_SENSORIAL_MEMORY, 
                 "Sensorial Memory");
         
         // Remove old rules from sensorial memory to rerun the sensorial memory algorithm. 
@@ -346,7 +347,7 @@ public class MemorysAttacks extends Thread {
         String allAlerts = securityAlerts.getItemsetsString_FromAlerts(
                 LongTermMemory.recoverRemembrancesUsing_3_getFromSecondsAgo,
                 LongTermMemory.limit_to_recover_databaseFlows,
-                timeToAlertsStayAtShortMemory,
+                CONFIG.TIME_TO_ALERTS_STAY_AT_SHORT_MEMORY,
                 "Short memory");
         
         // Obtain rules from IDS alerts using itemsets algorithm.
@@ -489,7 +490,7 @@ public class MemorysAttacks extends Thread {
                         badAlertFlow.getTransportSource(),
                         badAlertFlow.getTransportDestination(),
                         currentDate,
-                        timeToAlertsStayAtSensorialMemory+2
+                        CONFIG.TIME_TO_ALERTS_STAY_AT_SENSORIAL_MEMORY+2
                         );
             }
         } catch (ClassNotFoundException e) {
@@ -873,7 +874,8 @@ public class MemorysAttacks extends Thread {
                 shortMemoryAttacks.size()-addedRules,
                 removedRules,
                 alreadyExistedRules);
-        log.debug("Waiting {} seconds to rerun itemset algorithm and generate new AUTONOMIC rules",TIME_TO_WAIT);
+        log.debug("Waiting {} seconds to rerun itemset algorithm and generate new AUTONOMIC rules",
+                CONFIG.TIME_BETWEEN_RUN_MEMORY_ATTACKS);
         //printMemoryAttacks(shortMemoryAttacks);
         
         actuator.shutDown();
@@ -957,7 +959,8 @@ public class MemorysAttacks extends Thread {
         }
                     
         log.debug("There are {} rules in short memory - {} new, {} already existed, {} removed", shortMemoryAttacks.size(),addedRules,alreadyExistedRules, removedRules);
-        log.debug("Waiting {} seconds to rerun itemset algorithm and generate new AUTONOMIC rules",TIME_TO_WAIT);
+        log.debug("Waiting {} seconds to rerun itemset algorithm and generate new AUTONOMIC rules",
+                CONFIG.TIME_BETWEEN_RUN_MEMORY_ATTACKS);
     }
     
     

@@ -28,6 +28,7 @@ import net.beaconcontroller.packet.IPv4;
 import net.beaconcontroller.tools.DateTimeManager;
 import net.beaconcontroller.tools.FileManager;
 import net.beaconcontroller.tools.ProtocolsNumbers;
+import net.beaconcontroller.tutorial.CONFIG;
 import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
 
 import org.openflow.protocol.OFMatch;
@@ -291,7 +292,7 @@ public class IntrusionPreventionSystem extends Thread implements
             AlertMessage alertMsg = new AlertMessage();
             
             alertMsg.setTempo(fields[0].substring(0,18));
-            boolean alertIsInTheTime = DateTimeManager.verifyDateTimeRangeInSeconds(alertMsg.getTempo(), currentDate, MemorysAttacks.timeToAlertsStayAtShortMemory);
+            boolean alertIsInTheTime = DateTimeManager.verifyDateTimeRangeInSeconds(alertMsg.getTempo(), currentDate, CONFIG.TIME_TO_ALERTS_STAY_AT_SHORT_MEMORY);
             if (alertIsInTheTime) {
                 
                 int snortPriority = Integer.valueOf(fields[1]);

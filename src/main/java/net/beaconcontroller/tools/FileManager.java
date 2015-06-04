@@ -12,6 +12,7 @@ package net.beaconcontroller.tools;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -146,6 +147,22 @@ public class FileManager {
                     this.fullPathFileName);
         }
         return text;
+    }
+    
+    /**
+     * Read a file with the ImputStream method.
+     * @return A content from a file in the inputStream mode.
+     */
+    public FileInputStream readImputStreamFile() {
+        FileInputStream input = null;
+        try {
+            input = new FileInputStream(this.fullPathFileName);
+        } catch (FileNotFoundException e) {
+            log.debug("\n\nERROR... File not found: {}\n\n",
+                    this.fullPathFileName);
+            e.printStackTrace();
+        }
+        return input;
     }
     
     /**

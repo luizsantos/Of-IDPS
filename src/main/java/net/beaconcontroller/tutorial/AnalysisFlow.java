@@ -28,8 +28,8 @@ import org.slf4j.LoggerFactory;
 
 public class AnalysisFlow extends Thread {
     // Time to execute the analyze.
-    static final int timeBetweenAnalysis = CONFIG.TIME_BETWEEN_RUN_ANALYSIS_FLOW;
-    private int timePeriodToRecoverFlowFromDB = CONFIG.TIME_PERIOD_TO_RECOVER_FLOW_INFORMATION_FROM_DB;
+    //static final int timeBetweenAnalysis = CONFIG.TIME_BETWEEN_RUN_ANALYSIS_FLOW;
+    //private int timePeriodToRecoverFlowFromDB = CONFIG.TIME_PERIOD_TO_RECOVER_FLOW_INFORMATION_FROM_DB;
     
     // Used to store the detected suspicious flows
     //private static List<AlertMessageSharePriority> listOfMaliciousFlows = new ArrayList<AlertMessageSharePriority>();
@@ -80,8 +80,8 @@ public class AnalysisFlow extends Thread {
             analyzeDoSAttack();
             
             
-            log.debug("Waiting {} seconds to rerun OpenFlow analysis.",timeBetweenAnalysis);
-            waitTime(timeBetweenAnalysis);
+            log.debug("Waiting {} seconds to rerun OpenFlow analysis.",CONFIG.TIME_BETWEEN_RUN_ANALYSIS_FLOW);
+            waitTime(CONFIG.TIME_BETWEEN_RUN_ANALYSIS_FLOW);
         }
     }
 
@@ -119,7 +119,10 @@ public class AnalysisFlow extends Thread {
             StatusFlowDAO statusFlowDAO = new StatusFlowDAO();
             // Get the already suspicious flows.
             // TODO - What time period is better to use?
-            databaseFlowsToByAnalysed =  statusFlowDAO.getList_suspiciousDoSTCPFlows_upToSecondsAgo(this.timePeriodToRecoverFlowFromDB, dosTCPPacketCount, dosTCPByteCount);
+            databaseFlowsToByAnalysed =  statusFlowDAO.getList_suspiciousDoSTCPFlows_upToSecondsAgo(
+                    CONFIG.TIME_PERIOD_TO_RECOVER_FLOW_INFORMATION_FROM_DB,
+                    dosTCPPacketCount,
+                    dosTCPByteCount);
             
             log.debug("Number of alert valid alerts from database: {} - From AnalysisFlow.", databaseFlowsToByAnalysed.size());
         } catch (ClassNotFoundException e) {
@@ -248,7 +251,8 @@ public class AnalysisFlow extends Thread {
         try {
             StatusFlowDAO statusFlowDAO = new StatusFlowDAO();
             // TODO - What time period is better to use?
-            allFlowsToByAnalysed =  statusFlowDAO.getList_GoodBadFlows_upToSecondsAgo(this.timePeriodToRecoverFlowFromDB);
+            allFlowsToByAnalysed =  statusFlowDAO.getList_GoodBadFlows_upToSecondsAgo(
+                    CONFIG.TIME_PERIOD_TO_RECOVER_FLOW_INFORMATION_FROM_DB);
             log.debug("Number of alert valid alerts from database: {}", allFlowsToByAnalysed.size());
         } catch (ClassNotFoundException e) {
             log.debug("ATTENTION - Sorry wasn't possible to read data in database - SQL error!");
@@ -356,7 +360,8 @@ public class AnalysisFlow extends Thread {
         try {
             StatusFlowDAO statusFlowDAO = new StatusFlowDAO();
             // TODO - What time period is better to use?
-            allFlowsToByAnalysed =  statusFlowDAO.getList_GoodBadFlows_upToSecondsAgo(this.timePeriodToRecoverFlowFromDB);
+            allFlowsToByAnalysed =  statusFlowDAO.getList_GoodBadFlows_upToSecondsAgo(
+                    CONFIG.TIME_PERIOD_TO_RECOVER_FLOW_INFORMATION_FROM_DB);
             log.debug("Number of alert valid alerts from database: {}", allFlowsToByAnalysed.size());
         } catch (ClassNotFoundException e) {
             log.debug("ATTENTION - Sorry wasn't possible to read data in database - SQL error!");

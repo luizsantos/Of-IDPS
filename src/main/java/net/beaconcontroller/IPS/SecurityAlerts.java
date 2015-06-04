@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import net.OfIDPS.memoryAttacks.LongTermMemory;
 import net.beaconcontroller.DAO.AlertOpenFlowDAO;
+import net.beaconcontroller.tutorial.CONFIG;
 import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
 
 public class SecurityAlerts {
@@ -52,7 +53,7 @@ public class SecurityAlerts {
         String alertsFromIDSSnort = "";
         String alertsFromOpenFlow = "";
         // Get IDS alerts.
-        if (LearningSwitchTutorialSolution.disableOfIDPS_UseIDSAlerts != 1) {
+        if (CONFIG.DISABLE_OFIDPS_EXTERNAL_IDS != 1) {
             switch(methodToRecoverRemembrancesToLongMemory){
                 case LongTermMemory.recoverRemembrancesUsing_1_getAll:
                     //log.debug("{} - Get all Snort alerts!", stringWhoCalled);
@@ -87,12 +88,14 @@ public class SecurityAlerts {
                     alertsFromIDSSnort=ids.getItemsetsString_SnortAlerts_2_lastUsingLimit(limit, stringWhoCalled);
             } 
         } else {
-            log.debug("\t!!!!!!!! ATTENTION, Of-IDPS IDS alerts analysis IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variable disableOfIDPS_UseIDSAlerts on LearningSwithTutorialSolution class...");
+            log.debug("\t!!!!!!!! ATTENTION, Of-IDPS IDS alerts analysis IS DISABLED," +
+            		" then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!" +
+            		"  to change this setup to 0 (zero) the variable DISABLE_OFIDPS_EXTERNAL_IDS on CONFIG class...");
         }
         
         // Get OpenFlow alerts.
-        if (LearningSwitchTutorialSolution.disableOfIDPS_UseOfAlerts != 1
-                && LearningSwitchTutorialSolution.disableOfIDPS_UseOfgetStatisticsFromNetwork != 1) {
+        if (CONFIG.DISABLE_OFIDPS_ANALYSE_SECURITY_USING_OPENFLOW_STATISTICS != 1
+                && CONFIG.DISABLE_OFIDPS_GET_OPENFLOW_STATISTICS_FROM_NETWORK != 1) {
             switch(methodToRecoverRemembrancesToLongMemory){
                 case LongTermMemory.recoverRemembrancesUsing_1_getAll:
                     //log.debug("{} - Get all bad remembrances!", stringWhoCalled);
@@ -127,7 +130,10 @@ public class SecurityAlerts {
                     alertsFromOpenFlow = alertOpenFlowDAO.getItemsetsString_OpenFlowAlerts_2_lastUsingLimit(limit, stringWhoCalled);
             }
         } else {
-            log.debug("\t!!!!!!!! ATTENTION, Of-IDPS ALERT OPENFLOW STATISTICS IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variables disableOfIDPS_UseOfgetStatisticsFromNetwork and disableOfIDPS_UseOfAlerts on LearningSwithTutorialSolution class...");
+            log.debug("\t!!!!!!!! ATTENTION, Of-IDPS ALERT OPENFLOW STATISTICS IS DISABLED," +
+            		" then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!" +
+            		"  to change this setup to 0 (zero) the variables DISABLE_OFIDPS_ANALYSE_SECURITY_USING_OPENFLOW_STATISTICS" +
+            		" and DISABLE_OFIDPS_GET_OPENFLOW_STATISTICS_FROM_NETWORK on CONFIG class...");
         }
         return alertsFromIDSSnort+alertsFromOpenFlow;
     }
@@ -145,19 +151,24 @@ public class SecurityAlerts {
         List<AlertMessage> listOfAllAlerts =  new ArrayList<AlertMessage>();
         
         // Verify if IDS is enabled.
-        if (LearningSwitchTutorialSolution.disableOfIDPS_UseIDSAlerts != 1) {
+        if (CONFIG.DISABLE_OFIDPS_EXTERNAL_IDS != 1) {
             // Get alerts from IDS using the time of memory.
             listOfAllAlerts.addAll(ids.getAlertsFromSnortIDS(seconds, stringWhoCalled));
         } else {
-            log.debug("\t!!!!!!!! ATTENTION, Of-IDPS IDS alerts analysis IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variable disableOfIDPS_UseIDSAlerts on LearningSwithTutorialSolution class...");
+            log.debug("\t!!!!!!!! ATTENTION, Of-IDPS IDS alerts analysis IS DISABLED," +
+            		" then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!" +
+            		"  to change this setup to 0 (zero) the variable DISABLE_OFIDPS_EXTERNAL_IDS on CONFIG class...");
         }
         
         //Verify if the OpenFlow security analysis is enabled.
-        if (LearningSwitchTutorialSolution.disableOfIDPS_UseOfAlerts != 1
-                && LearningSwitchTutorialSolution.disableOfIDPS_UseOfgetStatisticsFromNetwork != 1) {
+        if (CONFIG.DISABLE_OFIDPS_ANALYSE_SECURITY_USING_OPENFLOW_STATISTICS != 1
+                && CONFIG.DISABLE_OFIDPS_GET_OPENFLOW_STATISTICS_FROM_NETWORK != 1) {
             listOfAllAlerts.addAll(alertOpenFlowDAO.getList_OpenFlowAlerts_3_UpToSecondsAgo(seconds, stringWhoCalled));
         } else {
-            log.debug("\t!!!!!!!! ATTENTION, Of-IDPS ALERT OPENFLOW STATISTICS IS DISABLED, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  to change this setup to 0 (zero) the variables disableOfIDPS_UseOfgetStatisticsFromNetwork and disableOfIDPS_UseOfAlerts on LearningSwithTutorialSolution class...");
+            log.debug("\t!!!!!!!! ATTENTION, Of-IDPS ALERT OPENFLOW STATISTICS IS DISABLED," +
+            		" then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!" +
+            		"  to change this setup to 0 (zero) the variables DISABLE_OFIDPS_ANALYSE_SECURITY_USING_OPENFLOW_STATISTICS" +
+            		" and DISABLE_OFIDPS_GET_OPENFLOW_STATISTICS_FROM_NETWORK on CONFIG class...");
         }
         
         return listOfAllAlerts;

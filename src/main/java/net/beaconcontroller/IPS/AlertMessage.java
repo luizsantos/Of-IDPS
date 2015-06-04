@@ -181,9 +181,9 @@ public class AlertMessage {
      */
     public void increaseAlertTime() {
         Calendar currentDateTimeIncreased =  Calendar.getInstance();
-        currentDateTimeIncreased.add(Calendar.SECOND, MemorysAttacks.timeToAlertsStayAtShortMemory);
+        currentDateTimeIncreased.add(Calendar.SECOND, CONFIG.TIME_TO_ALERTS_STAY_AT_SHORT_MEMORY);
         log.debug("This alert had your time increased in {} seconds ({})",
-                MemorysAttacks.timeToAlertsStayAtShortMemory, currentDateTimeIncreased.getTime());
+                CONFIG.TIME_TO_ALERTS_STAY_AT_SHORT_MEMORY, currentDateTimeIncreased.getTime());
         this.tempo = currentDateTimeIncreased.getTime();
     }
     
@@ -474,7 +474,7 @@ public class AlertMessage {
      * Print life in seconds
      */
     public void printLifeInSeconds() {
-        log.debug("rule/alert time live in seconds: ~"+ this.getLife()*MemorysAttacks.TIME_TO_WAIT);
+        log.debug("rule/alert time live in seconds: ~"+ this.getLife()*CONFIG.TIME_BETWEEN_RUN_MEMORY_ATTACKS);
     }
     
     /**
