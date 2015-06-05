@@ -73,6 +73,57 @@ public class CONFIG {
     //public static int disableOfIDPS_UseIDSAlerts=0;
     public static int DISABLE_OFIDPS_EXTERNAL_IDS = 0;
     
+    /*
+     * Attributes used to disable or enable sensorial, short, and long (bad/good) memory.
+     */    
+    // Disable sensorial memory
+    //protected static int disableSensorialMemory=0;
+    public static int DISABLE_MEMORY_SENSORIAL = 0;
+    
+    // Disable short-term memory
+    //protected static int disableShortMemory=0;
+    public static int DISABLE_MEMORY_SHORT = 0;
+    
+    // To disable long-term bad memory.
+    //public static int disableLongBadMemory=0;
+    public static int DISABLE_MEMORY_LONG_BAD = 0;
+    
+    // To disable long-term good memory.
+    //public static int disableLongGoodMemory=0;
+    public static int DISABLE_MEMORY_LONG_GOOD = 0;
+    
+    // Attribute that deals with the order of the rules to be analyzed and applied in the Of-IDPS.
+    /*
+     * Order to be read/analyzed the memories rules:
+     *      1       |     2     |     3     |   4
+     * -------------|-----------|-----------|----------
+     * longGood     | sensorial |sensorial  | sensorial
+     * sensorial    | longGood  |short      | short
+     * short        | short     |longGood   | longBad
+     * longBad      | longBad   |longBad    |
+     * 
+     * See MemorysAttack class.
+     */
+    public static int MEMORY_ORDER_TO_BE_APPLIED_IN_THE_OFIDPS = 3;
+    
+    //Method to recover remembrances to long memory.
+    /*
+     * You must choose:
+     * 1 - Get all remembrances - this can consume a lot of the machine process.
+     * 2 - Get remembrances using a limit to recovery the database register, example get the last 10.000 registers.
+     * 3 - Get remembrances using a limit but get the registers randomly.
+     * 4 - Get remembrances using a limit but get the registers randomly and using a statistic threshold based on the amount of existent registers in database to generate reliable samples.
+     * 5 - Get remembrances up to seconds ago.
+     * 6 - Get remembrances up to seconds ago but get the registers randomly.
+     * 7 - Get remembrances up to seconds ago but get the registers randomly and using a statistic threshold based on the amount of existent registers in database to generate reliable samples.
+     * See LongTermMemory class.
+     */
+    //public static int methodToRecoverRemembrancesToLongMemory = 7 ;
+    public static int MEMORY_LONG_METHOD_RECOVER_REMEMBRANCES = 7;
+    
+    // Max number of registers to be recovered from database and be processed by long memories to form good/bad remembrances.
+    //public static int limit_to_recover_databaseFlows=10000;
+    public static int MEMORY_LONG_METHOD_RECOVER_REMEMBRANCES_LIMIT_TO_RECOVER_FROM_DB=10000;
     
     
     // Memory Attacks variables/constants:
@@ -110,10 +161,6 @@ public class CONFIG {
      * Get statistics information from OpenFlow elements (ie. switches).
      */
     public static int TIME_BETWEEN_RUN_SENSOR_OPENFLOW = 3; // tempo sensor
-
-        
-    
-    
     
     // Analyzes flows variables/constants:
     /*
@@ -135,6 +182,18 @@ public class CONFIG {
      * use false to enable and true to disable.
      */
     public static boolean DISABLE_JSON_OUTPUT = false;
+    
+    // Of-IDPS DATABASE
+    // Database host.
+    public static String DB_OFIDPS_HOST="localhost";
+    // Database network port.
+    public static String DB_OFIDPS_PORT="5432";
+    // Database name.
+    public static String DB_OFIDPS_NAME="ofidps";
+    // Database user.
+    public static String DB_OFIDPS_USER="ofidps";
+    // Database password.
+    public static String DB_OFIDPS_PASSWORD="123mudar";
     
     /**
      * Used to start some methods and attributes.
@@ -158,8 +217,16 @@ public class CONFIG {
             DISABLE_OFIDPS_ANALYSE_SECURITY_USING_OPENFLOW_STATISTICS = 
                     propertieToInt(prop, "DISABLE_OFIDPS_ANALYSE_SECURITY_USING_OPENFLOW_STATISTICS");
             DISABLE_OFIDPS_EXTERNAL_IDS = propertieToInt(prop, "DISABLE_OFIDPS_EXTERNAL_IDS");
+            DISABLE_MEMORY_SENSORIAL = propertieToInt(prop, "DISABLE_MEMORY_SENSORIAL");
+            DISABLE_MEMORY_SHORT = propertieToInt(prop, "DISABLE_MEMORY_SHORT");
+            DISABLE_MEMORY_LONG_BAD = propertieToInt(prop, "DISABLE_MEMORY_LONG_BAD");
+            DISABLE_MEMORY_LONG_GOOD = propertieToInt(prop, "DISABLE_MEMORY_LONG_GOOD");
             
-            
+            MEMORY_ORDER_TO_BE_APPLIED_IN_THE_OFIDPS = propertieToInt(prop, "MEMORY_ORDER_TO_BE_APPLIED_IN_THE_OFIDPS");
+            MEMORY_LONG_METHOD_RECOVER_REMEMBRANCES = propertieToInt(prop, "MEMORY_LONG_METHOD_RECOVER_REMEMBRANCES");
+            MEMORY_LONG_METHOD_RECOVER_REMEMBRANCES_LIMIT_TO_RECOVER_FROM_DB = propertieToInt(prop, 
+                    "MEMORY_LONG_METHOD_RECOVER_REMEMBRANCES_LIMIT_TO_RECOVER_FROM_DB");
+                        
             TIME_BETWEEN_RUN_MEMORY_ATTACKS = propertieToInt(prop, "TIME_BETWEEN_RUN_MEMORY_ATTACKS");
             TIME_TO_ALERTS_STAY_AT_SENSORIAL_MEMORY = propertieToInt(prop, "TIME_TO_ALERTS_STAY_AT_SENSORIAL_MEMORY");
             TIME_TO_ALERTS_STAY_AT_SHORT_MEMORY = propertieToInt(prop, "TIME_TO_ALERTS_STAY_AT_SHORT_MEMORY");
@@ -168,10 +235,28 @@ public class CONFIG {
             TIME_BETWEEN_RUN_ANALYSIS_FLOW = propertieToInt(prop, "TIME_BETWEEN_RUN_ANALYSIS_FLOW");
             TIME_PERIOD_TO_RECOVER_FLOW_INFORMATION_FROM_DB = propertieToInt(prop, "TIME_PERIOD_TO_RECOVER_FLOW_INFORMATION_FROM_DB");
             DISABLE_JSON_OUTPUT = propertieToBoolean(prop, "DISABLE_JSON_OUTPUT");
+            
+            DB_OFIDPS_HOST = propertieToString(prop, "DB_OFIDPS_HOST");
+            DB_OFIDPS_PORT = propertieToString(prop, "DB_OFIDPS_PORT");
+            DB_OFIDPS_NAME = propertieToString(prop, "DB_OFIDPS_NAME");
+            DB_OFIDPS_USER = propertieToString(prop, "DB_OFIDPS_USER");
+            DB_OFIDPS_PASSWORD = propertieToString(prop, "DB_OFIDPS_PASSWORD");
+
+            
         } catch (IOException e) {
             log.debug("ATTENTION!!! Error during config file processing...");
             e.printStackTrace();
         }
+    }
+    
+    private static String propertieToString(Properties prop, String key) {
+        String value = prop.getProperty(key);
+        if(key.equalsIgnoreCase("DB_OFIDPS_PASSWORD")) {
+            log.debug("CONFIG - {} = ****", key);
+        } else {
+            log.debug("CONFIG - {} = {}", key, value);
+        }
+        return value;
     }
     
     private static int propertieToInt(Properties prop, String key) {

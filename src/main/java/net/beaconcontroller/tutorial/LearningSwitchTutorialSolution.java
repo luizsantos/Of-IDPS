@@ -63,13 +63,6 @@ import org.slf4j.LoggerFactory;
 public class LearningSwitchTutorialSolution implements IOFMessageListener,
         IOFSwitchListener {
     
-    
-    
-    
-    
-    
-    
-    
     /*
      * Used to send and receive OpenFlow statistics messages, like flows
      * installed in OpenFlow switches.
@@ -359,7 +352,7 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
                  * this packet not will be analyzed by the next memory!
                  */
                 MemoryAttackRuleMatch memoryAttackRuleMatch =  new MemoryAttackRuleMatch();
-                switch(MemorysAttacks.MEMORY_ORDER_TO_BE_APPLIED_IN_THE_OFIDPS) {
+                switch(CONFIG.MEMORY_ORDER_TO_BE_APPLIED_IN_THE_OFIDPS) {
                     case MemorysAttacks.MEMORY_ORDER_1_LONGGOOD_SENSORIAL_SHORT_LOGBAD:
                         log.debug("Order {} - longGood, sensorial, short, longBad!", MemorysAttacks.MEMORY_ORDER_1_LONGGOOD_SENSORIAL_SHORT_LOGBAD);
                         memoryAttackRuleMatch = memoryAnalyzeRulesOrder_1_LONGGOOD_SENSORIAL_SHORT_LOGBAD(match);
@@ -378,7 +371,7 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
                         break;
                     default:
                         log.debug("\n\n++++++++ATTENTION! Unknown order of MEMORIES to process the network packets!\n" +
-                        		" Verify and set the attibute MEMORY_ORDER_TO_BE_APPLIED_IN_THE_OFIDPS in the MemorysAttacks class.\n" +
+                        		" Verify and set the attibute MEMORY_ORDER_TO_BE_APPLIED_IN_THE_OFIDPS in the CONFIG file.\n" +
                         		" This way the Of-IDPS is pratically DISABLED.\n");
                 }
 
@@ -1033,7 +1026,7 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
                 sensorOF.start();
             } else {
                 log.debug("\t!!!!!!!! ATTENTION, Of-IDPS won't get OpenFlow statistics, then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!  " +
-                		"to change this setup to 0 (zero) the variable DISABLE_OFIDPS_GET_OPENFLOW_STATISTICS_FROM_NETWORK on CONFIG class..."); 
+                		"to change this setup to 0 (zero) the variable DISABLE_OFIDPS_GET_OPENFLOW_STATISTICS_FROM_NETWORK on CONFIG file..."); 
             }
             
             log.debug("\tStarting AUTONOMIC rules...");
@@ -1047,13 +1040,13 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
                 log.debug("\t!!!!!!!! ATTENTION, Of-IDPS ALERT OPENFLOW STATISTICS IS DISABLED," +
                 		" then won't be able to generate autonomic rules based on OpenFlow data!!!!!!!" +
                 		"  to change this setup to 0 (zero) the variables DISABLE_OFIDPS_GET_OPENFLOW_STATISTICS_FROM_NETWORK" +
-                		" and DISABLE_OFIDPS_ANALYSE_SECURITY_USING_OPENFLOW_STATISTICS on CONFIG class...");
+                		" and DISABLE_OFIDPS_ANALYSE_SECURITY_USING_OPENFLOW_STATISTICS on CONFIG file...");
             }
             
             
         } else {
             log.debug("\t!!!!!!!! ATTENTION, Of-IDPS DISABLE and AUTONOMIC RULES TOO!!!!!!!" +
-            		"  to change this setup to 0 (zero) the variable DISABLE_OFIDPS on CONFIG class...");
+            		"  to change this setup to 0 (zero) the variable DISABLE_OFIDPS on CONFIG file...");
         }
 
     }

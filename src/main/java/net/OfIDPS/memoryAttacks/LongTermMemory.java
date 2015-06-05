@@ -54,11 +54,7 @@ public class LongTermMemory extends Thread {
      */
     public static final int recoverRemembrancesUsing_3_2_getStatisticFromSecondsAgo=7;
     
-    
-    private static int methodToRecoverRemembrancesToLongMemory = recoverRemembrancesUsing_3_2_getStatisticFromSecondsAgo ; 
-    
-    // Max number of registers to be recovered from database;
-    public static int limit_to_recover_databaseFlows=10000;
+
     
     protected static Logger log = LoggerFactory
             .getLogger(LearningSwitchTutorialSolution.class);
@@ -91,27 +87,27 @@ public class LongTermMemory extends Thread {
     public void run() {
         log.debug("Start Thread that is responsible to construct Long-Term memory.");
         while (true) {
-            if (MemorysAttacks.disableLongMemory != 1) {
+            if (CONFIG.DISABLE_MEMORY_LONG_GOOD != 1 || CONFIG.DISABLE_MEMORY_LONG_BAD !=1 ) {
                 
                 // To use memoryAttacks methods.
                 MemorysAttacks memoryAttacks = new MemorysAttacks();
                 
-                if (MemorysAttacks.disableLongGoodMemory != 1) {
+                if (CONFIG.DISABLE_MEMORY_LONG_GOOD != 1) {
                     // Run memory for good remembrances.
                     longGoodMemory(memoryAttacks);
                 } else {
-                    log.debug("\t!!!!!!!! ATTENTION, Long GOOD memory is DISABLED!!!!!!!!  to change this setup to 0 (zero) the variable disableLongGoodMemory on MemoryAttacks class...");
+                    log.debug("\t!!!!!!!! ATTENTION, Long GOOD memory is DISABLED!!!!!!!!  to change this setup to 0 (zero) the variable DISABLE_MEMORY_LONG_GOOD on config file...");
                 }
                 
-                if (MemorysAttacks.disableLongBadMemory != 1) {
+                if (CONFIG.DISABLE_MEMORY_LONG_BAD != 1) {
                     // Run memory for bad remembrances.
                     longBadMemory(memoryAttacks);
                 } else {
-                    log.debug("\t!!!!!!!! ATTENTION, Long BAD memory is DISABLED!!!!!!!!  to change this setup to 0 (zero) the variable disableLongBadMemory on MemoryAttacks class...");
+                    log.debug("\t!!!!!!!! ATTENTION, Long BAD memory is DISABLED!!!!!!!!  to change this setup to 0 (zero) the variable DISABLE_MEMORY_LONG_BAD on config file....");
                 }
                 
             } else {
-                log.debug("\t!!!!!!!! ATTENTION, LONG memory is DISABLED (bad and good)!!!!!!!!  to change this setup to 0 (zero) the variable disableLongMemory on MemoryAttacks class...");
+                log.debug("\t!!!!!!!! ATTENTION, LONG memory is DISABLED (bad and good)!!!!!!!!  to change this setup to 0 (zero) the variable DISABLE_MEMORY_LONG_GOOD and/or DISABLE_MEMORY_LONG_BAD on config file...");
             }
             // Time to waiting
             log.debug("Waiting {} seconds to rerun Long-term memory", CONFIG.TIME_BETWEEN_RUN_MEMORY_ATTACKS);
@@ -132,8 +128,8 @@ public class LongTermMemory extends Thread {
         
         SecurityAlerts securityAlerts = new SecurityAlerts();
         String allAlerts = securityAlerts.getItemsetsString_FromAlerts(
-                methodToRecoverRemembrancesToLongMemory,
-                limit_to_recover_databaseFlows,
+                CONFIG.MEMORY_LONG_METHOD_RECOVER_REMEMBRANCES,
+                CONFIG.MEMORY_LONG_METHOD_RECOVER_REMEMBRANCES_LIMIT_TO_RECOVER_FROM_DB,
                 CONFIG.TIME_TO_ALERTS_STAY_AT_LONG_MEMORY,
                 "Long bad memory");
         
@@ -187,18 +183,18 @@ public class LongTermMemory extends Thread {
         // Get good network flows that were not related with security alerts.
         try {
             StatusFlowDAO statusFlowDAO = new StatusFlowDAO();
-            switch(methodToRecoverRemembrancesToLongMemory){
+            switch(CONFIG.MEMORY_LONG_METHOD_RECOVER_REMEMBRANCES){
                 case LongTermMemory.recoverRemembrancesUsing_1_getAll:
                     //log.debug("Long Good memory - Get all good remembrances!");
                     allGoodFlows = statusFlowDAO.getItemsetsString_ofNormalFlows_1_allFlows();
                     break;
                 case LongTermMemory.recoverRemembrancesUsing_2_getLastUsingLimit:
                     //log.debug("Long Good memory - Get last good remembrances using a limit!");
-                    allGoodFlows = statusFlowDAO.getItemsetsString_ofNormalFlows_2_lastUsingLimit(limit_to_recover_databaseFlows);
+                    allGoodFlows = statusFlowDAO.getItemsetsString_ofNormalFlows_2_lastUsingLimit(CONFIG.MEMORY_LONG_METHOD_RECOVER_REMEMBRANCES_LIMIT_TO_RECOVER_FROM_DB);
                     break;
                 case LongTermMemory.recoverRemembrancesUsing_2_1_getRandomlyUsingLimit:
                     //log.debug("Long Good memory - Get randomly good remembrances using a limit!");
-                    allGoodFlows = statusFlowDAO.getItemsetsString_ofNormalFlows_2_1_randomlyUsingLimit(limit_to_recover_databaseFlows);
+                    allGoodFlows = statusFlowDAO.getItemsetsString_ofNormalFlows_2_1_randomlyUsingLimit(CONFIG.MEMORY_LONG_METHOD_RECOVER_REMEMBRANCES_LIMIT_TO_RECOVER_FROM_DB);
                     break;
                 case LongTermMemory.recoverRemembrancesUsing_2_2_getStatisticUsingLimit:
                     //log.debug("Long Good memory - Get randomly using statistical parameters the last good remembrances using a limit!");
@@ -211,7 +207,7 @@ public class LongTermMemory extends Thread {
                 case LongTermMemory.recoverRemembrancesUsing_3_1_getRandomlyFromSecondsAgo:
                     //log.debug("Long Good memory - Get randomly last good remembrances up to seconds ago!");
                     allGoodFlows = statusFlowDAO.getItemsetsString_ofNormalFlows_3_1_randomlyFromSecondsAgo(
-                            CONFIG.TIME_TO_ALERTS_STAY_AT_LONG_MEMORY, limit_to_recover_databaseFlows);
+                            CONFIG.TIME_TO_ALERTS_STAY_AT_LONG_MEMORY, CONFIG.MEMORY_LONG_METHOD_RECOVER_REMEMBRANCES_LIMIT_TO_RECOVER_FROM_DB);
                     break;
                 case LongTermMemory.recoverRemembrancesUsing_3_2_getStatisticFromSecondsAgo:
                     //log.debug("Long Good memory - Get randomly using statistical parameters the last good remembrances up to seconds ago!");
@@ -219,7 +215,7 @@ public class LongTermMemory extends Thread {
                     break;
                 default:
                     //log.debug("Long Good memory - Default - Get last good remembrances using a limit!");
-                    allGoodFlows = statusFlowDAO.getItemsetsString_ofNormalFlows_2_lastUsingLimit(limit_to_recover_databaseFlows);
+                    allGoodFlows = statusFlowDAO.getItemsetsString_ofNormalFlows_2_lastUsingLimit(CONFIG.MEMORY_LONG_METHOD_RECOVER_REMEMBRANCES_LIMIT_TO_RECOVER_FROM_DB);
             }
             
         } catch (ClassNotFoundException e) {

@@ -95,20 +95,6 @@ public class MemorysAttacks extends Thread {
     //public static int timeToAlertsStayAtLongMemory= CONFIG.TIME_TO_ALERTS_STAY_AT_LONG_MEMORY;
     
     /*
-     * Attributes used to disable or enable sensorial, short, and long memory.
-     * 
-     * 1 to disable and any other value to enable!
-     */
-    protected static int disableSensorialMemory=0;
-    protected static int disableShortMemory=0;
-    // To disable bad and good long memory.
-    public static int disableLongMemory=0;
-    // To disable only bad long memory.
-    public static int disableLongBadMemory=0;
-    // To disable only good long memory.
-    public static int disableLongGoodMemory=0;
-    
-    /*
      * Time to wait until execute again the main method contained in the Thread (method run).
      */
     //public static int TIME_TO_WAIT = CONFIG.TIME_BETWEEN_RUN_MEMORY_ATTACKS;
@@ -135,8 +121,7 @@ public class MemorysAttacks extends Thread {
     public static final int MEMORY_ORDER_3_SENSORIAL_SHORT_LONGGOOD_LONGBAD=3;
     public static final int MEMORY_ORDER_4_SENSORIAL_SHORT_LONGBAD=4;
     
-    // Attribute that deals with the order of the rules to be analyzed and applied in the Of-IDPS.
-    public static final int MEMORY_ORDER_TO_BE_APPLIED_IN_THE_OFIDPS = MEMORY_ORDER_3_SENSORIAL_SHORT_LONGGOOD_LONGBAD;
+    
     
     // Set when class start at first time!
     private static Date dateTimeStartObject = new Date();
@@ -184,19 +169,19 @@ public class MemorysAttacks extends Thread {
             /*******************************
              * Sensorial memory.
              *******************************/
-            if(disableSensorialMemory!=1) {
+            if(CONFIG.DISABLE_MEMORY_SENSORIAL!=1) {
                 sensorialMemory();
             } else {
-                log.debug("\t!!!!!!!! ATTENTION, Sensorial memory is DISABLED!!!!!!!!  to change this setup to 0 (zero) the variable disableSensorialMemory on MemoryAttacks class...");
+                log.debug("\t!!!!!!!! ATTENTION, Sensorial memory is DISABLED!!!!!!!!  to change this setup to 0 (zero) the variable DISABLE_MEMORY_SENSORIAL on CONFIG file...");
             }
             
             /***************************
              * Feed short memory.
              ***************************/
-            if(disableShortMemory!=1) {
+            if(CONFIG.DISABLE_MEMORY_SHORT!=1) {
                 shortMemory();
             } else {
-                log.debug("\t!!!!!!!! ATTENTION, Short memory is DISABLED!!!!!!!!  to change this setup to 0 (zero) the variable disableShortMemory on MemoryAttacks class...");
+                log.debug("\t!!!!!!!! ATTENTION, Short memory is DISABLED!!!!!!!!  to change this setup to 0 (zero) the variable DISABLE_MEMORY_SHORT on CONFIG file...");
             }
             
             /**************************
@@ -346,7 +331,7 @@ public class MemorysAttacks extends Thread {
 //                "Short memory");
         String allAlerts = securityAlerts.getItemsetsString_FromAlerts(
                 LongTermMemory.recoverRemembrancesUsing_3_getFromSecondsAgo,
-                LongTermMemory.limit_to_recover_databaseFlows,
+                CONFIG.MEMORY_LONG_METHOD_RECOVER_REMEMBRANCES_LIMIT_TO_RECOVER_FROM_DB,
                 CONFIG.TIME_TO_ALERTS_STAY_AT_SHORT_MEMORY,
                 "Short memory");
         
