@@ -92,6 +92,17 @@ public class CONFIG {
     //public static int disableLongGoodMemory=0;
     public static int DISABLE_MEMORY_LONG_GOOD = 0;
     
+    // Disable different forms of security containment for different levels of security alerts.
+    /*
+     * In the Of-IDPS, packets related with: 
+     *  - Low security level alert, will has your bandwidth softly reduced;
+     *  - Medium security level alert, will has your bandwidth severely reduced;
+     *  - High security level alert, will has your packets blocked.
+     *  
+     *  ATTENTION - If we disable this control ALL PACKETS related with alerts will be BLOCKED.
+     */
+    public static int DISABLE_DIFFERENT_SECURITY_CONTAINMENT_FOR_DIFFERENT_ALERTS_LEVELS=0;
+    
     // Attribute that deals with the order of the rules to be analyzed and applied in the Of-IDPS.
     /*
      * Order to be read/analyzed the memories rules:
@@ -234,6 +245,9 @@ public class CONFIG {
             DISABLE_MEMORY_LONG_BAD = propertieToInt(prop, "DISABLE_MEMORY_LONG_BAD");
             DISABLE_MEMORY_LONG_GOOD = propertieToInt(prop, "DISABLE_MEMORY_LONG_GOOD");
             
+            DISABLE_DIFFERENT_SECURITY_CONTAINMENT_FOR_DIFFERENT_ALERTS_LEVELS = propertieToInt(prop,
+                    "DISABLE_DIFFERENT_SECURITY_CONTAINMENT_FOR_DIFFERENT_ALERTS_LEVELS");
+            
             MEMORY_ORDER_TO_BE_APPLIED_IN_THE_OFIDPS = propertieToInt(prop, "MEMORY_ORDER_TO_BE_APPLIED_IN_THE_OFIDPS");
             MEMORY_LONG_METHOD_RECOVER_REMEMBRANCES = propertieToInt(prop, "MEMORY_LONG_METHOD_RECOVER_REMEMBRANCES");
             MEMORY_LONG_METHOD_RECOVER_REMEMBRANCES_LIMIT_TO_RECOVER_FROM_DB = propertieToInt(prop, 
@@ -247,13 +261,11 @@ public class CONFIG {
             TIME_BETWEEN_RUN_ANALYSIS_FLOW = propertieToInt(prop, "TIME_BETWEEN_RUN_ANALYSIS_FLOW");
             TIME_PERIOD_TO_RECOVER_FLOW_INFORMATION_FROM_DB = propertieToInt(prop, "TIME_PERIOD_TO_RECOVER_FLOW_INFORMATION_FROM_DB");
             DISABLE_JSON_OUTPUT = propertieToBoolean(prop, "DISABLE_JSON_OUTPUT");
-            
             DB_OFIDPS_HOST = propertieToString(prop, "DB_OFIDPS_HOST");
             DB_OFIDPS_PORT = propertieToString(prop, "DB_OFIDPS_PORT");
             DB_OFIDPS_NAME = propertieToString(prop, "DB_OFIDPS_NAME");
             DB_OFIDPS_USER = propertieToString(prop, "DB_OFIDPS_USER");
             DB_OFIDPS_PASSWORD = propertieToString(prop, "DB_OFIDPS_PASSWORD");
-            
             DB_SNORT_HOST = propertieToString(prop, "DB_SNORT_HOST");
             DB_SNORT_PORT = propertieToString(prop, "DB_SNORT_PORT");
             DB_SNORT_NAME = propertieToString(prop, "DB_SNORT_NAME");

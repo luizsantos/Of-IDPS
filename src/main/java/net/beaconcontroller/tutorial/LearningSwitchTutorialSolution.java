@@ -377,8 +377,17 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
 
                 // If the packet combine with a security rule, apply his security priority. 
                 if(memoryAttackRuleMatch.isMatch()) {
-                    acao = memoryAttackRuleMatch.getAction();
-                    acao = handlePacketsWithoutPriority(acao);
+                    // First! Verify is different forms of security containment for different levels of security alerts is disabled.
+                    if(CONFIG.DISABLE_DIFFERENT_SECURITY_CONTAINMENT_FOR_DIFFERENT_ALERTS_LEVELS==1) {
+                        // If yes, block all packets!
+                        log.debug("ATTENTION!!! Different forms of security containment for different levels is disabled!" +
+                        		" To enable it change to 0 the variable DISABLE_DIFFERENT_SECURITY_CONTAINMENT_FOR_DIFFERENT_ALERTS_LEVELS on config file");
+                        acao = AlertMessage.ALERT_PRIORITY_HIGH;
+                    } else {
+                        // If not, get the level of security from alert/rule.
+                        acao = memoryAttackRuleMatch.getAction();
+                        acao = handlePacketsWithoutPriority(acao);  
+                    }
                 } else {
                     // If not, send this packet forward as a normal packet (not with security restrictions).
                     acao = AlertMessage.NORMAL_PACKET;
