@@ -195,6 +195,18 @@ public class CONFIG {
     // Database password.
     public static String DB_OFIDPS_PASSWORD="123mudar";
     
+    // Snort DATABASE
+    // Database host.
+    public static String DB_SNORT_HOST="localhost";
+    // Database network port.
+    public static String DB_SNORT_PORT="5432";
+    // Database name.
+    public static String DB_SNORT_NAME="snort";
+    // Database user.
+    public static String DB_SNORT_USER="snort";
+    // Database password.
+    public static String DB_SNORT_PASSWORD="123mudar"; 
+    
     /**
      * Used to start some methods and attributes.
      */
@@ -241,6 +253,14 @@ public class CONFIG {
             DB_OFIDPS_NAME = propertieToString(prop, "DB_OFIDPS_NAME");
             DB_OFIDPS_USER = propertieToString(prop, "DB_OFIDPS_USER");
             DB_OFIDPS_PASSWORD = propertieToString(prop, "DB_OFIDPS_PASSWORD");
+            
+            DB_SNORT_HOST = propertieToString(prop, "DB_SNORT_HOST");
+            DB_SNORT_PORT = propertieToString(prop, "DB_SNORT_PORT");
+            DB_SNORT_NAME = propertieToString(prop, "DB_SNORT_NAME");
+            DB_SNORT_USER = propertieToString(prop, "DB_SNORT_USER");
+            DB_SNORT_PASSWORD = propertieToString(prop, "DB_SNORT_PASSWORD");
+            
+            
 
             
         } catch (IOException e) {
@@ -251,8 +271,8 @@ public class CONFIG {
     
     private static String propertieToString(Properties prop, String key) {
         String value = prop.getProperty(key);
-        if(key.equalsIgnoreCase("DB_OFIDPS_PASSWORD")) {
-            log.debug("CONFIG - {} = ****", key);
+        if(key.equalsIgnoreCase("DB_OFIDPS_PASSWORD") || key.equals("DB_SNORT_PASSWORD")) {
+            log.debug("CONFIG - {} = *****", key);
         } else {
             log.debug("CONFIG - {} = {}", key, value);
         }

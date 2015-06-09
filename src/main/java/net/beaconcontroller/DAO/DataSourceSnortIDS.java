@@ -24,6 +24,7 @@ import java.sql.SQLException;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
+import net.beaconcontroller.tutorial.CONFIG;
 import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
 
 import org.slf4j.Logger;
@@ -33,10 +34,14 @@ import org.slf4j.LoggerFactory;
 public class DataSourceSnortIDS {
     // Database configuration variables.
     //public static final String URL = "jdbc:mysql://localhost:3306/OF_IDPS";
-    public static final String URL = "jdbc:postgresql://localhost:5432/snort";
+    public static final String URL = "jdbc:postgresql://"+
+            CONFIG.DB_SNORT_HOST+":"+
+            CONFIG.DB_SNORT_PORT+"/"+
+            CONFIG.DB_SNORT_NAME;
+            //localhost:5432/snort";
     //public static final String USERNAME = "root";
-    public static final String USERNAME = "snort";
-    public static final String PASSWORD = "123mudar";
+    public static final String USERNAME = CONFIG.DB_SNORT_USER;
+    public static final String PASSWORD = CONFIG.DB_SNORT_PASSWORD;
     //public static final String DRIVER_CLASS = "com.mysql.jdbc.Driver";
     public static final String DRIVER_CLASS = "org.postgresql.Driver";
     
