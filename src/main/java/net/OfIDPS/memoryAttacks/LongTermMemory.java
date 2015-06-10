@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.beaconcontroller.DAO.AlertOpenFlowDAO;
+import net.beaconcontroller.DAO.SecurityRulesDAO;
 import net.beaconcontroller.DAO.StatusFlowDAO;
 import net.beaconcontroller.IPS.AlertMessage;
 import net.beaconcontroller.IPS.IntrusionPreventionSystem;
@@ -106,9 +107,24 @@ public class LongTermMemory extends Thread {
                     log.debug("\t!!!!!!!! ATTENTION, Long BAD memory is DISABLED!!!!!!!!  to change this setup to 0 (zero) the variable DISABLE_MEMORY_LONG_BAD on config file....");
                 }
                 
+                // Update current security rules on long good memory on database.
+                if (CONFIG.DISABLE_DB_SECURITY_RULES_MEMORY_LONG_GOOD==false && CONFIG.DISABLE_MEMORY_LONG_GOOD != 1) {
+                    log.debug("DB - good");
+                    SecurityRulesDAO securityRulesDAO =  new SecurityRulesDAO();
+                    securityRulesDAO.updateRulesFromAMemoryInDB(longMemoryForGoodRemembrances, MemorysAttacks.MEMORY_LONG_GOOD);
+                }
+                
+                // Update current security rules on long bad memory on database.
+                if (CONFIG.DISABLE_DB_SECURITY_RULES_MEMORY_LONG_BAD==false && CONFIG.DISABLE_MEMORY_LONG_BAD != 1) {
+                    log.debug("DB - bad");
+                    SecurityRulesDAO securityRulesDAO =  new SecurityRulesDAO();
+                    securityRulesDAO.updateRulesFromAMemoryInDB(longMemoryAttacks, MemorysAttacks.MEMORY_LONG_BAD);
+                }
+                
             } else {
                 log.debug("\t!!!!!!!! ATTENTION, LONG memory is DISABLED (bad and good)!!!!!!!!  to change this setup to 0 (zero) the variable DISABLE_MEMORY_LONG_GOOD and/or DISABLE_MEMORY_LONG_BAD on config file...");
             }
+            
             // Time to waiting
             log.debug("Waiting {} seconds to rerun Long-term memory", CONFIG.TIME_BETWEEN_RUN_MEMORY_ATTACKS);
             waitTimeInSeconds(CONFIG.TIME_BETWEEN_RUN_MEMORY_ATTACKS);

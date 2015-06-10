@@ -56,6 +56,7 @@ import org.slf4j.LoggerFactory;
 
 
 import net.beaconcontroller.DAO.AlertOpenFlowDAO;
+import net.beaconcontroller.DAO.SecurityRulesDAO;
 import net.beaconcontroller.DAO.StatusFlowDAO;
 import net.beaconcontroller.IPS.AlertMessageSharePriority;
 import net.beaconcontroller.IPS.IntrusionPreventionSystem;
@@ -205,6 +206,22 @@ public class MemorysAttacks extends Thread {
             if (CONFIG.DISABLE_JSON_OUTPUT==false) {
                 writeRulesInShortMemoryToJsonFile();
             }
+            
+            
+            // Update current security rules on sensorial memory on database.
+            if (CONFIG.DISABLE_DB_SECURITY_RULES_MEMORY_SENSORIAL==false && CONFIG.DISABLE_MEMORY_SENSORIAL!=1) {
+                log.debug("DB - sensorial");
+                SecurityRulesDAO securityRulesDAO =  new SecurityRulesDAO();
+                securityRulesDAO.updateRulesFromAMemoryInDB(sensorialMemoryAttacks, MEMORY_SENSORIAL);
+            }
+            
+            // Update current security rules on short memory on database.
+            if (CONFIG.DISABLE_DB_SECURITY_RULES_MEMORY_SHORT==false && CONFIG.DISABLE_MEMORY_SHORT!=1) {
+                log.debug("DB - short");
+                SecurityRulesDAO securityRulesDAO =  new SecurityRulesDAO();
+                securityRulesDAO.updateRulesFromAMemoryInDB(shortMemoryAttacks, MEMORY_SHORT);
+            }
+            
             
             // Time to waiting
             log.debug("Waiting {} seconds to rerun Sensorial and Short-Term memory attacks\n", 

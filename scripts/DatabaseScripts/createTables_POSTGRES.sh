@@ -11,3 +11,6 @@ $MYSQL -d $DB_NAME -U $DB_USER -f createTablesFlows_POSTGRES.sql
 
 echo "creating alertsOpenFlow table..."
 $MYSQL -d $DB_NAME -U $DB_USER -f createAlertsOpenFlow_POSTGRES.sql
+
+echo "creating securityRules table..."
+$MYSQL -d $DB_NAME -U $DB_USER -f createSecurityRules_POSTGRES.sql

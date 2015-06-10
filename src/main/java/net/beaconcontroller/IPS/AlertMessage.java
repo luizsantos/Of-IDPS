@@ -229,6 +229,20 @@ public class AlertMessage {
     public int getPriorityAlert() {
         return priorityAlert;
     }
+    
+    public String getPriorityAlertString() {
+        switch (priorityAlert) {
+            case ALERT_PRIORITY_HIGH:
+                return "High";
+            case ALERT_PRIORITY_MEDIUM:
+                return "Medium";
+            case ALERT_PRIORITY_LOW:
+                return "Low";
+            case NORMAL_PACKET:
+                return "None";
+        }
+        return "Unknown";
+    }
 
     public void setPriorityAlert(int priorityAlert) {
         this.priorityAlert = priorityAlert;
@@ -244,6 +258,10 @@ public class AlertMessage {
 
     public int getNetworkDestination() {
         return networkDestination;
+    }
+    
+    public String getNetworkDestinationIPv4String() {
+        return convertIPv4ToAnyIfNecessary(networkDestination);
     }
 
     public void setNetworkDestination(int networkDestination) {
@@ -262,6 +280,10 @@ public class AlertMessage {
     public int getNetworkSource() {
         return networkSource;
     }
+    
+    public String getNetworkSourceIPv4String() {
+        return convertIPv4ToAnyIfNecessary(networkSource);
+    }
 
     public void setNetworkSource(int networkSource) {
         this.networkSource = networkSource;
@@ -279,6 +301,11 @@ public class AlertMessage {
     public int getNetworkProtocol() {
         return networkProtocol;
     }
+    
+    public String getNetworkProtocolString() {
+        return convertProtocolToAnyIfNecessary(networkProtocol);
+    }
+    
 
     public void setNetworkProtocol(int networkProtocol) {
         this.networkProtocol = networkProtocol;
@@ -287,6 +314,11 @@ public class AlertMessage {
     public int getTransportDestination() {
         return transportDestination;
     }
+    
+    public String getTransportDestinationString() {
+        return convertToAnyIfNecessary(transportDestination);
+    }
+    
 
     public void setTransportDestination(int transportDestination) {
         this.transportDestination = transportDestination;
@@ -295,12 +327,14 @@ public class AlertMessage {
     public int getTransportSource() {
         return transportSource;
     }
+    
+    public String getTransportSourceString() {
+        return convertToAnyIfNecessary(transportSource);
+    }
 
     public void setTransportSource(int transportSource) {
         this.transportSource = transportSource;
     }
-    
-    
 
     public int getSupportApriori() {
         return supportApriori;

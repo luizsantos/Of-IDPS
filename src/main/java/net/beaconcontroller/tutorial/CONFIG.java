@@ -163,6 +163,7 @@ public class CONFIG {
      * 604800 - one week.
      * 2629800 - one month.
      * 31557600 - one year.
+     * 
      */
 
     
@@ -193,6 +194,12 @@ public class CONFIG {
      * use false to enable and true to disable.
      */
     public static boolean DISABLE_JSON_OUTPUT = false;
+    
+    public static boolean DISABLE_DB_SECURITY_RULES_MEMORY_SENSORIAL = false;
+    public static boolean DISABLE_DB_SECURITY_RULES_MEMORY_SHORT = false;
+    public static boolean DISABLE_DB_SECURITY_RULES_MEMORY_LONG_GOOD = false;
+    public static boolean DISABLE_DB_SECURITY_RULES_MEMORY_LONG_BAD = false;
+    
     
     // Of-IDPS DATABASE
     // Database host.
@@ -260,6 +267,13 @@ public class CONFIG {
             TIME_BETWEEN_RUN_SENSOR_OPENFLOW = propertieToInt(prop, "TIME_BETWEEN_RUN_SENSOR_OPENFLOW");
             TIME_BETWEEN_RUN_ANALYSIS_FLOW = propertieToInt(prop, "TIME_BETWEEN_RUN_ANALYSIS_FLOW");
             TIME_PERIOD_TO_RECOVER_FLOW_INFORMATION_FROM_DB = propertieToInt(prop, "TIME_PERIOD_TO_RECOVER_FLOW_INFORMATION_FROM_DB");
+            
+            DISABLE_DB_SECURITY_RULES_MEMORY_SENSORIAL = propertieToBoolean(prop, "DISABLE_DB_SECURITY_RULES_MEMORY_SENSORIAL");
+            DISABLE_DB_SECURITY_RULES_MEMORY_SHORT = propertieToBoolean(prop, "DISABLE_DB_SECURITY_RULES_MEMORY_SHORT");
+            DISABLE_DB_SECURITY_RULES_MEMORY_LONG_GOOD = propertieToBoolean(prop, "DISABLE_DB_SECURITY_RULES_MEMORY_LONG_GOOD");
+            DISABLE_DB_SECURITY_RULES_MEMORY_LONG_BAD = propertieToBoolean(prop, "DISABLE_DB_SECURITY_RULES_MEMORY_LONG_BAD");
+            
+            
             DISABLE_JSON_OUTPUT = propertieToBoolean(prop, "DISABLE_JSON_OUTPUT");
             DB_OFIDPS_HOST = propertieToString(prop, "DB_OFIDPS_HOST");
             DB_OFIDPS_PORT = propertieToString(prop, "DB_OFIDPS_PORT");
