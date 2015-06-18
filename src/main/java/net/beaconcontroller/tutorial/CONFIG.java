@@ -195,9 +195,18 @@ public class CONFIG {
      */
     public static boolean DISABLE_JSON_OUTPUT = false;
     
+    // Disable Database output rules:
+    /*
+     * This is used to generate output that can be used to Web interface!
+     * use false to enable and true to disable.
+     */
+    // - Rules on sensorial memory.
     public static boolean DISABLE_DB_SECURITY_RULES_MEMORY_SENSORIAL = false;
+    // - Rules on short memory.
     public static boolean DISABLE_DB_SECURITY_RULES_MEMORY_SHORT = false;
+    // - Rules on long good memory.
     public static boolean DISABLE_DB_SECURITY_RULES_MEMORY_LONG_GOOD = false;
+    // - Rules on long bad memory.
     public static boolean DISABLE_DB_SECURITY_RULES_MEMORY_LONG_BAD = false;
     
     
