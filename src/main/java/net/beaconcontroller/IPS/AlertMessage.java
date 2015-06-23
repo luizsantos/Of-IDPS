@@ -321,7 +321,8 @@ public class AlertMessage {
      * @return String port number in a format non negative format!
      */
     public String getTransportDestinationString() {
-        int port = transportDestination & 0xFFFF;
+        int port = transportDestination ;
+        if (port<0) port= port & 0xFFFF;
         return convertToAnyIfNecessary(port);
     }
     
@@ -340,7 +341,8 @@ public class AlertMessage {
      * @return String port number in a format non negative format!
      */
     public String getTransportSourceString() {
-        int port = transportSource & 0xFFFF;
+        int port = transportSource;
+        if (port<0) port= port & 0xFFFF;
         return convertToAnyIfNecessary(port);
     }
 
