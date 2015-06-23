@@ -651,11 +651,11 @@ public class AlgoFPGrowth_Strings {
                 System.out.println("ATTENTION!!! Sensorial memory does not use itemset method!");
             break;
             case MemorysAttacks.MEMORY_SHORT:
-                System.out.println("Short memory using method 1");
+                //System.out.println("Short memory using method 1");
                 method_1_ToBadMemories(numberOfFieldsOnRule, alertMsg, key);
             break;
             case MemorysAttacks.MEMORY_LONG_BAD:
-                System.out.println("Long bad memory using method 1");
+                //System.out.println("Long bad memory using method 1");
                 method_1_ToBadMemories(numberOfFieldsOnRule, alertMsg, key);
             break;
             case MemorysAttacks.MEMORY_LONG_GOOD:
