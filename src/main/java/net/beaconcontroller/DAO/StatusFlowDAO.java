@@ -141,7 +141,8 @@ public class StatusFlowDAO extends Thread {
         int totalRegisters = getCountFlowsFromDatabase(selectCount);
 //        int requiredPercentage = 10;
 //        int limit = (totalRegisters*requiredPercentage)/100;
-        int limit = (int) Calculation.sampleSize_cofidence95_error5(totalRegisters);
+        //int limit = (int) Calculation.sampleSize_cofidence95_error5(totalRegisters);
+        int limit = (int) Calculation.sampleSize_cofidence99_error2(totalRegisters);
         String sql = getSQLQuery_ofNormalFlows_2_1_randomlyUsingLimit(limit);
         return getItemsetsString_FlowsFromDatabase(sql);
     }
@@ -243,7 +244,8 @@ public class StatusFlowDAO extends Thread {
         // use a percentage from total of register
 //        int requiredPercentage = 10;
 //        int limit = (totalRegisters*requiredPercentage)/100;
-        int limit = (int) Calculation.sampleSize_cofidence95_error5(totalRegisters);
+        //int limit = (int) Calculation.sampleSize_cofidence95_error5(totalRegisters);
+        int limit = (int) Calculation.sampleSize_cofidence99_error2(totalRegisters);
         String sql = getSQLQuery_ofNormalFlows_3_1_randomlyFromSecondsAgo(seconds, limit);
         return getItemsetsString_FlowsFromDatabase(sql);
     }

@@ -64,6 +64,8 @@ public class AlgoFPGrowth_Strings {
 	private int transactionCount = 0; // transaction count in the database
 	private int itemsetCount; // number of freq. itemsets found
 	
+	private int memoryType;
+	
 	// Minimum support threshold
 	public int relativeMinsupp;
 	
@@ -142,8 +144,8 @@ public class AlgoFPGrowth_Strings {
     /**
 	 * Default constructor
 	 */
-	public AlgoFPGrowth_Strings() {
-		
+	public AlgoFPGrowth_Strings(int memoryType) {
+		this.memoryType=memoryType;
 	}
 
     /**
@@ -644,7 +646,40 @@ public class AlgoFPGrowth_Strings {
             AlertMessage alertMsg, String key) {
         
         //System.out.println("****> Total of transactions: " + transactionCount);
+        switch (this.memoryType) {
+            case MemorysAttacks.MEMORY_SENSORIAL:
+                System.out.println("ATTENTION!!! Sensorial memory does not use itemset method!");
+            break;
+            case MemorysAttacks.MEMORY_SHORT:
+                System.out.println("Short memory using method 1");
+                method_1_ToBadMemories(numberOfFieldsOnRule, alertMsg, key);
+            break;
+            case MemorysAttacks.MEMORY_LONG_BAD:
+                System.out.println("Long bad memory using method 1");
+                method_1_ToBadMemories(numberOfFieldsOnRule, alertMsg, key);
+            break;
+            case MemorysAttacks.MEMORY_LONG_GOOD:
+                //System.out.println("Long good memory using method 2");
+                method_2_ToLongGoodMemory(numberOfFieldsOnRule, alertMsg, key);
+            break;
+            default:
+                System.out.println("ATTENTION!!! Not found a method to process this alerts on " +
+                		"itemset algorithm (AlgoFPGrowth_String class)! " +
+                		"Please use a valid method selecting a valid memory number/id...");
+                break;
+        }
         
+    }
+
+    /**
+     * First method used to get rules to bad memories.
+     * 
+     * @param numberOfFieldsOnRule - Quantity of fields presents on the rule.
+     * @param alertMsg - Rule in the alert message form!
+     * @param key - Rule socket netkork key.
+     */
+    private void method_1_ToBadMemories(int numberOfFieldsOnRule,
+            AlertMessage alertMsg, String key) {
         if (numberOfFieldsOnRule <= 1) {
             int newMinsupp = (int) Math.ceil(0.9 * transactionCount);
             if (alertMsg.getSupportApriori()>=newMinsupp) {
@@ -674,6 +709,84 @@ public class AlgoFPGrowth_Strings {
             int newMinsupp = (int) Math.ceil(0.1 * transactionCount);
             //System.out.println("\t\t\t{{{>(5) "+numberOfFieldsOnRule+" items - "+newMinsupp+ " - "+alertMsg.getSupportApriori()+"/"+transactionCount);
         }
+    }
+    
+    /**
+     * First method used to get rules to bad memories.
+     * 
+     * @param numberOfFieldsOnRule - Quantity of fields presents on the rule.
+     * @param rule - Rule in the alert message form!
+     * @param key - Rule socket netkork key.
+     */
+    private void method_2_ToLongGoodMemory(int numberOfFieldsOnRule,
+            AlertMessage rule, String key) {
+        int sport=0;
+        int dport=0;
+        // Verify if the minimum support was hit!
+        int novoMinsupp = (int) Math.ceil(0.1 * transactionCount);
+        if (rule.getSupportApriori() >= novoMinsupp && transactionCount > 500) {
+            // verify if source, destination, and protocol not exists! Case true
+            // return and don't do nothing
+            if ((rule.getNetworkSource() == Integer.MAX_VALUE)
+                    || (rule.getNetworkDestination() == Integer.MAX_VALUE)
+                    || (rule.getNetworkProtocol() == Integer.MAX_VALUE)) {
+                return;
+            } else {
+                // Verify if exist source port!
+                if (rule.getTransportSource() != Integer.MAX_VALUE) {
+                    // if yes, set sport to 1.
+                    sport = 1;
+                }
+                // verify if exist destination port!
+                if (rule.getTransportDestination() != Integer.MAX_VALUE) {
+                    // if yes, set dport to 1.
+                    dport = 1;
+                }
+                // Now verify if don't exist any port! If it's true don't make
+                // anything and just return!
+                if (sport == 0 && dport == 0) {
+                    return;
+                } else {
+                    // if we have ports...
+                    // we have both ports?
+                    if ((sport == 1 && dport == 1)
+                            || (sport == 0 && dport == 1)
+                            || (sport == 1 && dport == 0)) {
+                        // Add coming and going rules  
+                        addRuleOnListOfSecurityRules(rule, key);
+                        addInvertedRule(rule);
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * This is used to invert the source and destinations fields from a rule!
+     * Then the original rule, for instance, create the rule to the packet 
+     * going out and this method create the rule to the packet going back. 
+     * 
+     * @param rule - A security rule/alert.
+     * @return - A inverted rule/alert
+     */
+    private void addInvertedRule(AlertMessage rule) {
+        AlertMessage ruleInverted = new AlertMessage();
+        ruleInverted.setPriorityAlert(rule.getPriorityAlert());
+        ruleInverted.setAlertDescription(rule.getAlertDescription());
+        ruleInverted.setNetworkSource(rule.getNetworkDestination());
+        ruleInverted.setNetworkDestination(rule.getNetworkSource());
+        ruleInverted.setNetworkProtocol(rule.getNetworkProtocol());
+        ruleInverted.setTransportSource(rule.getTransportDestination());
+        ruleInverted.setTransportDestination(rule.getTransportSource());
+        ruleInverted.setSupportApriori(-1); // indicate the inverse rule!
+        
+        String keyInverted = Integer.toString(ruleInverted.getNetworkSource())+
+                Integer.toString(ruleInverted.getNetworkDestination())+
+                Integer.toString(ruleInverted.getNetworkProtocol())+
+                Integer.toString(ruleInverted.getTransportSource())+
+                Integer.toString(ruleInverted.getTransportDestination());
+        
+        addRuleOnListOfSecurityRules(ruleInverted, keyInverted);
     }
 
     /**

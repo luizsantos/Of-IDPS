@@ -354,7 +354,7 @@ public class MemorysAttacks extends Thread {
         
         // Obtain rules from IDS alerts using itemsets algorithm.
         Map<String,AlertMessage> ruleListFromIDS = new HashMap<String, AlertMessage>();
-        ruleListFromIDS = getSecurityRulesUsingItensetsAlgorithm(allAlerts);
+        ruleListFromIDS = getSecurityRulesUsingItensetsAlgorithm(allAlerts, MEMORY_SHORT);
         
         /*
          * Update rules on short memory and send this for all switches on the network.
@@ -531,6 +531,34 @@ public class MemorysAttacks extends Thread {
     }
     
     /**
+     * Record/write rules from attacks memory in a Json file.
+     * 
+     * @param memory - Attacks memory.
+     * @param fileName - file name.
+     */
+    public static void writeMemoryRulesInJsonFile(Map<String,AlertMessage> memory, String fileName) {
+        FileManager file = new FileManager("/home/luiz/Downloads/bootstrap-3.3.1/docs/examples/OfIDPS/", fileName+".json");
+        file.emptyFileContent();
+        file.writeFile("{\"rules\": [");
+//        for(String key : shortMemoryAttacks.keySet()) {
+//            AlertMessage currentRule = shortMemoryAttacks.get(key);
+//            file.writeFile(currentRule.getJsonMsgAlert()+",");
+//        }
+        
+        for(Iterator<Map.Entry<String, AlertMessage>> rule = memory.entrySet().iterator();rule.hasNext();) {
+            Map.Entry<String, AlertMessage> entry = rule.next();
+            if(rule.hasNext()) {
+            file.writeFile(entry.getValue().getJsonMsgAlert()+",");
+            } else {
+                file.writeFile(entry.getValue().getJsonMsgAlert());
+            }
+        }
+        
+        
+        file.writeFile("]}");
+    }
+    
+    /**
      * Record/write the security alerts in a Json file.
      * 
      */
@@ -670,13 +698,13 @@ public class MemorysAttacks extends Thread {
      * @param - ruleListFromIDS - Map.  
      * @return - List of rules.
      */
-    public Map<String, AlertMessage> getSecurityRulesUsingItensetsAlgorithm(String alertsFromIDSSnort) {
+    public Map<String, AlertMessage> getSecurityRulesUsingItensetsAlgorithm(String alertsFromIDSSnort, int memoryType) {
         Map<String,AlertMessage> ruleListFromIDS = new HashMap<String, AlertMessage>();
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMDD_HHmmss");
         Date date = new Date();
         // TODO - Remove the write of output in file, this isn't necessary
         String output = "/tmp/OfIDPS_output_rule.txt";  // the path for saving the frequent itemsets found
-        AlgoFPGrowth_Strings algo = new AlgoFPGrowth_Strings();
+        AlgoFPGrowth_Strings algo = new AlgoFPGrowth_Strings(memoryType);
         try {
             // Obtain rules from IDS alerts using itemsets algorithm. 
             ruleListFromIDS = algo.runAlgorithm(alertsFromIDSSnort,output);

@@ -109,14 +109,14 @@ public class LongTermMemory extends Thread {
                 
                 // Update current security rules on long good memory on database.
                 if (CONFIG.DISABLE_DB_SECURITY_RULES_MEMORY_LONG_GOOD==false && CONFIG.DISABLE_MEMORY_LONG_GOOD != 1) {
-                    log.debug("DB - good");
+                    //log.debug("DB - good");
                     SecurityRulesDAO securityRulesDAO =  new SecurityRulesDAO();
                     securityRulesDAO.updateRulesFromAMemoryInDB(longMemoryForGoodRemembrances, MemorysAttacks.MEMORY_LONG_GOOD);
                 }
                 
                 // Update current security rules on long bad memory on database.
                 if (CONFIG.DISABLE_DB_SECURITY_RULES_MEMORY_LONG_BAD==false && CONFIG.DISABLE_MEMORY_LONG_BAD != 1) {
-                    log.debug("DB - bad");
+                    //log.debug("DB - bad");
                     SecurityRulesDAO securityRulesDAO =  new SecurityRulesDAO();
                     securityRulesDAO.updateRulesFromAMemoryInDB(longMemoryAttacks, MemorysAttacks.MEMORY_LONG_BAD);
                 }
@@ -153,7 +153,8 @@ public class LongTermMemory extends Thread {
         
         // Obtain rules from IDS alerts using itemsets algorithm.
         Map<String,AlertMessage> ruleListFromIDS = new HashMap<String, AlertMessage>();
-        ruleListFromIDS = memoryAttacks.getSecurityRulesUsingItensetsAlgorithm(allAlerts);
+        ruleListFromIDS = memoryAttacks.getSecurityRulesUsingItensetsAlgorithm(allAlerts,
+                MemorysAttacks.MEMORY_LONG_BAD);
         
         longMemoryAttacks.clear();
         longMemoryAttacks.putAll(ruleListFromIDS);
@@ -246,19 +247,24 @@ public class LongTermMemory extends Thread {
         
         // Obtain rules from IDS alerts using itemsets algorithm.
         Map<String,AlertMessage> ruleListFromIDS = new HashMap<String, AlertMessage>();
-        ruleListFromIDS = memoryAttacks.getSecurityRulesUsingItensetsAlgorithm(allGoodFlows);
+        ruleListFromIDS = memoryAttacks.getSecurityRulesUsingItensetsAlgorithm(allGoodFlows, 
+                MemorysAttacks.MEMORY_LONG_GOOD);
         
         longMemoryForGoodRemembrances.clear();
         longMemoryForGoodRemembrances.putAll(ruleListFromIDS);
         
-        //printRules(ruleListFromIDS, "Good memory");
+        printRules(ruleListFromIDS, "Good memory");
         
         // write alerts in a file...
-//        FileManager fileManager = new FileManager("~", "goodMemory.txt");
+//        FileManager fileManager = new FileManager("goodMemory.txt");
 //        fileManager.writeFile("\n DateTime "+
 //                DateTimeManager.dateToStringJavaDate((DateTimeManager.getCurrentDate()))
 //                +" \n ");
 //        fileManager.writeFile(allGoodFlows);
+        
+        // write in the file
+        // TODO - improve the method!
+        //MemorysAttacks.writeMemoryRulesInJsonFile(longMemoryForGoodRemembrances, "rules");
         
         Date dateStop = DateTimeManager.getCurrentDate();
         long diffSeconds = DateTimeManager.differenceBetweenTwoDatesInSeconds(dateStart, dateStop);
