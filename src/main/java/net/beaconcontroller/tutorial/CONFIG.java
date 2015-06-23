@@ -92,6 +92,20 @@ public class CONFIG {
     //public static int disableLongGoodMemory=0;
     public static int DISABLE_MEMORY_LONG_GOOD = 0;
     
+    /*
+     * Enable read only to memory rules!
+     * If we enable this, the rules will be created but not applied in the system!
+     * 1 to enable other number to disable! 
+     */
+    // Read only for sensorial memory.
+    public static int ENABLE_MEMORY_SENSORIAL_READ_ONLY = 0;
+    // Read only for short memory.
+    public static int ENABLE_MEMORY_SHORT_READ_ONLY = 0;
+    // Read only for long bad memory.
+    public static int ENABLE_MEMORY_LONG_BAD_READ_ONLY = 0;
+    // Read only for long good memory.
+    public static int ENABLE_MEMORY_LONG_GOOD_READ_ONLY = 0;
+    
     // Disable different forms of security containment for different levels of security alerts.
     /*
      * In the Of-IDPS, packets related with: 
@@ -260,6 +274,11 @@ public class CONFIG {
             DISABLE_MEMORY_SHORT = propertieToInt(prop, "DISABLE_MEMORY_SHORT");
             DISABLE_MEMORY_LONG_BAD = propertieToInt(prop, "DISABLE_MEMORY_LONG_BAD");
             DISABLE_MEMORY_LONG_GOOD = propertieToInt(prop, "DISABLE_MEMORY_LONG_GOOD");
+            
+            ENABLE_MEMORY_SENSORIAL_READ_ONLY = propertieToInt(prop, "ENABLE_MEMORY_SENSORIAL_READ_ONLY");
+            ENABLE_MEMORY_SHORT_READ_ONLY = propertieToInt(prop, "ENABLE_MEMORY_SHORT_READ_ONLY");
+            ENABLE_MEMORY_LONG_BAD_READ_ONLY = propertieToInt(prop, "ENABLE_MEMORY_LONG_BAD_READ_ONLY");
+            ENABLE_MEMORY_LONG_GOOD_READ_ONLY= propertieToInt(prop, "ENABLE_MEMORY_LONG_GOOD_READ_ONLY");
             
             DISABLE_DIFFERENT_SECURITY_CONTAINMENT_FOR_DIFFERENT_ALERTS_LEVELS = propertieToInt(prop,
                     "DISABLE_DIFFERENT_SECURITY_CONTAINMENT_FOR_DIFFERENT_ALERTS_LEVELS");

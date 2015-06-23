@@ -498,9 +498,55 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
      * @return - A MemoryAttackRule object that inform if 
      *  there is match and the level of security priority to be applied as action to the packet. 
      */
-    private MemoryAttackRuleMatch analyzePacketInTheMemory(OFMatch match, Map<String, AlertMessage> memoryAtacks) {
+    private MemoryAttackRuleMatch analyzePacketInTheMemory(
+            OFMatch match, Map<String, AlertMessage> memoryAtacks, int memoryType) {
         // To store/return the result!
         MemoryAttackRuleMatch memoryAttackRuleMatch =  new MemoryAttackRuleMatch();
+        
+        
+        /*
+         * Verify if is enabled/allowed read the rules for the analyzed memory! 
+         * If this is disabled the Of-IDPS will ignore the rules from a memory.
+         * 
+         * If enabled analyze the packet with the rules, if not, just inform 
+         * there are not rules that match. 
+         * 
+         */
+        if(memoryType == MemorysAttacks.MEMORY_SENSORIAL && 
+                CONFIG.ENABLE_MEMORY_SENSORIAL_READ_ONLY==1){
+            log.debug("ATTENTION... SENSORIAL memory" +
+            		" in read only mode, thereby, the security rules aren't applied to the network! " +
+            		"To change this look for ENABLE_MEMORY_SENSORIAL_READ_ONLY in the config file.");
+            memoryAttackRuleMatch.setMatch(false);
+            memoryAttackRuleMatch.setAction(AlertMessage.NORMAL_PACKET);
+            return memoryAttackRuleMatch; 
+        } else if (memoryType == MemorysAttacks.MEMORY_SHORT && 
+                CONFIG.ENABLE_MEMORY_SHORT_READ_ONLY==1){
+            log.debug("ATTENTION... SHORT memory" +
+                    " in read only mode, thereby, the security rules aren't applied to the network! " +
+                    "To change this look for ENABLE_MEMORY_SENSORIAL_READ_ONLY in the config file.");
+            memoryAttackRuleMatch.setMatch(false);
+            memoryAttackRuleMatch.setAction(AlertMessage.NORMAL_PACKET);
+            return memoryAttackRuleMatch;
+        } else if (memoryType == MemorysAttacks.MEMORY_LONG_BAD && 
+                CONFIG.ENABLE_MEMORY_LONG_BAD_READ_ONLY==1){
+            log.debug("ATTENTION... LONG BAD memory" +
+                    " in read only mode, thereby, the security rules aren't applied to the network! " +
+                    "To change this look for ENABLE_MEMORY_SENSORIAL_READ_ONLY in the config file.");
+            memoryAttackRuleMatch.setMatch(false);
+            memoryAttackRuleMatch.setAction(AlertMessage.NORMAL_PACKET);
+            return memoryAttackRuleMatch;
+        } else if (memoryType == MemorysAttacks.MEMORY_LONG_GOOD && 
+                CONFIG.ENABLE_MEMORY_LONG_GOOD_READ_ONLY==1){
+            log.debug("ATTENTION... LONG GOOD memory" +
+                    " in read only mode, thereby, the security rules aren't applied to the network! " +
+                    "To change this look for ENABLE_MEMORY_SENSORIAL_READ_ONLY in the config file.");
+            memoryAttackRuleMatch.setMatch(false);
+            memoryAttackRuleMatch.setAction(AlertMessage.NORMAL_PACKET);
+            return memoryAttackRuleMatch;
+        }
+            
+        
         /*
          * Get network socket from the packet that will be analyzed by
          * Of-IDPS.
@@ -1082,25 +1128,25 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
         MemoryAttackRuleMatch memoryAttackRuleMatch;
         
         // Verify if this packet match with one rule of long good memory!
-        memoryAttackRuleMatch = analyzePacketInTheMemory(match, longMemoryForGoodRemembrances);
+        memoryAttackRuleMatch = analyzePacketInTheMemory(match, longMemoryForGoodRemembrances, MemorysAttacks.MEMORY_LONG_GOOD);
         if (memoryAttackRuleMatch.isMatch()) {
             log.debug("Packet match with a long good memory rule!");
             return memoryAttackRuleMatch;
         }
         // Verify if this packet match with one rule of sensorial memory!
-        memoryAttackRuleMatch = analyzePacketInTheMemory(match, sensorialMemoryAttacks);
+        memoryAttackRuleMatch = analyzePacketInTheMemory(match, sensorialMemoryAttacks, MemorysAttacks.MEMORY_SENSORIAL);
         if (memoryAttackRuleMatch.isMatch()) {
             log.debug("Packet match with a sensorial memory rule!");
             return memoryAttackRuleMatch;
         }
         // Verify if this packet match with one rule of short memory!
-        memoryAttackRuleMatch = analyzePacketInTheMemory(match, shortMemoryAttacks);
+        memoryAttackRuleMatch = analyzePacketInTheMemory(match, shortMemoryAttacks, MemorysAttacks.MEMORY_SHORT);
         if (memoryAttackRuleMatch.isMatch()) {
             log.debug("Packet match with a short memory rule!");
             return memoryAttackRuleMatch;
         }
         // Verify if this packet match with one rule of long bad memory!
-        memoryAttackRuleMatch = analyzePacketInTheMemory(match, longMemoryAttacks);
+        memoryAttackRuleMatch = analyzePacketInTheMemory(match, longMemoryAttacks, MemorysAttacks.MEMORY_LONG_BAD);
         if (memoryAttackRuleMatch.isMatch()) {
             log.debug("Packet match with a long bad memory rule!");
             return memoryAttackRuleMatch;
@@ -1124,25 +1170,25 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
         
         
         // Verify if this packet match with one rule of sensorial memory!
-        memoryAttackRuleMatch = analyzePacketInTheMemory(match, sensorialMemoryAttacks);
+        memoryAttackRuleMatch = analyzePacketInTheMemory(match, sensorialMemoryAttacks, MemorysAttacks.MEMORY_SENSORIAL);
         if (memoryAttackRuleMatch.isMatch()) {
             log.debug("Packet match with a sensorial memory rule!");
             return memoryAttackRuleMatch;
         }
         // Verify if this packet match with one rule of long good memory!
-        memoryAttackRuleMatch = analyzePacketInTheMemory(match, longMemoryForGoodRemembrances);
+        memoryAttackRuleMatch = analyzePacketInTheMemory(match, longMemoryForGoodRemembrances, MemorysAttacks.MEMORY_LONG_GOOD);
         if (memoryAttackRuleMatch.isMatch()) {
             log.debug("Packet match with a long good memory rule!");
             return memoryAttackRuleMatch;
         }
         // Verify if this packet match with one rule of short memory!
-        memoryAttackRuleMatch = analyzePacketInTheMemory(match, shortMemoryAttacks);
+        memoryAttackRuleMatch = analyzePacketInTheMemory(match, shortMemoryAttacks, MemorysAttacks.MEMORY_SHORT);
         if (memoryAttackRuleMatch.isMatch()) {
             log.debug("Packet match with a short memory rule!");
             return memoryAttackRuleMatch;
         }
         // Verify if this packet match with one rule of long bad memory!
-        memoryAttackRuleMatch = analyzePacketInTheMemory(match, longMemoryAttacks);
+        memoryAttackRuleMatch = analyzePacketInTheMemory(match, longMemoryAttacks, MemorysAttacks.MEMORY_LONG_BAD);
         if (memoryAttackRuleMatch.isMatch()) {
             log.debug("Packet match with a long bad memory rule!");
             return memoryAttackRuleMatch;
@@ -1164,25 +1210,25 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
         
         
         // Verify if this packet match with one rule of sensorial memory!
-        memoryAttackRuleMatch = analyzePacketInTheMemory(match, sensorialMemoryAttacks);
+        memoryAttackRuleMatch = analyzePacketInTheMemory(match, sensorialMemoryAttacks, MemorysAttacks.MEMORY_SENSORIAL);
         if (memoryAttackRuleMatch.isMatch()) {
             log.debug("Packet match with a sensorial memory rule!");
             return memoryAttackRuleMatch;
         }
         // Verify if this packet match with one rule of short memory!
-        memoryAttackRuleMatch = analyzePacketInTheMemory(match, shortMemoryAttacks);
+        memoryAttackRuleMatch = analyzePacketInTheMemory(match, shortMemoryAttacks, MemorysAttacks.MEMORY_SHORT);
         if (memoryAttackRuleMatch.isMatch()) {
             log.debug("Packet match with a short memory rule!");
             return memoryAttackRuleMatch;
         }
         // Verify if this packet match with one rule of long good memory!
-        memoryAttackRuleMatch = analyzePacketInTheMemory(match, longMemoryForGoodRemembrances);
+        memoryAttackRuleMatch = analyzePacketInTheMemory(match, longMemoryForGoodRemembrances, MemorysAttacks.MEMORY_LONG_GOOD);
         if (memoryAttackRuleMatch.isMatch()) {
             log.debug("Packet match with a long good memory rule!");
             return memoryAttackRuleMatch;
         }
         // Verify if this packet match with one rule of long bad memory!
-        memoryAttackRuleMatch = analyzePacketInTheMemory(match, longMemoryAttacks);
+        memoryAttackRuleMatch = analyzePacketInTheMemory(match, longMemoryAttacks, MemorysAttacks.MEMORY_LONG_BAD);
         if (memoryAttackRuleMatch.isMatch()) {
             log.debug("Packet match with a long bad memory rule!");
             return memoryAttackRuleMatch;
@@ -1201,20 +1247,20 @@ public class LearningSwitchTutorialSolution implements IOFMessageListener,
     private MemoryAttackRuleMatch memoryAnalyzeRulesOrder_4_Sensorial_Short_LongBad(OFMatch match) {
         MemoryAttackRuleMatch memoryAttackRuleMatch;
         // Verify if this packet match with one rule of sensorial memory!
-        memoryAttackRuleMatch = analyzePacketInTheMemory(match, sensorialMemoryAttacks);
+        memoryAttackRuleMatch = analyzePacketInTheMemory(match, sensorialMemoryAttacks, MemorysAttacks.MEMORY_SENSORIAL);
         if (memoryAttackRuleMatch.isMatch()) {
             // If there is a rule, update the action!
             log.debug("Packet match with a sensorial memory rule!");
             return memoryAttackRuleMatch;
         }
         // Verify if this packet match with one rule of short memory!
-        memoryAttackRuleMatch = analyzePacketInTheMemory(match, shortMemoryAttacks);
+        memoryAttackRuleMatch = analyzePacketInTheMemory(match, shortMemoryAttacks, MemorysAttacks.MEMORY_SHORT);
         if (memoryAttackRuleMatch.isMatch()) {
             log.debug("Packet match with a short memory rule!");
             return memoryAttackRuleMatch;
         }
         // Verify if this packet match with one rule of long memory!
-        memoryAttackRuleMatch = analyzePacketInTheMemory(match,longMemoryAttacks);
+        memoryAttackRuleMatch = analyzePacketInTheMemory(match,longMemoryAttacks, MemorysAttacks.MEMORY_LONG_BAD);
         if (memoryAttackRuleMatch.isMatch()) {
             log.debug("Packet match with a long memory rule!");
             return memoryAttackRuleMatch;
