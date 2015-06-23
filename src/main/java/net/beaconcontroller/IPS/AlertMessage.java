@@ -315,8 +315,14 @@ public class AlertMessage {
         return transportDestination;
     }
     
+    /**
+     * Get the string port number in a format non negative format!
+     * Caution, use this only to export data, not inside of system...
+     * @return String port number in a format non negative format!
+     */
     public String getTransportDestinationString() {
-        return convertToAnyIfNecessary(transportDestination);
+        int port = transportDestination & 0xFFFF;
+        return convertToAnyIfNecessary(port);
     }
     
 
@@ -328,8 +334,14 @@ public class AlertMessage {
         return transportSource;
     }
     
+    /**
+     * Get the string port number in a format non negative format!
+     * Caution, use this only to export data, not inside of system...
+     * @return String port number in a format non negative format!
+     */
     public String getTransportSourceString() {
-        return convertToAnyIfNecessary(transportSource);
+        int port = transportSource & 0xFFFF;
+        return convertToAnyIfNecessary(port);
     }
 
     public void setTransportSource(int transportSource) {
