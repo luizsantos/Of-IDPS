@@ -723,8 +723,8 @@ public class AlgoFPGrowth_Strings {
         int sport=0;
         int dport=0;
         // Verify if the minimum support was hit!
-        int novoMinsupp = (int) Math.ceil(0.1 * transactionCount);
-        if (rule.getSupportApriori() >= novoMinsupp && transactionCount > 500) {
+        float novoMinsupp =  (float)0.05 * (float)transactionCount;
+        if ((float)rule.getSupportApriori() >= novoMinsupp && transactionCount > 500) {
             // verify if source, destination, and protocol not exists! Case true
             // return and don't do nothing
             if ((rule.getNetworkSource() == Integer.MAX_VALUE)
