@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import net.beaconcontroller.IPS.AlertMessage;
+import net.beaconcontroller.IPS.AlertSnort;
 import net.beaconcontroller.tutorial.LearningSwitchTutorialSolution;
 
 import org.slf4j.Logger;
@@ -41,13 +42,37 @@ public class SecurityRulesDAO extends Thread {
         Connection connection = null;
         PreparedStatement stmt = null;
         // log.debug("Inserting register in database.");
+        
+        // used to store the snort alert id!
+        int snortAlertId=-1;
+        // verify if not is a: none description, a OpenFlow analysis description, or good memory rule.
+        if(!rule.getAlertDescription().equals("none") &&
+                !rule.getAlertDescription().equals("OF_DoS") &&
+                !rule.getAlertDescription().endsWith("good")) {
+            // Convert string to integer!
+            try {
+                int alertId = Integer.parseInt(rule.getAlertDescription());
+                // Using the barnyard id get the snort alert id on the database.
+                SnortAlertMessageDAO snortAlertMessageDAO = new SnortAlertMessageDAO();
+                AlertSnort alertSnort = snortAlertMessageDAO
+                        .getSnortAlertIdUsingBarnyardId(alertId);
+                // Put the retrieved snort id and description on correct fields!
+                rule.setAlertDescription(alertSnort.getDescription());
+                snortAlertId = alertSnort.getId();
+            } catch (NumberFormatException nfe) {
+                log.debug(">>>>>>>>Error to convert "
+                        + rule.getAlertDescription() + " to integer number!");
+            }
+            
+        }
 
         String sql = "INSERT INTO securityRules (" + "memory," + "priority,"
                 + "alertDescription," + "networkSource,"
                 + "networkDestination," + "networkProtocol,"
                 + "transportSource," + "transportDestination," 
                 + "supportApriori," +  "life," +  "averagePacketsMatchInOfControllerPerHop,"
-                + "totalPacketsMatchInOfController," + "averageOfTotalPacketsMatchInOfControllerPerSeconds"
+                + "totalPacketsMatchInOfController," + "averageOfTotalPacketsMatchInOfControllerPerSeconds,"
+                + "ids_alert_id"
                 + ")"
                 + " VALUES (" + memoryType + ","
                 + '\'' + rule.getPriorityAlertString() + '\'' + ","
@@ -61,7 +86,8 @@ public class SecurityRulesDAO extends Thread {
                 + rule.getLife() + ","
                 + rule.getAveragePacketsMatchInOfControllerPerHop() + ","
                 + rule.getTotalPacketsMatchInOfController() + ","
-                + rule.getAverageOfTotalPacketsMatchInOfControllerPerSeconds() 
+                + rule.getAverageOfTotalPacketsMatchInOfControllerPerSeconds()  + ","
+                + snortAlertId 
                 + ");";
          //log.debug("sql={}",sql);
 

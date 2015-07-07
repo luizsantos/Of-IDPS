@@ -11,5 +11,6 @@ create table securityRules(
                 life int not null,
                 averagePacketsMatchInOfControllerPerHop int not null,
                 totalPacketsMatchInOfController int not null,
-                averageOfTotalPacketsMatchInOfControllerPerSeconds int not null
+                averageOfTotalPacketsMatchInOfControllerPerSeconds int not null,
+                ids_alert_id int
  );

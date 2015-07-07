@@ -21,9 +21,14 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.management.Descriptor;
 
 import net.beaconcontroller.IPS.AlertMessage;
+import net.beaconcontroller.IPS.AlertSnort;
 import net.beaconcontroller.tools.Calculation;
 import net.beaconcontroller.tools.DateTimeManager;
 import net.beaconcontroller.tools.IpAddress;
@@ -42,6 +47,8 @@ public class SnortAlertMessageDAO {
     private int totalICMPSnortAlerts=0;
     
     protected static Logger log = LoggerFactory.getLogger(LearningSwitchTutorialSolution.class);
+    
+    
     
     // 1
     
@@ -779,6 +786,68 @@ public class SnortAlertMessageDAO {
         
         return count;
         
+    }
+    
+    private String getSQLQuery_getSnortAlertIdUsingBarnyardId(int sig_id) {
+        return "SELECT * FROM signature WHERE sig_id="+sig_id+";";
+    }
+    
+    public synchronized AlertSnort getSnortAlertIdUsingBarnyardId(int id) {
+        AlertSnort alertSnort =  new AlertSnort();
+        Connection connection = null;
+        Statement stmt = null;
+        ResultSet resultSqlSelect = null;
+        try {
+            DataSourceSnortIDS ds;
+            try {
+                ds = DataSourceSnortIDS.getInstance();
+                connection = ds.getConnection();
+            } catch (PropertyVetoException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } 
+            
+            stmt = connection.createStatement();
+            
+            String sql = getSQLQuery_getSnortAlertIdUsingBarnyardId(id);
+            
+            resultSqlSelect = stmt.executeQuery(sql);
+            
+            while (resultSqlSelect.next()) {
+                alertSnort.setId(resultSqlSelect.getInt("sig_sid"));
+                alertSnort.setDescription(resultSqlSelect.getString("sig_name"));
+            }
+            
+        } catch (SQLException e) {
+            log.debug("ATTENTION - Error during SQL select from IDS Snort Alert table - get alert id and description!");
+            e.printStackTrace();
+        } finally {
+            if(resultSqlSelect != null) {
+                try {
+                    resultSqlSelect.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+        return alertSnort;
     }
     
     
