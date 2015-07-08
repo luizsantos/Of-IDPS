@@ -169,7 +169,33 @@ public class AlgoFPGrowth_Strings {
          */
         this.runAlgorithm(input, output, 0.1);
         return listSecurityRulesNoDuplicates;        
-    }	
+    }
+    
+    /**
+     * Used on the good long memory... using a specific minimum support  
+     * 
+     * Run the itemsets algorithm! Here will be returned rules with at least 1
+     * item and we use different support number for different amounts of
+     * returned items.
+     * 
+     * @param input - The file path of an input transaction database.
+     * @param output - The path of the desired output file.
+     * @param minsupp - A minimum support.
+     * @throws IOException - Exception if error while writing the file
+     */
+    public Map<String, AlertMessage> runAlgorithm_toMemoryLong(String input, String output, double minsupp) throws FileNotFoundException, IOException {
+        // Require at least 1 item.
+        this.setQuantityOfItemsRequiredOnRule(1);
+        // Set to 1 to use different support numbers.
+        this.useDifferentsSupportBasedOnQuantityOfReturnedItems=1;
+        /*
+         * Run itemsets algorithm start support number in 0.1, but this will be
+         * ignored because of value of value 1 on the
+         * useDifferentsSupportBasedOnQuantityOfReturnedItems variable.
+         */
+        this.runAlgorithm(input, output, minsupp);
+        return listSecurityRulesNoDuplicates;        
+    }
 	
 	
 	

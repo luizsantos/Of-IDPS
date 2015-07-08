@@ -1,7 +1,7 @@
 create table securityRules(
 		memory int,
                 priority varchar(10),
-                alertDescription varchar(25) not null,
+                alertDescription varchar(100) not null,
                 networkSource varchar(16) not null,
                 networkDestination varchar(16) not null,
                 networkProtocol varchar(4) not null,

@@ -706,8 +706,29 @@ public class MemorysAttacks extends Thread {
         String output = "/tmp/OfIDPS_output_rule.txt";  // the path for saving the frequent itemsets found
         AlgoFPGrowth_Strings algo = new AlgoFPGrowth_Strings(memoryType);
         try {
-            // Obtain rules from IDS alerts using itemsets algorithm. 
-            ruleListFromIDS = algo.runAlgorithm(alertsFromIDSSnort,output);
+            // Obtain rules from IDS alerts using itemsets algorithm based on the memory type. 
+            switch (memoryType) {
+                case MEMORY_SENSORIAL:
+                    log.debug("ATTENTION - SENSORIAL memory don't uses itemset algorithm");
+                    break;
+                case MEMORY_SHORT:
+                    //log.debug("Set itemset to short memory!");
+                    ruleListFromIDS = algo.runAlgorithm(alertsFromIDSSnort,output);
+                    break;
+                case MEMORY_LONG_BAD:
+                    //log.debug("Set itemset to long bad memory!");
+                    ruleListFromIDS = algo.runAlgorithm_toMemoryLong(alertsFromIDSSnort,output,0.05);
+                    break;
+                case MEMORY_LONG_GOOD:
+                    //log.debug("Set itemset to long good memory!");
+                    ruleListFromIDS = algo.runAlgorithm_toMemoryLong(alertsFromIDSSnort,output,0.05);
+                    break;
+                default:
+                    log.debug("!!!!ATTENTION!!! - Unknown type of memory, not was possible to choice of a itemset method.");
+                    break;
+            }
+            
+            
             
         } catch (FileNotFoundException e) {
             log.debug("MemorysAttacks: Not is possible write on file {}", output);
